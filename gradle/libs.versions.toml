@@ -6,6 +6,7 @@ constraintlayout = "2.1.4"
 androidGradlePlugin = "8.0.1"
 androidLibrary = "8.0.1"
 jetbrainsKotlin  = "1.8.10"
+ksp = "1.8.10-1.0.9"
 
 [libraries]
 androidx-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "ktx" }
@@ -17,3 +18,4 @@ androidx-constraintlayout = { group = "androidx.constraintlayout", name = "const
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
 android-library = { id = "com.android.library", version.ref = "androidLibrary" }
 jetbrains-kotlin = { id = "org.jetbrains.kotlin.android", version.ref = "jetbrainsKotlin" }
+devtools-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
