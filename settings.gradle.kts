@@ -13,4 +13,4 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "Awesome Sunset Wallpapers"
-include ':app'
+include(":app")
