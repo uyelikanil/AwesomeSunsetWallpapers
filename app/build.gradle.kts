@@ -1,7 +1,9 @@
 plugins {
+    kotlin("kapt")
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin)
     alias(libs.plugins.devtools.ksp)
+    alias(libs.plugins.dagger.hilt)
 }
 
 android {
@@ -21,22 +23,37 @@ android {
         }
     }
 
+    flavorDimensions += "version"
+    productFlavors {
+        create("full") {
+            buildConfigField("String", "BASE_URL", "\"https://api.pexels.com\"")
+            buildConfigField("String", "API_KEY",
+                "\"AYcBbQE9tWR1DQDCy4Lh3XobkrOi9XNM1J4v3x4RFspWNuGOZq6Aqh9u\""
+            )
+        }
+    }
+
     buildTypes {
         getByName("release") {
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro")
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "17"
     }
-    packagingOptions {
+    packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
+    }
+
+    buildFeatures {
+        buildConfig = true
     }
 }
 
@@ -45,4 +62,15 @@ dependencies {
     implementation(libs.androidx.lifecycle.runtime)
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.constraintlayout)
+    implementation(libs.dagger.hilt)
+    kapt(libs.dagger.hilt.compiler)
+    implementation(libs.kotlinx.coroutines.android)
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.kotlin.serialization)
+    implementation(libs.okhttp.logging)
+}
+
+// Allow references to generated code
+kapt {
+    correctErrorTypes = true
 }
