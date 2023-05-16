@@ -13,7 +13,7 @@ class PhotoMapper @Inject constructor() {
         pexelsPhoto.src
     )
 
-    fun mapPexelPhotosToPhoto(pexelsPhotoExpanded: PexelsPhotoExpanded): List<Photo> =
+    fun mapPexelsPhotosToPhoto(pexelsPhotoExpanded: PexelsPhotoExpanded): List<Photo> =
         pexelsPhotoExpanded.photos.map{mapToPhoto(it)
     }
 }

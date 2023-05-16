@@ -12,5 +12,5 @@ class GetPhotoUseCaseImpl @Inject constructor(private val photoRepository: Photo
         photoMapper.mapToPhoto(photoRepository.getPhoto(id))
 
     override suspend fun getPhotos(query: List<String>?, page: Int?, per_page: Int?): List<Photo> =
-        photoMapper.mapPexelPhotosToPhoto(photoRepository.getPhotosWithQuery(query, page, per_page))
+        photoMapper.mapPexelsPhotosToPhoto(photoRepository.getPhotosWithQuery(query, page, per_page))
 }
