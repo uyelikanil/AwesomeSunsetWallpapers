@@ -24,8 +24,8 @@ data class PexelsPhoto(
     val photographer_url: String = "",
     val photographer_id: Int,
     val avg_color: String = "",
-    val src: Int,
-    val liked: PexelsPhotoSrc,
+    val src: PexelsPhotoSrc,
+    val liked: Boolean,
     val alt: String = ""
 )
 
