@@ -1,8 +1,11 @@
 package com.anilyilmaz.awesomesunsetwallpapers.core.domain.usecase
 
+import androidx.paging.PagingData
 import com.anilyilmaz.awesomesunsetwallpapers.core.data.repository.PhotoRepository
 import com.anilyilmaz.awesomesunsetwallpapers.core.domain.mapper.PhotoMapper
 import com.anilyilmaz.awesomesunsetwallpapers.core.model.Photo
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class GetPhotoUseCaseImpl @Inject constructor(private val photoRepository: PhotoRepository,
@@ -11,6 +14,7 @@ class GetPhotoUseCaseImpl @Inject constructor(private val photoRepository: Photo
     override suspend fun getPhoto(id: Int): Photo =
         photoMapper.mapToPhoto(photoRepository.getPhoto(id))
 
-    override suspend fun getPhotos(query: List<String>?, page: Int?, per_page: Int?): List<Photo> =
-        photoMapper.mapPexelsPhotosToPhoto(photoRepository.getPhotosWithQuery(query, page, per_page))
+    override fun getPhotos(query: List<String>, per_page: Int): Flow<PagingData<Photo>> =
+        photoRepository.getPhotosWithQuery(query, per_page).map {
+            photoMapper.mapPexelsPhotosToPhoto(it)}
 }

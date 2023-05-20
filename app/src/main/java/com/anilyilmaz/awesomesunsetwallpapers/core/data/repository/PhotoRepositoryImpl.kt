@@ -5,7 +5,6 @@ import com.anilyilmaz.awesomesunsetwallpapers.core.common.AswDispatchers.IO
 import com.anilyilmaz.awesomesunsetwallpapers.core.common.Dispatcher
 import com.anilyilmaz.awesomesunsetwallpapers.core.network.datasource.PexelsDataSource
 import com.anilyilmaz.awesomesunsetwallpapers.core.network.model.PexelsPhoto
-import com.anilyilmaz.awesomesunsetwallpapers.core.network.model.PexelsPhotoExpanded
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
@@ -18,6 +17,6 @@ class PhotoRepositoryImpl @Inject constructor(private val pexelsDataSource: Pexe
     override suspend fun getPhoto(id: Int): PexelsPhoto = withContext(ioDispatcher) {
         pexelsDataSource.getPhoto(id).data}
 
-    override suspend fun getPhotosWithQuery(query: List<String>, per_page: Int):
+    override fun getPhotosWithQuery(query: List<String>, per_page: Int):
             Flow<PagingData<PexelsPhoto>> = pexelsDataSource.getPhotosWithQuery(query, per_page)
 }
