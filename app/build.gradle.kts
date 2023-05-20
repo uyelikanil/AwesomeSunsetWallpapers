@@ -69,6 +69,7 @@ dependencies {
     implementation(libs.retrofit.kotlin.serialization)
     implementation(libs.okhttp.logging)
     implementation(libs.androidx.paging)
+    implementation(libs.retrofit.converter.moshi)
 }
 
 // Allow references to generated code

@@ -1,5 +1,6 @@
 package com.anilyilmaz.awesomesunsetwallpapers.core.network.datasource
 
+import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.anilyilmaz.awesomesunsetwallpapers.core.network.api.PexelsService
@@ -15,11 +16,11 @@ class PexelsPagingSource (private val pexelsService: PexelsService,
             val nextPageNumber = params.key ?: 1
             val response = pexelsService.getPhotosWithQuery(query, nextPageNumber, perPage)
 
-            val nextKey = if (nextPageNumber < (response.data.total_results / perPage))
+            val nextKey = if (nextPageNumber < (response.total_results / perPage))
                 nextPageNumber + 1 else null
 
             LoadResult.Page(
-                data = response.data.photos,
+                data = response.photos,
                 prevKey = null,
                 nextKey = nextKey
             )

@@ -15,7 +15,7 @@ class PhotoRepositoryImpl @Inject constructor(private val pexelsDataSource: Pexe
                                               CoroutineDispatcher): PhotoRepository {
 
     override suspend fun getPhoto(id: Int): PexelsPhoto = withContext(ioDispatcher) {
-        pexelsDataSource.getPhoto(id).data}
+        pexelsDataSource.getPhoto(id)}
 
     override fun getPhotosWithQuery(query: List<String>, per_page: Int):
             Flow<PagingData<PexelsPhoto>> = pexelsDataSource.getPhotosWithQuery(query, per_page)
