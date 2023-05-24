@@ -31,8 +31,6 @@ class PexelsDataSourceImpl @Inject constructor(okhttpCallFactory: Call.Factory):
     ): Flow<PagingData<PexelsPhoto>> {
         return Pager(config = PagingConfig(
                 pageSize = per_page,
-                initialLoadSize = per_page * 2,
-                prefetchDistance = per_page * 3,
                 enablePlaceholders = true),
             pagingSourceFactory = { PexelsPagingSource(pexelsApi, query, per_page * 3) }
         ).flow
