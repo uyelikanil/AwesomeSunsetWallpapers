@@ -55,6 +55,10 @@ android {
     buildFeatures {
         buildConfig = true
     }
+
+    buildFeatures {
+        viewBinding = true
+    }
 }
 
 dependencies {
@@ -70,6 +74,10 @@ dependencies {
     implementation(libs.okhttp.logging)
     implementation(libs.androidx.paging)
     implementation(libs.retrofit.converter.moshi)
+    implementation(libs.androidx.navigation.fragment)
+    implementation(libs.androidx.navigation.ui)
+    implementation(libs.coil)
+    implementation(libs.androidx.swiperefreshlayout)
 }
 
 // Allow references to generated code
