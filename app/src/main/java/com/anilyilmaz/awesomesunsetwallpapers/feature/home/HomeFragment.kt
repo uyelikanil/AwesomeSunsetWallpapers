@@ -1,17 +1,23 @@
 package com.anilyilmaz.awesomesunsetwallpapers.feature.home
 
+import android.opengl.Visibility
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.isGone
+import androidx.core.view.isInvisible
+import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.GridLayoutManager
 import com.anilyilmaz.awesomesunsetwallpapers.R
 import com.anilyilmaz.awesomesunsetwallpapers.core.model.NetworkState
@@ -19,6 +25,8 @@ import com.anilyilmaz.awesomesunsetwallpapers.databinding.FragmentHomeBinding
 import com.anilyilmaz.awesomesunsetwallpapers.feature.main.SharedViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -56,24 +64,34 @@ class HomeFragment : Fragment() {
 
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.homeUiState
-                    .flowWithLifecycle(viewLifecycleOwner.lifecycle)
-                    .collectLatest { uiState ->
-                        binding.swiperefresh.isRefreshing = uiState.isLoading
+                launch {
+                    pagingAdapter.loadStateFlow
+                        .collectLatest { loadStates ->
+                            binding.swiperefresh.isRefreshing =
+                                loadStates.refresh is LoadState.Loading
 
-                        pagingAdapter.submitData(uiState.pagingData)
+                            binding.recyclerView.isVisible =
+                                loadStates.refresh is LoadState.NotLoading
 
-                        if(uiState.error) {
-                            Toast.makeText(context, getString(R.string.error),
-                                Toast.LENGTH_SHORT).show()
-                            viewModel.errorHandled()
+                            binding.errorLayout.isVisible =
+                                loadStates.refresh is LoadState.Error
                         }
-                    }
+                }
+
+                launch {
+                    viewModel.homeUiState
+                        .collectLatest { uiState ->
+                            pagingAdapter.submitData(viewLifecycleOwner.lifecycle,
+                                uiState.pagingData)
+                        }
+                }
             }
         }
 
         binding.swiperefresh.setOnRefreshListener {
             viewModel.getWallpapers()
         }
+
+        binding.errorRetryTextView.setOnClickListener { viewModel.getWallpapers() }
     }
 }
