@@ -10,10 +10,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <androidx.appcompat.widget.Toolbar
+        <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="?attr/actionBarSize"
+            app:titleCentered="true"
             app:title="@string/app_name"
             app:layout_scrollFlags="scroll|enterAlways|snap" />
 
@@ -36,7 +37,8 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_view"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:padding="4dp"/>
 
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 

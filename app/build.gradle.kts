@@ -78,6 +78,7 @@ dependencies {
     implementation(libs.androidx.navigation.ui)
     implementation(libs.coil)
     implementation(libs.androidx.swiperefreshlayout)
+    implementation(libs.material)
 }
 
 // Allow references to generated code
