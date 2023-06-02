@@ -6,7 +6,7 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
-import coil.result
+import com.anilyilmaz.awesomesunsetwallpapers.R
 import com.anilyilmaz.awesomesunsetwallpapers.core.model.Photo
 import com.anilyilmaz.awesomesunsetwallpapers.databinding.WallpaperListCardBinding
 
@@ -29,7 +29,10 @@ class WallpapersAdapter(diffCallback: DiffUtil.ItemCallback<Photo>):
 class WallpaperViewHolder(private val binding: WallpaperListCardBinding
 ): RecyclerView.ViewHolder(binding.root) {
     fun bind(photo: Photo){
-        binding.imageView.load(photo.src.portrait)
+        binding.imageView.load(photo.src.portrait) {
+            crossfade(true)
+            placeholder(R.mipmap.ic_launcher_foreground)
+        }
     }
 }
 
