@@ -19,6 +19,10 @@ class HomeViewModel @Inject constructor(private val getPhotoUseCase: GetPhotoUse
     private val _uiState = MutableStateFlow(HomeUiState())
     val homeUiState: StateFlow<HomeUiState> = _uiState.asStateFlow()
 
+    init {
+        getWallpapers()
+    }
+
     fun getWallpapers() = getPhotoUseCase.getPhotos(listOf("sunset"), 30)
         .cachedIn(viewModelScope)
         .map { wallpaperResult -> _uiState.update { it.copy(wallpaperResult)} }

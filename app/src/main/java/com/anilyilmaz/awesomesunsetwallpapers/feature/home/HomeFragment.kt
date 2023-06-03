@@ -48,8 +48,6 @@ class HomeFragment : Fragment() {
 
         setUi()
 
-        viewModel.getWallpapers()
-
         sharedViewModel.networkState.observe(viewLifecycleOwner) {
             if (it == NetworkState.CONNECTED) {
                 viewModel.getWallpapers()
