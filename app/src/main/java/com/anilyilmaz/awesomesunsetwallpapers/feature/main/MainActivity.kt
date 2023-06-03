@@ -7,11 +7,14 @@ import android.net.NetworkRequest
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.anilyilmaz.awesomesunsetwallpapers.R
 import com.anilyilmaz.awesomesunsetwallpapers.core.model.NetworkState
 import com.anilyilmaz.awesomesunsetwallpapers.databinding.ActivityMainBinding
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity () {
@@ -25,19 +28,17 @@ class MainActivity : AppCompatActivity () {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        init()
-    }
-
-    private fun init() {
         setInternetConnection()
 
-        sharedViewModel.networkState.observe(this) {
-            if (it == NetworkState.CONNECTED) {
-                Snackbar.make(binding.root, getString(R.string.network_is_connected),
-                    Snackbar.LENGTH_SHORT).show()
-            } else if (it == NetworkState.LOST || it == NetworkState.UNAVAILABLE) {
-                Snackbar.make(binding.root, getString(R.string.there_is_no_network),
-                    Snackbar.LENGTH_INDEFINITE).show()
+        lifecycleScope.launch {
+            sharedViewModel.networkState.collectLatest {
+                if (it == NetworkState.CONNECTED) {
+                    Snackbar.make(binding.root, getString(R.string.network_is_connected),
+                        Snackbar.LENGTH_SHORT).show()
+                } else if (it == NetworkState.LOST || it == NetworkState.UNAVAILABLE) {
+                    Snackbar.make(binding.root, getString(R.string.there_is_no_network),
+                        Snackbar.LENGTH_INDEFINITE).show()
+                }
             }
         }
     }
