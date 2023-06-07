@@ -64,7 +64,7 @@ class HomeFragment : Fragment() {
                             binding.recyclerView.isVisible =
                                 loadStates.refresh is LoadState.NotLoading
 
-                            binding.errorLayout.isVisible =
+                            binding.errorLayout.root.isVisible =
                                 loadStates.refresh is LoadState.Error
                         }
                 }
@@ -83,6 +83,6 @@ class HomeFragment : Fragment() {
             viewModel.getWallpapers()
         }
 
-        binding.errorRetryTextView.setOnClickListener { viewModel.getWallpapers() }
+        binding.errorLayout.errorRetryTextView.setOnClickListener { viewModel.getWallpapers() }
     }
 }
