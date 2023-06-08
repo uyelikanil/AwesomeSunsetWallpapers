@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <style name="OutlinedButton" parent="Widget.Material3.Button.OutlinedButton">
+        <item name="android:textColor">@color/white</item>
+    </style>
+
     <style name="FilledCardview" parent="Widget.Material3.CardView.Filled">
         <item name="cardBackgroundColor">@color/transparent</item>
+    </style>
+
+    <style name="CircularProgressIndicatorMedium"
+        parent="Widget.Material3.CircularProgressIndicator.Medium">
+        <item name="indicatorColor">@color/yellow_700</item>
     </style>
 </resources>

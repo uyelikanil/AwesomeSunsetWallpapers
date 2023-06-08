@@ -9,5 +9,26 @@
         android:id="@+id/homeFragment"
         android:name="com.anilyilmaz.awesomesunsetwallpapers.feature.home.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home">
+
+        <action android:id="@+id/startWallpaperDetailFragment"
+            app:destination="@+id/wallpaperDetailFragment">
+            <argument
+                android:name="wallpaperId"
+                app:argType="integer"
+                android:defaultValue="0" />
+        </action>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/wallpaperDetailFragment"
+        android:name="com.anilyilmaz.awesomesunsetwallpapers.feature.wallpaperdetail.WallpaperDetailFragment"
+        android:label="fragment_wallpaper_detail"
+        tools:layout="@layout/fragment_wallpaper_detail">
+        <argument
+            android:name="wallpaperId"
+            app:argType="integer"
+            android:defaultValue="0" />
+    </fragment>
 </navigation>

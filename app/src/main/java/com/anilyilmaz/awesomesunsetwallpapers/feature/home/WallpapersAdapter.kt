@@ -2,6 +2,7 @@ package com.anilyilmaz.awesomesunsetwallpapers.feature.home
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.navigation.findNavController
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -32,6 +33,11 @@ class WallpaperViewHolder(private val binding: WallpaperListCardBinding
         binding.imageView.load(photo.src.portrait) {
             crossfade(true)
             placeholder(R.mipmap.ic_launcher_foreground)
+        }
+
+        binding.imageView.setOnClickListener {
+            val action = HomeFragmentDirections.startWallpaperDetailFragment(photo.id)
+            it.findNavController().navigate(action)
         }
     }
 }
