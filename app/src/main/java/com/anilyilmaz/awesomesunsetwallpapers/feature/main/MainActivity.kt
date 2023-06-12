@@ -30,8 +30,6 @@ class MainActivity : AppCompatActivity () {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        setInternetConnection()
-
         lifecycleScope.launch {
             sharedViewModel.networkState.collectLatest {
                 if (it == NetworkState.CONNECTED) {
@@ -43,9 +41,13 @@ class MainActivity : AppCompatActivity () {
                 }
             }
         }
+
+        setInternetConnection()
     }
 
     private fun setInternetConnection () {
+        sharedViewModel.updateNetworkState(getNetworkStateUseCase.getState())
+
         val networkRequest = NetworkRequest.Builder()
             .addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
             .addTransportType(NetworkCapabilities.TRANSPORT_WIFI)
@@ -67,11 +69,6 @@ class MainActivity : AppCompatActivity () {
                 super.onLost(network)
                 sharedViewModel.updateNetworkState(NetworkState.LOST)
             }
-    }
-
-    override fun onStart() {
-        super.onStart()
-        sharedViewModel.updateNetworkState(getNetworkStateUseCase.getState())
     }
 }
 
