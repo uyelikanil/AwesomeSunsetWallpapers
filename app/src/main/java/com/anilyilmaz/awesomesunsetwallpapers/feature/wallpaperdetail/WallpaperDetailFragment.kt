@@ -1,5 +1,7 @@
 package com.anilyilmaz.awesomesunsetwallpapers.feature.wallpaperdetail
 
+import android.app.WallpaperManager
+import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,6 +9,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.addCallback
+import androidx.core.content.FileProvider
+import androidx.core.graphics.drawable.toBitmap
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -17,19 +21,22 @@ import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
 import coil.ImageLoader
 import coil.request.ImageRequest
+import com.anilyilmaz.awesomesunsetwallpapers.BuildConfig
 import com.anilyilmaz.awesomesunsetwallpapers.R
+import com.anilyilmaz.awesomesunsetwallpapers.core.domain.usecase.SetTempFileUseCase
 import com.anilyilmaz.awesomesunsetwallpapers.databinding.FragmentWallpaperDetailBinding
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class WallpaperDetailFragment() : Fragment() {
     private lateinit var binding: FragmentWallpaperDetailBinding
     private val viewModel by viewModels<WallpaperDetailViewModel>()
     private val args: WallpaperDetailFragmentArgs by navArgs()
+    @Inject lateinit var wallpaperManager: WallpaperManager
+    @Inject lateinit var setTempFileUseCase: SetTempFileUseCase
     private lateinit var imageDrawable: Drawable
 
     override fun onCreateView(
@@ -83,11 +90,15 @@ class WallpaperDetailFragment() : Fragment() {
             if(::imageDrawable.isInitialized) {
                 viewLifecycleOwner.lifecycleScope.launch {
                     try {
-                        val tempImage = viewModel.getTempImage(imageDrawable)
-                        val contentUri = viewModel.getContentUri(tempImage)
-                        val cropAndSetWallpaperIntent =
-                            viewModel.getCropAndSetWallpaperIntent(contentUri)
-                        startActivity(cropAndSetWallpaperIntent)
+                        context?.let { context ->
+                            val tempImage = setTempFileUseCase.setTempImage(imageDrawable.toBitmap(),
+                                Bitmap.CompressFormat.JPEG, "wallpaper")
+                            val contentUri = FileProvider.getUriForFile(context,
+                                BuildConfig.APPLICATION_ID + ".provider", tempImage)
+                            val cropAndSetWallpaperIntent =
+                                wallpaperManager.getCropAndSetWallpaperIntent(contentUri)
+                            startActivity(cropAndSetWallpaperIntent)
+                        }
                     } catch (e: Exception) {
                         Toast.makeText(context,
                             getString(R.string.error_occurred_while_setting_wallpaper),

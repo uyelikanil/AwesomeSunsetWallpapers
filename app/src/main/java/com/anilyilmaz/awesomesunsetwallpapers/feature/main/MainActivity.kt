@@ -9,18 +9,20 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.anilyilmaz.awesomesunsetwallpapers.R
+import com.anilyilmaz.awesomesunsetwallpapers.core.domain.usecase.GetNetworkStateUseCase
 import com.anilyilmaz.awesomesunsetwallpapers.core.model.NetworkState
 import com.anilyilmaz.awesomesunsetwallpapers.databinding.ActivityMainBinding
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity () {
-
     private lateinit var binding: ActivityMainBinding
-    private val mainVewModel by viewModels<MainVewModel>()
+    @Inject lateinit var connectivityManager: ConnectivityManager
+    @Inject lateinit var getNetworkStateUseCase: GetNetworkStateUseCase
     private val sharedViewModel by viewModels<SharedViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,7 +52,7 @@ class MainActivity : AppCompatActivity () {
             .addTransportType(NetworkCapabilities.TRANSPORT_CELLULAR)
             .build()
 
-        mainVewModel.connectivityManager.requestNetwork(networkRequest, networkCallback)
+        connectivityManager.requestNetwork(networkRequest, networkCallback)
     }
 
     private val networkCallback =
@@ -64,15 +66,12 @@ class MainActivity : AppCompatActivity () {
             override fun onLost(network: Network) {
                 super.onLost(network)
                 sharedViewModel.updateNetworkState(NetworkState.LOST)
-
             }
     }
 
     override fun onStart() {
         super.onStart()
-
-        val networkState = mainVewModel.getNetworkState()
-        sharedViewModel.updateNetworkState(networkState)
+        sharedViewModel.updateNetworkState(getNetworkStateUseCase.getState())
     }
 }
 
