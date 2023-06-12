@@ -4,6 +4,7 @@ import android.app.WallpaperManager
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -56,7 +57,7 @@ class WallpaperDetailFragment() : Fragment() {
     }
 
     private fun setUi() {
-        requireActivity().onBackPressedDispatcher.addCallback {
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
             if(binding.buttonLayout.isVisible) {
                 Navigation.findNavController(binding.root).popBackStack()
             } else {
