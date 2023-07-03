@@ -22,4 +22,9 @@ class SharedViewModel @Inject constructor(private val getNetworkStateUseCase:
         currentNetworkState = state
         _networkState.emit(state)
     }
+
+    fun updateNetworkState(isThereActiveNetwork: Boolean) = viewModelScope.launch {
+        val state = getNetworkStateUseCase.getState(isThereActiveNetwork)
+        updateNetworkState(state)
+    }
 }

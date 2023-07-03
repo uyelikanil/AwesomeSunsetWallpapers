@@ -6,6 +6,6 @@ interface GetNetworkStateUseCase {
 
     fun getState(newState: NetworkState, oldState: NetworkState): NetworkState
 
-    fun getState(): NetworkState
+    fun getState(isThereActiveNetwork: Boolean): NetworkState
 
 }

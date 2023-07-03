@@ -9,7 +9,6 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.anilyilmaz.awesomesunsetwallpapers.R
-import com.anilyilmaz.awesomesunsetwallpapers.core.domain.usecase.GetNetworkStateUseCase
 import com.anilyilmaz.awesomesunsetwallpapers.core.model.NetworkState
 import com.anilyilmaz.awesomesunsetwallpapers.databinding.ActivityMainBinding
 import com.google.android.material.snackbar.Snackbar
@@ -22,7 +21,6 @@ import javax.inject.Inject
 class MainActivity : AppCompatActivity () {
     private lateinit var binding: ActivityMainBinding
     @Inject lateinit var connectivityManager: ConnectivityManager
-    @Inject lateinit var getNetworkStateUseCase: GetNetworkStateUseCase
     private val sharedViewModel by viewModels<SharedViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,7 +44,8 @@ class MainActivity : AppCompatActivity () {
     }
 
     private fun setInternetConnection () {
-        sharedViewModel.updateNetworkState(getNetworkStateUseCase.getState())
+        val isThereActiveNetwork = connectivityManager.activeNetwork != null
+        sharedViewModel.updateNetworkState(isThereActiveNetwork)
 
         val networkRequest = NetworkRequest.Builder()
             .addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
