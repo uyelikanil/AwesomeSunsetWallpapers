@@ -55,9 +55,6 @@ android {
 
     buildFeatures {
         buildConfig = true
-    }
-
-    buildFeatures {
         viewBinding = true
     }
 }
@@ -70,16 +67,19 @@ dependencies {
     implementation(libs.dagger.hilt)
     kapt(libs.dagger.hilt.compiler)
     implementation(libs.kotlinx.coroutines.android)
+    testImplementation(libs.kotlinx.coroutines.test)
     implementation(libs.retrofit)
     implementation(libs.retrofit.kotlin.serialization)
     implementation(libs.okhttp.logging)
     implementation(libs.androidx.paging)
+    testImplementation(libs.androidx.paging.test)
     implementation(libs.retrofit.converter.moshi)
     implementation(libs.androidx.navigation.fragment)
     implementation(libs.androidx.navigation.ui)
     implementation(libs.coil)
     implementation(libs.androidx.swiperefreshlayout)
     implementation(libs.material)
+    testImplementation(libs.junit4)
 }
 
 // Allow references to generated code

@@ -23,3 +23,4 @@ class GetPhotoUseCaseImpl @Inject constructor(private val photoRepository: Photo
         }
     }
 }
+
