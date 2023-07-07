@@ -1,4 +1,4 @@
-package com.anilyilmaz.awesomesunsetwallpapers.core.network
+package com.anilyilmaz.awesomesunsetwallpapers.testdoubles.network
 
 import androidx.paging.Pager
 import androidx.paging.PagingConfig

@@ -1,7 +1,7 @@
 package com.anilyilmaz.awesomesunsetwallpapers.core.domain.mapper
 
-import com.anilyilmaz.awesomesunsetwallpapers.core.modelfactory.pexelsPhotoTestData
-import com.anilyilmaz.awesomesunsetwallpapers.core.modelfactory.photoTestData
+import com.anilyilmaz.awesomesunsetwallpapers.testdoubles.modelfactory.pexelsPhotoTestData
+import com.anilyilmaz.awesomesunsetwallpapers.testdoubles.modelfactory.photoTestData
 import org.junit.Assert.assertEquals
 import org.junit.Test
 

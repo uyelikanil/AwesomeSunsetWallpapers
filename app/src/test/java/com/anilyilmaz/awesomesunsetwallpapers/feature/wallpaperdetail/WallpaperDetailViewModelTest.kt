@@ -1,12 +1,15 @@
 package com.anilyilmaz.awesomesunsetwallpapers.feature.wallpaperdetail
 
-import com.anilyilmaz.awesomesunsetwallpapers.core.data.FakePhotoRepositoryImpl
+import com.anilyilmaz.awesomesunsetwallpapers.core.data.repository.PhotoRepositoryImpl
 import com.anilyilmaz.awesomesunsetwallpapers.core.domain.mapper.PhotoMapper
 import com.anilyilmaz.awesomesunsetwallpapers.core.domain.usecase.GetPhotoUseCaseImpl
+import com.anilyilmaz.awesomesunsetwallpapers.testdoubles.network.FakePexelsDataSource
 import com.anilyilmaz.awesomesunsetwallpapers.util.MainDispatcherRule
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Before
@@ -19,13 +22,14 @@ class WallpaperDetailViewModelTest {
     val mainDispatcherRule = MainDispatcherRule()
 
     private lateinit var viewModel: WallpaperDetailViewModel
-    private lateinit var getPhotoUseCase : GetPhotoUseCaseImpl
-    private val photoRepository = FakePhotoRepositoryImpl()
+    private val dataSource = FakePexelsDataSource()
     private val photoMapper = PhotoMapper()
+    private val dispatcher = StandardTestDispatcher(mainDispatcherRule.testDispatcher.scheduler)
+    private val photoRepository = PhotoRepositoryImpl(dataSource, dispatcher)
+    private val getPhotoUseCase = GetPhotoUseCaseImpl(photoRepository, photoMapper)
 
     @Before
     fun setUp() {
-        getPhotoUseCase = GetPhotoUseCaseImpl(photoRepository, photoMapper)
         viewModel = WallpaperDetailViewModel(getPhotoUseCase)
     }
 
@@ -56,11 +60,11 @@ class WallpaperDetailViewModelTest {
 
         // Then
         var uiState = viewModel.uiState.value
-        launch {
-            assert(uiState is WallpaperDetailUiState.Loading)
-            uiState = viewModel.uiState.value
-            assert(uiState is WallpaperDetailUiState.Success)
-            job.cancel()
-        }
+        advanceUntilIdle()
+        assert(uiState is WallpaperDetailUiState.Loading)
+        uiState = viewModel.uiState.value
+        assert(uiState is WallpaperDetailUiState.Success)
+
+        job.cancel()
     }
 }

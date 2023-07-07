@@ -1,7 +1,7 @@
-package com.anilyilmaz.awesomesunsetwallpapers.core.network
+package com.anilyilmaz.awesomesunsetwallpapers.testdoubles.network
 
-import com.anilyilmaz.awesomesunsetwallpapers.core.modelfactory.pexelsPhotoExpandedTestData
-import com.anilyilmaz.awesomesunsetwallpapers.core.modelfactory.pexelsPhotoTestData
+import com.anilyilmaz.awesomesunsetwallpapers.testdoubles.modelfactory.pexelsPhotoExpandedTestData
+import com.anilyilmaz.awesomesunsetwallpapers.testdoubles.modelfactory.pexelsPhotoTestData
 import com.anilyilmaz.awesomesunsetwallpapers.core.network.api.PexelsService
 import com.anilyilmaz.awesomesunsetwallpapers.core.network.model.PexelsPhoto
 import com.anilyilmaz.awesomesunsetwallpapers.core.network.model.PexelsPhotoExpanded

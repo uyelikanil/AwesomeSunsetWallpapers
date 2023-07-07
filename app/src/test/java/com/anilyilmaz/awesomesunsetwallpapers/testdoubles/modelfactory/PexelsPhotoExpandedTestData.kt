@@ -1,4 +1,4 @@
-package com.anilyilmaz.awesomesunsetwallpapers.core.modelfactory
+package com.anilyilmaz.awesomesunsetwallpapers.testdoubles.modelfactory
 
 import com.anilyilmaz.awesomesunsetwallpapers.core.network.model.PexelsPhotoExpanded
 

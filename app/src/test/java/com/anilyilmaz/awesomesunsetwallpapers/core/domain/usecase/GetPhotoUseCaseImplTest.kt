@@ -1,9 +1,11 @@
 package com.anilyilmaz.awesomesunsetwallpapers.core.domain.usecase
 
 import androidx.paging.testing.asSnapshot
-import com.anilyilmaz.awesomesunsetwallpapers.core.data.FakePhotoRepositoryImpl
+import com.anilyilmaz.awesomesunsetwallpapers.core.data.repository.PhotoRepositoryImpl
 import com.anilyilmaz.awesomesunsetwallpapers.core.domain.mapper.PhotoMapper
-import com.anilyilmaz.awesomesunsetwallpapers.core.modelfactory.photoTestData
+import com.anilyilmaz.awesomesunsetwallpapers.testdoubles.modelfactory.photoTestData
+import com.anilyilmaz.awesomesunsetwallpapers.testdoubles.network.FakePexelsDataSource
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.*
 import org.junit.Before
@@ -12,8 +14,10 @@ import org.junit.Test
 class GetPhotoUseCaseImplTest {
 
     private lateinit var usecase: GetPhotoUseCaseImpl
-    private val photoRepository = FakePhotoRepositoryImpl()
     private val photoMapper = PhotoMapper()
+    private val pexelsDataSource = FakePexelsDataSource()
+    private val dispatcher = UnconfinedTestDispatcher()
+    private val photoRepository = PhotoRepositoryImpl(pexelsDataSource, dispatcher)
 
     @Before
     fun setUp() {

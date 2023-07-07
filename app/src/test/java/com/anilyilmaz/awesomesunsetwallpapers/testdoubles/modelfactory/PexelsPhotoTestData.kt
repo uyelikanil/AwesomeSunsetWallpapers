@@ -1,7 +1,6 @@
-package com.anilyilmaz.awesomesunsetwallpapers.core.modelfactory
+package com.anilyilmaz.awesomesunsetwallpapers.testdoubles.modelfactory
 
 import com.anilyilmaz.awesomesunsetwallpapers.core.network.model.PexelsPhoto
-import com.anilyilmaz.awesomesunsetwallpapers.core.network.model.PexelsPhotoExpanded
 import com.anilyilmaz.awesomesunsetwallpapers.core.network.model.PexelsPhotoSrc
 
 fun pexelsPhotoTestData(id: Int = 0) = PexelsPhoto(
