@@ -3,7 +3,7 @@ Awesome Sunset Wallpapers
 A sunset wallpaper app for Android. It follows Android's architecture guideline and entirely written with Kotlin.
 
 ## Screenshots
-<img src="/docs/images/wallpaper-list-screen.png" width="320"> &emsp; <img src="/docs/images/wallpaper-detail-screen.png" width="320"> &emsp; <img src="/docs/images/wallpaper-full-screen.png" width="320">
+<img src="/docs/images/wallpaper-list-screen.png" width="270"> &emsp; <img src="/docs/images/wallpaper-detail-screen.png" width="270"> &emsp; <img src="/docs/images/wallpaper-full-screen.png" width="270">
 
 ## Tech Stack
 * Kotlin
