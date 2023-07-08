@@ -10,6 +10,7 @@ A sunset wallpaper app for Android. It follows Android's architecture guideline 
 * Coroutine & Flow
 * Android Architecture Components
 * Dagger Hilt
+* Coil
 * Retrofit
 * OkHttp
 * Moshi
