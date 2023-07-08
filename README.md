@@ -1,4 +1,4 @@
-<img src="/app/src/main/res/mipmap-mdpi/ic_launcher.png"> Awesome Sunset Wallpapers
+<img align="left" src="/app/src/main/res/mipmap-mdpi/ic_launcher.png"> Awesome Sunset Wallpapers
 ==================
 A sunset wallpaper app for Android. It follows Android's architecture guideline and entirely written with Kotlin.
 
