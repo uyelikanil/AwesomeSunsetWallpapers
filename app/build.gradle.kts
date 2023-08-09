@@ -4,17 +4,16 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin)
     alias(libs.plugins.devtools.ksp)
     alias(libs.plugins.dagger.hilt)
-    alias(libs.plugins.navigation.safeargs)
 }
 
 android {
     namespace = "com.anilyilmaz.awesomesunsetwallpapers"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.anilyilmaz.awesomesunsetwallpapers"
         minSdk = 21
-        targetSdk = 33
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0.0"
 
@@ -56,6 +55,11 @@ android {
     buildFeatures {
         buildConfig = true
         viewBinding = true
+        compose = true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.4.8"
     }
 }
 
@@ -63,23 +67,31 @@ dependencies {
     implementation(libs.androidx.ktx)
     implementation(libs.androidx.lifecycle.runtime)
     implementation(libs.androidx.appcompat)
-    implementation(libs.androidx.constraintlayout)
     implementation(libs.dagger.hilt)
+    implementation(libs.androidx.runner)
     kapt(libs.dagger.hilt.compiler)
     implementation(libs.kotlinx.coroutines.android)
     testImplementation(libs.kotlinx.coroutines.test)
     implementation(libs.retrofit)
     implementation(libs.retrofit.kotlin.serialization)
     implementation(libs.okhttp.logging)
-    implementation(libs.androidx.paging)
     testImplementation(libs.androidx.paging.test)
     implementation(libs.retrofit.converter.moshi)
-    implementation(libs.androidx.navigation.fragment)
-    implementation(libs.androidx.navigation.ui)
-    implementation(libs.coil)
-    implementation(libs.androidx.swiperefreshlayout)
-    implementation(libs.material)
     testImplementation(libs.junit4)
+    implementation(libs.androidx.compose.foundation)
+    implementation(libs.androidx.compose.material3)
+    implementation(libs.androidx.hilt.navigation.compose)
+    implementation(libs.androidx.lifecycle.runtime.compose)
+    implementation(libs.coil.compose)
+    implementation(libs.androidx.navigation.compose)
+    implementation(libs.androidx.paging.compose)
+    implementation(libs.accompanist.systemuicontroller)
+    implementation(libs.androidx.compose.ui.tooling.preview)
+    debugImplementation(libs.androidx.compose.ui.tooling)
+
+    val composeBom = platform(libs.androidx.compose.bom)
+    implementation(composeBom)
+    androidTestImplementation(composeBom)
 }
 
 // Allow references to generated code

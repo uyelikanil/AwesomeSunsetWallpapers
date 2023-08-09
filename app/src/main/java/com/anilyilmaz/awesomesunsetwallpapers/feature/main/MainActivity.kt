@@ -1,42 +1,45 @@
 package com.anilyilmaz.awesomesunsetwallpapers.feature.main
 
+import android.app.WallpaperManager
 import android.net.ConnectivityManager
 import android.net.Network
 import android.net.NetworkCapabilities
 import android.net.NetworkRequest
 import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
-import com.anilyilmaz.awesomesunsetwallpapers.R
+import androidx.core.view.WindowCompat
+import com.anilyilmaz.awesomesunsetwallpapers.core.designsystem.theme.AppTheme
+import com.anilyilmaz.awesomesunsetwallpapers.core.domain.usecase.GetNetworkStateUseCase
+import com.anilyilmaz.awesomesunsetwallpapers.core.domain.usecase.SetTempFileUseCase
 import com.anilyilmaz.awesomesunsetwallpapers.core.model.NetworkState
-import com.anilyilmaz.awesomesunsetwallpapers.databinding.ActivityMainBinding
-import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity () {
-    private lateinit var binding: ActivityMainBinding
+class MainActivity : ComponentActivity() {
     @Inject lateinit var connectivityManager: ConnectivityManager
+    @Inject lateinit var wallpaperManager: WallpaperManager
+    @Inject lateinit var getNetworkStateUseCase: GetNetworkStateUseCase
+    @Inject lateinit var setTempFileUseCase: SetTempFileUseCase
     private val sharedViewModel by viewModels<SharedViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
 
-        lifecycleScope.launch {
-            sharedViewModel.networkState.collectLatest {
-                if (it == NetworkState.CONNECTED) {
-                    Snackbar.make(binding.root, getString(R.string.network_is_connected),
-                        Snackbar.LENGTH_SHORT).show()
-                } else if (it == NetworkState.LOST || it == NetworkState.UNAVAILABLE) {
-                    Snackbar.make(binding.root, getString(R.string.there_is_no_network),
-                        Snackbar.LENGTH_INDEFINITE).show()
-                }
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+
+        setContent {
+            AppTheme {
+                AwesomeSunsetWallpapersApp(
+                    sharedViewModel = sharedViewModel,
+                    connectivityManager = connectivityManager,
+                    wallpaperManager = wallpaperManager,
+                    getNetworkStateUseCase = getNetworkStateUseCase,
+                    setTempFileUseCase = setTempFileUseCase
+                )
             }
         }
 
@@ -44,9 +47,6 @@ class MainActivity : AppCompatActivity () {
     }
 
     private fun setInternetConnection () {
-        val isThereActiveNetwork = connectivityManager.activeNetwork != null
-        sharedViewModel.updateNetworkState(isThereActiveNetwork)
-
         val networkRequest = NetworkRequest.Builder()
             .addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
             .addTransportType(NetworkCapabilities.TRANSPORT_WIFI)
@@ -56,9 +56,7 @@ class MainActivity : AppCompatActivity () {
         connectivityManager.requestNetwork(networkRequest, networkCallback)
     }
 
-    private val networkCallback =
-        object : ConnectivityManager.NetworkCallback() {
-
+    private val networkCallback = object : ConnectivityManager.NetworkCallback() {
             override fun onAvailable(network: Network) {
                 super.onAvailable(network)
                 sharedViewModel.updateNetworkState(NetworkState.AVAILABLE)
@@ -68,6 +66,11 @@ class MainActivity : AppCompatActivity () {
                 super.onLost(network)
                 sharedViewModel.updateNetworkState(NetworkState.LOST)
             }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        connectivityManager.unregisterNetworkCallback(networkCallback)
     }
 }
 

@@ -3,9 +3,8 @@
     <string name="network_is_connected">Network is connected</string>
     <string name="there_is_no_network">There is no network</string>
     <string name="error">Error</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="set_as_a_wallpaper">Set as a Wallpaper</string>
     <string name="error_occurred_while_setting_wallpaper">Error occurred while setting wallpaper!</string>
-
+    <string name="retry">RETRY</string>
+    <string name="something_went_wrong">Something went wrong!</string>
 </resources>
