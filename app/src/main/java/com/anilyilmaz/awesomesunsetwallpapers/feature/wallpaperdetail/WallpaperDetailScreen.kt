@@ -11,6 +11,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Surface
@@ -124,7 +125,8 @@ internal fun WallpaperDetailScreen(
                         modifier = Modifier
                             .fillMaxSize()
                             .wrapContentSize(Alignment.BottomCenter)
-                            .padding(16.dp),
+                            .padding(16.dp)
+                            .safeDrawingPadding(),
                         onClick = {
                             composableScope.launch {
                                 setWallpaper(
