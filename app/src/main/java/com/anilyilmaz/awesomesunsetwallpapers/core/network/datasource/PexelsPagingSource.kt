@@ -1,6 +1,5 @@
 package com.anilyilmaz.awesomesunsetwallpapers.core.network.datasource
 
-import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.anilyilmaz.awesomesunsetwallpapers.core.network.api.PexelsService
