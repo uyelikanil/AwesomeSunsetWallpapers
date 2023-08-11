@@ -7,7 +7,7 @@ A sunset wallpaper app for Android. It follows Android's architecture guideline 
 
 ## Tech Stack
 * Kotlin
-* Coroutine & Flow
+* Coroutines & Flow
 * Android Architecture Components
 * Dagger Hilt
 * Coil
