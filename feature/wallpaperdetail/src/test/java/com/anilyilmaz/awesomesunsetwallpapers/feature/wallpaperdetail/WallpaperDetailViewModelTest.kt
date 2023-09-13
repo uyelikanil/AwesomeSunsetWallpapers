@@ -63,11 +63,11 @@ class WallpaperDetailViewModelTest {
         viewModel.getWallpaper()
 
         // Then
-        var uiState = viewModel.uiState.value
+        val uiStateLoading = viewModel.uiState.value
         advanceUntilIdle()
-        assert(uiState is WallpaperDetailUiState.Loading)
-        uiState = viewModel.uiState.value
-        assert(uiState is WallpaperDetailUiState.Success)
+        val uiStateSuccess = viewModel.uiState.value
+        assert(uiStateLoading is WallpaperDetailUiState.Loading)
+        assert(uiStateSuccess is WallpaperDetailUiState.Success)
 
         job.cancel()
     }
