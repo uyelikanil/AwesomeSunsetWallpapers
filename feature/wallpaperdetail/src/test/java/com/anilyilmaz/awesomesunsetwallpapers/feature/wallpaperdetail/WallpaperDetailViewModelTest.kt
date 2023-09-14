@@ -55,7 +55,7 @@ class WallpaperDetailViewModelTest {
     fun `when getWallpaper is called, then ui state should be Loading first and then should be Success` ()
     = runTest {
         // Given
-        val job = launch(UnconfinedTestDispatcher(testScheduler)) {
+        val job = launch(UnconfinedTestDispatcher()) {
             viewModel.uiState.collect()
         }
 
