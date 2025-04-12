@@ -1,7 +1,6 @@
 plugins {
-    kotlin("kapt")
     id("awesomesunsetwallpapers.android.feature")
-    id("awesomesunsetwallpapers.compose")
+    id("awesomesunsetwallpapers.library.compose")
 }
 
 android {

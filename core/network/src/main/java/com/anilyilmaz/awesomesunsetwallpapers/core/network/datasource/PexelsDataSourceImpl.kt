@@ -6,18 +6,22 @@ import androidx.paging.PagingData
 import com.anilyilmaz.awesomesunsetwallpapers.core.network.api.PexelsService
 import com.anilyilmaz.awesomesunsetwallpapers.core.network.model.PexelsPhoto
 import kotlinx.coroutines.flow.Flow
+import kotlinx.serialization.json.Json
 import okhttp3.Call
+import okhttp3.MediaType.Companion.toMediaType
 import retrofit2.Retrofit
-import retrofit2.converter.moshi.MoshiConverterFactory
+import retrofit2.converter.kotlinx.serialization.asConverterFactory
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class PexelsDataSourceImpl @Inject constructor(okhttpCallFactory: Call.Factory): PexelsDataSource {
+class PexelsDataSourceImpl @Inject constructor(
+    okhttpCallFactory: Call.Factory, networkJson: Json
+): PexelsDataSource {
     private val pexelsApi = Retrofit.Builder()
         .baseUrl("https://api.pexels.com")
         .callFactory(okhttpCallFactory)
-        .addConverterFactory(MoshiConverterFactory.create())
+        .addConverterFactory(networkJson.asConverterFactory("application/json".toMediaType()))
         .build()
         .create(PexelsService::class.java)
 

@@ -1,5 +1,4 @@
-plugins {
-    id("awesomesunsetwallpapers.android.library")
+plugins {id("awesomesunsetwallpapers.android.library")
 }
 
 android {

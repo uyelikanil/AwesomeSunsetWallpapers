@@ -1,5 +1,4 @@
 plugins {
-    kotlin("kapt")
     id("awesomesunsetwallpapers.android.library")
 }
 

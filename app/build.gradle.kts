@@ -1,8 +1,7 @@
 plugins {
-    kotlin("kapt")
     id("awesomesunsetwallpapers.android.application")
     id("awesomesunsetwallpapers.android.hilt")
-    id("awesomesunsetwallpapers.compose")
+    id("awesomesunsetwallpapers.application.compose")
 }
 
 android {
@@ -36,6 +35,8 @@ dependencies {
     implementation(project(":feature:home"))
     implementation(project(":feature:wallpaperdetail"))
 
+
+    implementation(libs.androidx.ktx)
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.lifecycle.runtime.compose)
     implementation(libs.androidx.compose.runtime)
