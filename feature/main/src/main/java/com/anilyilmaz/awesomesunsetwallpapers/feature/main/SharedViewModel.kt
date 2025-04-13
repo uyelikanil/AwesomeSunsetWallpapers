@@ -11,20 +11,21 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class SharedViewModel @Inject constructor(private val getNetworkStateUseCase:
-                                          GetNetworkStateUseCase): ViewModel() {
+class SharedViewModel @Inject constructor(
+    private val getNetworkStateUseCase: GetNetworkStateUseCase
+): ViewModel() {
     private var currentNetworkState = NetworkState.AVAILABLE
     private val _networkState = MutableSharedFlow<NetworkState>()
     val networkState: SharedFlow<NetworkState> = _networkState
 
     fun updateNetworkState(newNetworkState: NetworkState) = viewModelScope.launch {
-        val state = getNetworkStateUseCase.getState(newNetworkState, currentNetworkState)
+        val state = getNetworkStateUseCase(newNetworkState, currentNetworkState)
         currentNetworkState = state
         _networkState.emit(state)
     }
 
     fun updateNetworkState(isThereActiveNetwork: Boolean) = viewModelScope.launch {
-        val state = getNetworkStateUseCase.getState(isThereActiveNetwork)
+        val state = getNetworkStateUseCase(isThereActiveNetwork)
         updateNetworkState(state)
     }
 }

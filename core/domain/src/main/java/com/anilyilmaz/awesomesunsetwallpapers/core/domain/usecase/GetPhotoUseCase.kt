@@ -1,11 +1,15 @@
 package com.anilyilmaz.awesomesunsetwallpapers.core.domain.usecase
 
-import androidx.paging.PagingData
+import com.anilyilmaz.awesomesunsetwallpapers.core.data.repository.PhotoRepository
+import com.anilyilmaz.awesomesunsetwallpapers.core.domain.mapper.PhotoMapper
 import com.anilyilmaz.awesomesunsetwallpapers.core.model.Photo
-import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
-interface GetPhotoUseCase {
-    suspend fun getPhoto(id: Int): Photo
-
-    fun getPhotos(query: List<String>, per_page: Int): Flow<PagingData<Photo>>
+class GetPhotoUseCase @Inject constructor(
+    private val photoRepository: PhotoRepository,
+    private val photoMapper: PhotoMapper
+) {
+    suspend operator fun invoke(id: Int): Photo =
+        photoMapper.mapToPhoto(photoRepository.getPhoto(id))
 }
+

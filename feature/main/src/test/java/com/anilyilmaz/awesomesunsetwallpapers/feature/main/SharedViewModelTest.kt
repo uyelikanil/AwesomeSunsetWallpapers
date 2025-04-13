@@ -1,6 +1,6 @@
 package com.anilyilmaz.awesomesunsetwallpapers.feature.main
 
-import com.anilyilmaz.awesomesunsetwallpapers.core.domain.usecase.GetNetworkStateUseCaseImpl
+import com.anilyilmaz.awesomesunsetwallpapers.core.domain.usecase.GetNetworkStateUseCase
 import com.anilyilmaz.awesomesunsetwallpapers.core.model.NetworkState
 import com.anilyilmaz.awesomesunsetwallpapers.core.testing.util.MainDispatcherRule
 import kotlinx.coroutines.launch
@@ -17,7 +17,7 @@ class SharedViewModelTest {
     val mainDispatcherRule = MainDispatcherRule()
 
     private lateinit var viewModel: SharedViewModel
-    private val getNetworkStateUseCase = GetNetworkStateUseCaseImpl()
+    private val getNetworkStateUseCase = GetNetworkStateUseCase()
 
     @Before
     fun setUp() {

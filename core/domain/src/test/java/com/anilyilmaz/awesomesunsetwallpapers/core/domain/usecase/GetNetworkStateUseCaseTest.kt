@@ -4,9 +4,9 @@ import com.anilyilmaz.awesomesunsetwallpapers.core.model.NetworkState
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
-class GetNetworkStateUseCaseImplTest {
+class GetNetworkStateUseCaseTest {
 
-    private val useCase = GetNetworkStateUseCaseImpl()
+    private val useCase = GetNetworkStateUseCase()
 
     @Test
     fun `given new NetworkState is AVAILABLE and old NetworkState is LOST, when getState is called, then NetworkState should be CONNECTED` () {
@@ -15,7 +15,7 @@ class GetNetworkStateUseCaseImplTest {
         val oldState = NetworkState.LOST
 
         // When
-        val networkState = useCase.getState(newState, oldState)
+        val networkState = useCase(newState, oldState)
 
         // Then
         assertEquals(NetworkState.CONNECTED, networkState)
@@ -27,7 +27,7 @@ class GetNetworkStateUseCaseImplTest {
         val isThereNetwork = false
 
         // When
-        val networkState = useCase.getState(isThereNetwork)
+        val networkState = useCase(isThereNetwork)
 
         // Then
         assertEquals(NetworkState.UNAVAILABLE, networkState)

@@ -30,7 +30,7 @@ class WallpaperDetailViewModel @Inject constructor(
         _uiState.value = WallpaperDetailUiState.Loading
 
         try {
-            val photo = getPhotoUseCase.getPhoto(wallpaperId)
+            val photo = getPhotoUseCase(wallpaperId)
             _uiState.value = WallpaperDetailUiState.Success(photo.src.portrait, photo.photographer)
         } catch (e: Exception) {
             _uiState.value = WallpaperDetailUiState.Error

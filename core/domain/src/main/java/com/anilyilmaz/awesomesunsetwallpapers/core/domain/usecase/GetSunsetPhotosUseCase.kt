@@ -9,13 +9,11 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
-class GetPhotoUseCaseImpl @Inject constructor(private val photoRepository: PhotoRepository,
-    private val photoMapper: PhotoMapper): GetPhotoUseCase {
-
-    override suspend fun getPhoto(id: Int): Photo =
-        photoMapper.mapToPhoto(photoRepository.getPhoto(id))
-
-    override fun getPhotos(query: List<String>, per_page: Int): Flow<PagingData<Photo>> {
+class GetSunsetPhotosUseCase @Inject constructor(
+    private val photoRepository: PhotoRepository,
+    private val photoMapper: PhotoMapper
+) {
+    operator fun invoke(query: List<String>, per_page: Int): Flow<PagingData<Photo>> {
         val pexelsPhotosPagingData = photoRepository.getPhotosWithQuery(query, per_page)
 
         return pexelsPhotosPagingData.map { pagingData ->

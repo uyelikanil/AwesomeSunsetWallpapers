@@ -70,7 +70,7 @@ fun AwesomeSunsetWallpapersApp(
             navController = navController,
             sharedViewModel = sharedViewModel,
             getCropAndSetWallpaperIntent = wallpaperManager::getCropAndSetWallpaperIntent,
-            setTempImage = setTempFileUseCase::setTempImage
+            setTempImage = setTempFileUseCase::invoke
         )
     }
 }
@@ -80,7 +80,7 @@ private fun getInitialNetworkState(
     getNetworkStateUseCase: GetNetworkStateUseCase
 ): NetworkState {
     val isThereActiveNetwork = connectivityManager.activeNetwork != null
-    val initialNetworkState = getNetworkStateUseCase.getState(isThereActiveNetwork)
+    val initialNetworkState = getNetworkStateUseCase(isThereActiveNetwork)
     return initialNetworkState
 }
 

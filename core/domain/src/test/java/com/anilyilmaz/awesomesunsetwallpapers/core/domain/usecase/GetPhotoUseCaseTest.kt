@@ -1,6 +1,5 @@
 package com.anilyilmaz.awesomesunsetwallpapers.core.domain.usecase
 
-import androidx.paging.testing.asSnapshot
 import com.anilyilmaz.awesomesunsetwallpapers.core.data.repository.PhotoRepositoryImpl
 import com.anilyilmaz.awesomesunsetwallpapers.core.domain.mapper.PhotoMapper
 import com.anilyilmaz.awesomesunsetwallpapers.core.testing.testdoubles.modelfactory.photoTestData
@@ -11,9 +10,9 @@ import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
 
-class GetPhotoUseCaseImplTest {
+class GetPhotoUseCaseTest {
 
-    private lateinit var usecase: GetPhotoUseCaseImpl
+    private lateinit var usecase: GetPhotoUseCase
     private val photoMapper = PhotoMapper()
     private val pexelsDataSource = FakePexelsDataSource()
     private val dispatcher = UnconfinedTestDispatcher()
@@ -21,7 +20,7 @@ class GetPhotoUseCaseImplTest {
 
     @Before
     fun setUp() {
-        usecase = GetPhotoUseCaseImpl(photoRepository, photoMapper)
+        usecase = GetPhotoUseCase(photoRepository, photoMapper)
     }
 
     @Test
@@ -31,24 +30,9 @@ class GetPhotoUseCaseImplTest {
         val expectedPhoto = photoTestData(0)
 
         // When
-        val result = usecase.getPhoto(0)
+        val result = usecase(0)
 
         // Then
         assertEquals(expectedPhoto, result)
-    }
-
-    @Test
-    fun `Items of paging data should be mapped to Photo`() = runTest {
-        // Given
-        val expectedPhoto = photoTestData()
-        val query = listOf("sunset")
-        val per_page = 1
-
-        // When
-        val result = usecase.getPhotos(query, per_page)
-        val resultPhoto = result.asSnapshot().first()
-
-        // Then
-        assertEquals(expectedPhoto, resultPhoto)
     }
 }
