@@ -2,13 +2,12 @@ package com.anilyilmaz.awesomesunsetwallpapers.core.domain.mapper
 
 import com.anilyilmaz.awesomesunsetwallpapers.core.model.Photo
 import com.anilyilmaz.awesomesunsetwallpapers.core.network.model.PexelsPhoto
+import com.anilyilmaz.awesomesunsetwallpapers.core.network.model.PexelsPhotoSrc
 import javax.inject.Inject
 
-class PhotoMapper @Inject constructor() {
-    fun mapToPhoto(pexelsPhoto: PexelsPhoto): Photo = Photo(
-        pexelsPhoto.id,
-        pexelsPhoto.photographer,
-        pexelsPhoto.photographer_url,
-        pexelsPhoto.src
-    )
-}
+fun PexelsPhoto.toPhoto(): Photo = Photo(
+    id = id,
+    photographer = photographer,
+    photographer_url = photographer_url,
+    src = src
+)

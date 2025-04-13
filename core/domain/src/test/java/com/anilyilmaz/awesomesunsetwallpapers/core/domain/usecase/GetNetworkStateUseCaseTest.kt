@@ -5,7 +5,6 @@ import org.junit.Assert.assertEquals
 import org.junit.Test
 
 class GetNetworkStateUseCaseTest {
-
     private val useCase = GetNetworkStateUseCase()
 
     @Test
