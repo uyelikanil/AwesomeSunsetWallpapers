@@ -16,7 +16,8 @@ import javax.inject.Singleton
 
 @Singleton
 class PexelsDataSourceImpl @Inject constructor(
-    okhttpCallFactory: Call.Factory, networkJson: Json
+    networkJson: Json,
+    okhttpCallFactory: Call.Factory
 ): PexelsDataSource {
     private val pexelsApi = Retrofit.Builder()
         .baseUrl("https://api.pexels.com")
@@ -29,13 +30,20 @@ class PexelsDataSourceImpl @Inject constructor(
         pexelsApi.getPhoto(id)
 
     override fun getPhotosWithQuery(
-        query: List<String>,
-        per_page: Int
+        query: List<String>
     ): Flow<PagingData<PexelsPhoto>> {
-        return Pager(config = PagingConfig(
-                pageSize = per_page,
-                enablePlaceholders = true),
-            pagingSourceFactory = { PexelsPagingSource(pexelsApi, query, per_page * 3) }
+        return Pager(
+            config = PagingConfig(
+                pageSize = PER_PAGE,
+                enablePlaceholders = true
+            ),
+            pagingSourceFactory = {
+                PexelsPagingSource(pexelsApi, query, PER_PAGE * 3)
+            }
         ).flow
+    }
+
+    companion object {
+        private const val PER_PAGE = 30
     }
 }

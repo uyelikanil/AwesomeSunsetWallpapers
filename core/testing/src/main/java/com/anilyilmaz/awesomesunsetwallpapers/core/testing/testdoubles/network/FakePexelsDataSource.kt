@@ -15,13 +15,16 @@ class FakePexelsDataSource: PexelsDataSource {
     override suspend fun getPhoto(id: Int): PexelsPhoto = api.getPhoto(id)
 
     override fun getPhotosWithQuery(
-        query: List<String>,
-        per_page: Int
+        query: List<String>
     ): Flow<PagingData<PexelsPhoto>> {
         return Pager(config = PagingConfig(
-            pageSize = per_page,
+            pageSize = PER_PAGE,
             enablePlaceholders = true),
-            pagingSourceFactory = { PexelsPagingSource(api, query, per_page * 3) }
+            pagingSourceFactory = { PexelsPagingSource(api, query, PER_PAGE * 3) }
         ).flow
+    }
+
+    companion object {
+        private const val PER_PAGE = 1
     }
 }

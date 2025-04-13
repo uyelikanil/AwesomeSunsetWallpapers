@@ -10,13 +10,14 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-class PhotoRepositoryImpl @Inject constructor(private val pexelsDataSource: PexelsDataSource,
-                                              @Dispatcher(IO) private val ioDispatcher:
-                                              CoroutineDispatcher): PhotoRepository {
-
+class PhotoRepositoryImpl @Inject constructor(
+    private val pexelsDataSource: PexelsDataSource,
+    @Dispatcher(IO) private val ioDispatcher:
+    CoroutineDispatcher
+): PhotoRepository {
     override suspend fun getPhoto(id: Int): PexelsPhoto = withContext(ioDispatcher) {
         pexelsDataSource.getPhoto(id)}
 
-    override fun getPhotosWithQuery(query: List<String>, per_page: Int):
-            Flow<PagingData<PexelsPhoto>> = pexelsDataSource.getPhotosWithQuery(query, per_page)
+    override fun getPhotosWithQuery(query: List<String>):
+            Flow<PagingData<PexelsPhoto>> = pexelsDataSource.getPhotosWithQuery(query)
 }

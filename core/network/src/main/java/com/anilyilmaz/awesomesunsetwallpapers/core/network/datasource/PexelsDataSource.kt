@@ -7,6 +7,5 @@ import kotlinx.coroutines.flow.Flow
 interface PexelsDataSource {
     suspend fun getPhoto(id: Int): PexelsPhoto
 
-    fun getPhotosWithQuery(query: List<String>, per_page: Int):
-            Flow<PagingData<PexelsPhoto>>
+    fun getPhotosWithQuery(query: List<String>): Flow<PagingData<PexelsPhoto>>
 }

@@ -14,6 +14,5 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(
     getSunsetPhotosUseCase: GetSunsetPhotosUseCase
 ): ViewModel() {
-    var getWallpapers: Flow<PagingData<Photo>> =
-        getSunsetPhotosUseCase(listOf("sunset"), 30).cachedIn(viewModelScope)
+    val getWallpapers: Flow<PagingData<Photo>> = getSunsetPhotosUseCase().cachedIn(viewModelScope)
 }

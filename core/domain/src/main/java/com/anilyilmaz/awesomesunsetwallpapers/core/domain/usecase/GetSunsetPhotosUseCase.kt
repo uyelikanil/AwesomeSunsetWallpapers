@@ -13,8 +13,9 @@ class GetSunsetPhotosUseCase @Inject constructor(
     private val photoRepository: PhotoRepository,
     private val photoMapper: PhotoMapper
 ) {
-    operator fun invoke(query: List<String>, per_page: Int): Flow<PagingData<Photo>> {
-        val pexelsPhotosPagingData = photoRepository.getPhotosWithQuery(query, per_page)
+    operator fun invoke(): Flow<PagingData<Photo>> {
+        val query = listOf("sunset")
+        val pexelsPhotosPagingData = photoRepository.getPhotosWithQuery(query)
 
         return pexelsPhotosPagingData.map { pagingData ->
             pagingData.map { photoMapper.mapToPhoto(it) }

@@ -28,11 +28,9 @@ class GetSunsetPhotosUseCaseTest {
     fun `Items of paging data should be mapped to Photo`() = runTest {
         // Given
         val expectedPhoto = photoTestData()
-        val query = listOf("sunset")
-        val per_page = 1
 
         // When
-        val result = usecase(query, per_page)
+        val result = usecase()
         val resultPhoto = result.asSnapshot().first()
 
         // Then
