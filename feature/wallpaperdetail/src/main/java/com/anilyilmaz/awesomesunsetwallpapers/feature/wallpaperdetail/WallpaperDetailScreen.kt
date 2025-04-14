@@ -39,6 +39,7 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.anilyilmaz.awesomesunsetwallpapers.core.designsystem.component.TransparentCenterAlignedTopAppBar
 import com.anilyilmaz.awesomesunsetwallpapers.core.designsystem.component.WhiteTextOutlinedButton
+import com.anilyilmaz.awesomesunsetwallpapers.core.designsystem.extension.shimmerEffect
 import com.anilyilmaz.awesomesunsetwallpapers.core.designsystem.theme.AppTheme
 import com.anilyilmaz.awesomesunsetwallpapers.core.designsystem.theme.md_theme_dark_primary
 import kotlinx.coroutines.launch
@@ -110,6 +111,7 @@ internal fun WallpaperDetailScreen(
                         .clickable {
                             isImageFullScreen = !isImageFullScreen
                         }
+                        .shimmerEffect()
                 )
 
                 if(!isImageFullScreen) {

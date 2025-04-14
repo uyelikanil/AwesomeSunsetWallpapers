@@ -4,6 +4,8 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
@@ -25,7 +27,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -38,8 +39,11 @@ import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemKey
-import coil.compose.AsyncImage
+import coil.compose.AsyncImagePainter
+import coil.compose.SubcomposeAsyncImage
+import coil.compose.SubcomposeAsyncImageContent
 import coil.request.ImageRequest
+import com.anilyilmaz.awesomesunsetwallpapers.core.designsystem.extension.shimmerEffect
 import com.anilyilmaz.awesomesunsetwallpapers.core.designsystem.theme.AppTheme
 import com.anilyilmaz.awesomesunsetwallpapers.core.model.NetworkState
 import com.anilyilmaz.awesomesunsetwallpapers.core.model.Photo
@@ -117,8 +121,8 @@ private fun PagingList(
         }
         is LoadState.NotLoading -> {
             LazyVerticalGrid(
-                columns = GridCells.Fixed(2),
-                contentPadding = PaddingValues(8.dp),
+                columns = GridCells.Adaptive(minSize = 128.dp),
+                contentPadding = PaddingValues(4.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp),
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
                 modifier = Modifier.padding(top = paddingValues.calculateTopPadding())
@@ -130,20 +134,31 @@ private fun PagingList(
                     val item = wallpapers[index]
 
                     item?.let {
-                        AsyncImage(
+                        SubcomposeAsyncImage(
                             model = ImageRequest.Builder(LocalContext.current)
                                 .data(it.src.portrait)
                                 .crossfade(true)
                                 .build(),
                             contentScale = ContentScale.Fit,
-                            placeholder = painterResource(id = R.drawable.ic_launcher_foreground),
                             contentDescription = null,
                             modifier = Modifier
+                                .fillMaxSize()
                                 .clip(shape = ShapeDefaults.Medium)
                                 .clickable {
                                     onImageClick(it.id)
                                 }
-                        )
+                        ) {
+                            val state = painter.state
+                            if (state is AsyncImagePainter.State.Loading) {
+                                Spacer(modifier = Modifier
+                                    .fillMaxSize()
+                                    .aspectRatio(0.75f)
+                                    .shimmerEffect()
+                                )
+                            } else {
+                                SubcomposeAsyncImageContent()
+                            }
+                        }
                     }
                 }
             }
