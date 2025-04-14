@@ -3,7 +3,9 @@ package com.anilyilmaz.awesomesunsetwallpapers.feature.wallpaperdetail
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.toRoute
 import com.anilyilmaz.awesomesunsetwallpapers.core.domain.usecase.GetPhotoUseCase
+import com.anilyilmaz.awesomesunsetwallpapers.feature.wallpaperdetail.navigation.WallpaperDetail
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -16,11 +18,10 @@ class WallpaperDetailViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val getPhotoUseCase: GetPhotoUseCase
 ): ViewModel() {
-
     private val _uiState = MutableStateFlow<WallpaperDetailUiState>(WallpaperDetailUiState.Loading)
     val uiState: StateFlow<WallpaperDetailUiState> = _uiState.asStateFlow()
 
-    private val wallpaperId: Int = checkNotNull(savedStateHandle["wallpaperId"])
+    private val wallpaperId: Int = savedStateHandle.toRoute<WallpaperDetail>().wallpaperId
 
     init {
         getWallpaper()

@@ -1,43 +1,35 @@
 import com.anilyilmaz.awesomesunsetwallpapers.libs
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.api.artifacts.VersionCatalogsExtension
+import org.gradle.kotlin.dsl.apply
 import org.gradle.kotlin.dsl.dependencies
-import org.gradle.kotlin.dsl.getByType
 import org.gradle.kotlin.dsl.project
 
 class AndroidFeatureConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
-            pluginManager.apply {
-                apply("awesomesunsetwallpapers.android.library")
-                apply("awesomesunsetwallpapers.android.hilt")
-            }
+            apply(plugin = "awesomesunsetwallpapers.android.library")
+            apply(plugin = "awesomesunsetwallpapers.android.hilt")
+            apply(plugin = "org.jetbrains.kotlin.plugin.serialization")
 
             dependencies {
-                add("implementation", project(":core:network"))
-                add("implementation", project(":core:domain"))
-                add("implementation", project(":core:model"))
-                add("implementation", project(":core:designsystem"))
-                add("implementation", project(":core:ui"))
+                "implementation"(project(":core:network"))
+                "implementation"(project(":core:domain"))
+                "implementation"(project(":core:model"))
+                "implementation"(project(":core:designsystem"))
+                "implementation"(project(":core:ui"))
 
-                add("implementation", libs.findLibrary(
-                    "androidx.lifecycle.viewmodel").get())
-                add("implementation", libs.findLibrary(
-                    "kotlinx.coroutines.android").get())
-                add("implementation", libs.findLibrary(
-                    "androidx.compose.foundation").get())
-                add("implementation", libs.findLibrary(
-                    "androidx.compose.material3").get())
-                add("implementation", libs.findLibrary(
-                    "androidx.hilt.navigation.compose").get())
-                add("implementation", libs.findLibrary(
-                    "androidx.lifecycle.runtime.compose").get())
-                add("implementation", libs.findLibrary("coil.compose").get())
-                add("implementation", libs.findLibrary(
-                    "androidx.compose.ui.tooling.preview").get())
-                add("debugImplementation", libs.findLibrary(
-                    "androidx.compose.ui.tooling").get())
+                "implementation"(libs.findLibrary("androidx.lifecycle.viewmodel").get())
+                "implementation"(libs.findLibrary("kotlinx.coroutines.android").get())
+                "implementation"(libs.findLibrary("androidx.compose.foundation").get())
+                "implementation"(libs.findLibrary("androidx.compose.material3").get())
+                "implementation"(libs.findLibrary("androidx.navigation.compose").get())
+                "implementation"(libs.findLibrary("androidx.hilt.navigation.compose").get())
+                "implementation"(libs.findLibrary("androidx.lifecycle.runtime.compose").get())
+                "implementation"(libs.findLibrary("coil.compose").get())
+                "implementation"(libs.findLibrary("androidx.compose.ui.tooling.preview").get())
+                "debugImplementation"(libs.findLibrary("androidx.compose.ui.tooling").get())
+                "implementation"(libs.findLibrary("kotlinx.serialization.json").get())
             }
         }
     }
