@@ -1,3 +1,5 @@
+import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+
 plugins {
     id("awesomesunsetwallpapers.android.library")
     id("awesomesunsetwallpapers.android.hilt")
@@ -6,6 +8,22 @@ plugins {
 
 android {
     namespace = "com.anilyilmaz.awesomesunsetwallpapers.core.network"
+
+    buildTypes {
+        val pexelsAuthKey: String = gradleLocalProperties(rootDir,
+            providers).getProperty("pexels.auth.key")
+
+        release {
+            buildConfigField("String", "PEXELS_AUTH_KEY", pexelsAuthKey)
+        }
+        debug {
+            buildConfigField("String", "PEXELS_AUTH_KEY", pexelsAuthKey)
+        }
+    }
+
+    buildFeatures {
+        buildConfig = true
+    }
 }
 
 dependencies {

@@ -1,5 +1,6 @@
 package com.anilyilmaz.awesomesunsetwallpapers.core.network.di
 
+import com.anilyilmaz.awesomesunsetwallpapers.core.network.BuildConfig
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -26,7 +27,7 @@ object  NetworkModule {
     fun okHttpCallFactory(): Call.Factory = OkHttpClient.Builder()
         .addInterceptor(Interceptor { chain ->
             val request = chain.request().newBuilder().addHeader("Authorization",
-                "AYcBbQE9tWR1DQDCy4Lh3XobkrOi9XNM1J4v3x4RFspWNuGOZq6Aqh9u").build()
+                BuildConfig.PEXELS_AUTH_KEY).build()
         chain.proceed(request)})
         .addInterceptor(
             HttpLoggingInterceptor()
