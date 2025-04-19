@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -24,7 +23,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -82,70 +80,68 @@ internal fun WallpaperDetailScreen(
         }
     }
 
-    Surface(color = Color.Black) {
-        when(uiState) {
-            is WallpaperDetailUiState.Loading -> {
+    when(uiState) {
+        is WallpaperDetailUiState.Loading -> {
+            TopAppBar(
+                topAppBarText = "",
+                onNavigationClick = onNavigationClick
+            )
+
+            CircularProgressIndicator(modifier = Modifier
+                .fillMaxSize()
+                .wrapContentSize(Alignment.Center)
+            )
+        }
+        is WallpaperDetailUiState.Success ->  {
+            AsyncImage(
+                model = ImageRequest.Builder(context = context)
+                    .data(uiState.wallpaperSrc)
+                    .crossfade(true)
+                    .build(),
+                contentScale = ContentScale.Crop,
+                contentDescription = null,
+                onSuccess = { success ->
+                    imageDrawable = success.result.drawable
+                },
+                modifier = Modifier
+                    .fillMaxSize()
+                    .clickable {
+                        isImageFullScreen = !isImageFullScreen
+                    }
+                    .shimmerEffect()
+            )
+
+            if(!isImageFullScreen) {
                 TopAppBar(
-                    topAppBarText = "",
+                    topAppBarText =  uiState.photographer,
                     onNavigationClick = onNavigationClick
                 )
 
-                CircularProgressIndicator(modifier = Modifier
-                    .fillMaxSize()
-                    .wrapContentSize(Alignment.Center)
-                )
-            }
-            is WallpaperDetailUiState.Success ->  {
-                AsyncImage(
-                    model = ImageRequest.Builder(context = context)
-                        .data(uiState.wallpaperSrc)
-                        .crossfade(true)
-                        .build(),
-                    contentScale = ContentScale.Crop,
-                    contentDescription = null,
-                    onSuccess = { success ->
-                        imageDrawable = success.result.drawable
-                    },
+                WhiteTextOutlinedButton(
+                    text = stringResource(id = R.string.set_as_a_wallpaper),
                     modifier = Modifier
                         .fillMaxSize()
-                        .clickable {
-                            isImageFullScreen = !isImageFullScreen
+                        .wrapContentSize(Alignment.BottomCenter)
+                        .padding(16.dp)
+                        .safeDrawingPadding(),
+                    onClick = {
+                        composableScope.launch {
+                            setWallpaper(
+                                context = context,
+                                getCropAndSetWallpaperIntent = getCropAndSetWallpaperIntent,
+                                setTempImage = setTempImage
+                            )
                         }
-                        .shimmerEffect()
+                    }
                 )
-
-                if(!isImageFullScreen) {
-                    TopAppBar(
-                        topAppBarText =  uiState.photographer,
-                        onNavigationClick = onNavigationClick
-                    )
-
-                    WhiteTextOutlinedButton(
-                        text = stringResource(id = R.string.set_as_a_wallpaper),
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .wrapContentSize(Alignment.BottomCenter)
-                            .padding(16.dp)
-                            .safeDrawingPadding(),
-                        onClick = {
-                            composableScope.launch {
-                                setWallpaper(
-                                    context = context,
-                                    getCropAndSetWallpaperIntent = getCropAndSetWallpaperIntent,
-                                    setTempImage = setTempImage
-                                )
-                            }
-                        }
-                    )
-                }
             }
-            is WallpaperDetailUiState.Error -> {
-                TopAppBar(
-                    topAppBarText = "",
-                    onNavigationClick = onNavigationClick
-                )
-                ErrorLayout(getWallpaper = getWallpaper)
-            }
+        }
+        is WallpaperDetailUiState.Error -> {
+            TopAppBar(
+                topAppBarText = "",
+                onNavigationClick = onNavigationClick
+            )
+            ErrorLayout(getWallpaper = getWallpaper)
         }
     }
 }

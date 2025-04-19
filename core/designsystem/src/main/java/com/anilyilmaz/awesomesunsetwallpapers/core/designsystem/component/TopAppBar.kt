@@ -46,7 +46,7 @@ fun TransparentCenterAlignedTopAppBar(
 @Preview
 @Composable
 fun TransparentCenterAlignedTopAppBarPreview() {
- TransparentCenterAlignedTopAppBar(
-     title = "data"
- )
+    TransparentCenterAlignedTopAppBar(
+        title = "Title"
+    )
 }

@@ -3,14 +3,18 @@ package com.anilyilmaz.awesomesunsetwallpapers.ui
 import android.annotation.SuppressLint
 import android.app.WallpaperManager
 import android.net.ConnectivityManager
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.rememberNavController
@@ -30,38 +34,42 @@ fun AwesomeSunsetWallpapersApp(
     getNetworkStateUseCase: GetNetworkStateUseCase,
     setTempFileUseCase: SetTempFileUseCase
 ) {
-    val navController = rememberNavController()
-
     val initialNetworkState = getInitialNetworkState(connectivityManager = connectivityManager,
         getNetworkStateUseCase = getNetworkStateUseCase)
     val networkState by sharedViewModel.networkState.collectAsStateWithLifecycle(
         initialValue = initialNetworkState)
 
-    val snackbarHostState: SnackbarHostState = remember { SnackbarHostState() }
-    Scaffold(snackbarHost = { SnackbarHost(snackbarHostState) }) {
-        val networkIsConnectedMessage = stringResource(id = R.string.network_is_connected)
-        val thereIsNoNetworkdMessage = stringResource(id = R.string.there_is_no_network)
-        LaunchedEffect(networkState) {
-            if (networkState == NetworkState.CONNECTED) {
-                snackbarHostState.showSnackbar(
-                    message = networkIsConnectedMessage,
-                    duration = SnackbarDuration.Short
-                )
-            } else if (networkState == NetworkState.LOST ||
-                networkState == NetworkState.UNAVAILABLE) {
-                snackbarHostState.showSnackbar(
-                    message = thereIsNoNetworkdMessage,
-                    duration = SnackbarDuration.Indefinite
-                )
+    Surface(Modifier.fillMaxSize()) {
+        val navController = rememberNavController()
+        val snackbarHostState: SnackbarHostState = remember { SnackbarHostState() }
+        Scaffold(
+            snackbarHost = { SnackbarHost(snackbarHostState) },
+            contentWindowInsets = WindowInsets(0, 0, 0, 0)
+        ) {
+            val networkIsConnectedMessage = stringResource(id = R.string.network_is_connected)
+            val thereIsNoNetworkdMessage = stringResource(id = R.string.there_is_no_network)
+            LaunchedEffect(networkState) {
+                if (networkState == NetworkState.CONNECTED) {
+                    snackbarHostState.showSnackbar(
+                        message = networkIsConnectedMessage,
+                        duration = SnackbarDuration.Short
+                    )
+                } else if (networkState == NetworkState.LOST ||
+                    networkState == NetworkState.UNAVAILABLE) {
+                    snackbarHostState.showSnackbar(
+                        message = thereIsNoNetworkdMessage,
+                        duration = SnackbarDuration.Indefinite
+                    )
+                }
             }
-        }
 
-        AwesomeSunsetWallpapersNavHost(
-            navController = navController,
-            sharedViewModel = sharedViewModel,
-            getCropAndSetWallpaperIntent = wallpaperManager::getCropAndSetWallpaperIntent,
-            setTempImage = setTempFileUseCase::invoke
-        )
+            AwesomeSunsetWallpapersNavHost(
+                navController = navController,
+                sharedViewModel = sharedViewModel,
+                getCropAndSetWallpaperIntent = wallpaperManager::getCropAndSetWallpaperIntent,
+                setTempImage = setTempFileUseCase::invoke
+            )
+        }
     }
 }
 
