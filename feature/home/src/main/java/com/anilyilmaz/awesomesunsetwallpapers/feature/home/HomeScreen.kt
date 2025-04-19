@@ -139,10 +139,11 @@ private fun PagingList(
                                 .data(it.src.portrait)
                                 .crossfade(true)
                                 .build(),
-                            contentScale = ContentScale.Fit,
+                            contentScale = ContentScale.Crop,
                             contentDescription = null,
                             modifier = Modifier
                                 .fillMaxSize()
+                                .aspectRatio(0.75f)
                                 .clip(shape = ShapeDefaults.Medium)
                                 .clickable {
                                     onImageClick(it.id)
@@ -152,7 +153,6 @@ private fun PagingList(
                             if (state is AsyncImagePainter.State.Loading) {
                                 Spacer(modifier = Modifier
                                     .fillMaxSize()
-                                    .aspectRatio(0.75f)
                                     .shimmerEffect()
                                 )
                             } else {
