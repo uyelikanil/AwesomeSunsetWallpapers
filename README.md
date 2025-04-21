@@ -16,7 +16,7 @@ A sunset wallpaper app for Android. It follows Android's architecture guideline 
 
 ## Pexels API Key
 
-Awesome Sunset Wallpapers uses the [Pexels API](https://www.pexels.com/api/) for constructing RESTful API.<br>
+Awesome Sunset Wallpapers uses the [Pexels API](https://www.pexels.com/api/) for constructing RESTful API. 
 Pexels provides a RESTful API interface of images and videos.
 
 Once you have the key, add this line to the `local.properties` file, in the project's root folder:
