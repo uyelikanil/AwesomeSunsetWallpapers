@@ -13,7 +13,6 @@ A sunset wallpaper app for Android. It follows Android's architecture guideline 
 * Coil
 * Retrofit
 * OkHttp
-* Moshi
 
 ## License
 ```
