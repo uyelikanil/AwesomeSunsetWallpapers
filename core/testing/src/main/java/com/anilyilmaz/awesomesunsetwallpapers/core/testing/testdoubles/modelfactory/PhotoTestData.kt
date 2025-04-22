@@ -3,15 +3,17 @@ package com.anilyilmaz.awesomesunsetwallpapers.core.testing.testdoubles.modelfac
 import com.anilyilmaz.awesomesunsetwallpapers.core.model.Photo
 import com.anilyilmaz.awesomesunsetwallpapers.core.network.model.PexelsPhotoSrc
 
-fun photoTestData(id: Int = 0) = Photo(
-    id,
-    "Photographer", "Photographer URL",
-    PexelsPhotoSrc("original URL",
-        "large2x URL",
-        "large URL",
-        "medium URL",
-        "small URL",
-        "portrait URL",
-        "landscape URL",
-        "tiny URL")
+fun photoTestData(id: Long = 0) = Photo(
+    id = id,
+    photographer = "Photographer", photographer_url = "Photographer URL",
+    src = PexelsPhotoSrc(
+        original = "original URL",
+        large2x = "large2x URL",
+        large = "large URL",
+        medium = "medium URL",
+        small = "small URL",
+        portrait = "portrait URL",
+        landscape = "landscape URL",
+        tiny = "tiny URL"
+    )
 )

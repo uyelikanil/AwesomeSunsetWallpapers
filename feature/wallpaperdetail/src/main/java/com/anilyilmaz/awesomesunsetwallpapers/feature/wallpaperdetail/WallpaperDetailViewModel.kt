@@ -21,7 +21,7 @@ class WallpaperDetailViewModel @Inject constructor(
     private val _uiState = MutableStateFlow<WallpaperDetailUiState>(WallpaperDetailUiState.Loading)
     val uiState: StateFlow<WallpaperDetailUiState> = _uiState.asStateFlow()
 
-    private val wallpaperId: Int = savedStateHandle.toRoute<WallpaperDetail>().wallpaperId
+    private val wallpaperId: Long = savedStateHandle.toRoute<WallpaperDetail>().wallpaperId
 
     init {
         getWallpaper()

@@ -10,7 +10,7 @@ import kotlinx.serialization.Serializable
 import java.io.File
 
 @Serializable
-data class WallpaperDetail(val wallpaperId: Int)
+data class WallpaperDetail(val wallpaperId: Long)
 
 fun NavGraphBuilder.wallpaperDetailScreen(
     getCropAndSetWallpaperIntent: (Uri) -> Intent,

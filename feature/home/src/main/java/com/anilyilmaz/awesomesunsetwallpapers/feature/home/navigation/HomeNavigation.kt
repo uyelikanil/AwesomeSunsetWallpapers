@@ -11,7 +11,7 @@ object Home
 
 fun NavGraphBuilder.homeScreen(
     sharedViewModel: SharedViewModel,
-    onImageClick: (Int) -> Unit
+    onImageClick: (Long) -> Unit
 ) {
     composable<Home> {
         HomeRoute(

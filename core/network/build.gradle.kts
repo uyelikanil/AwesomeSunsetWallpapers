@@ -29,8 +29,10 @@ android {
 dependencies {
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.kotlinx.serialization.json)
-    implementation(libs.retrofit)
-    implementation(libs.retrofit.kotlin.serialization)
-    implementation(libs.okhttp.logging)
+    implementation(libs.ktor)
+    implementation(libs.ktor.okhttp)
+    implementation(libs.ktor.content.negotiation)
+    implementation(libs.ktor.kotlin.serialization)
+    implementation(libs.ktor.logging)
     implementation(libs.androidx.paging.compose)
 }

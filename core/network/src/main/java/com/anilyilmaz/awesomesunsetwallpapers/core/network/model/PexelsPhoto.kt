@@ -16,13 +16,13 @@ data class PexelsPhotoSrc(
 
 @Serializable
 data class PexelsPhoto(
-    val id: Int,
+    val id: Long,
     val width: Int,
     val height: Int,
     val url: String = "",
     val photographer: String = "",
     val photographer_url: String = "",
-    val photographer_id: Int,
+    val photographer_id: Long,
     val avg_color: String = "",
     val src: PexelsPhotoSrc,
     val liked: Boolean,

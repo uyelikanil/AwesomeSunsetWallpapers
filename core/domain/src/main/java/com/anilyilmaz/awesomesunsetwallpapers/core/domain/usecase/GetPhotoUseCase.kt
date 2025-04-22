@@ -8,6 +8,6 @@ import javax.inject.Inject
 class GetPhotoUseCase @Inject constructor(
     private val photoRepository: PhotoRepository
 ) {
-    suspend operator fun invoke(id: Int): Photo = photoRepository.getPhoto(id).toPhoto()
+    suspend operator fun invoke(id: Long): Photo = photoRepository.getPhoto(id).toPhoto()
 }
 

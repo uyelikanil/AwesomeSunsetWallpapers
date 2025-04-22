@@ -2,17 +2,22 @@ package com.anilyilmaz.awesomesunsetwallpapers.core.network.api
 
 import com.anilyilmaz.awesomesunsetwallpapers.core.network.model.PexelsPhoto
 import com.anilyilmaz.awesomesunsetwallpapers.core.network.model.PexelsPhotoExpanded
-import retrofit2.http.GET
-import retrofit2.http.Path
-import retrofit2.http.Query
+import io.ktor.client.HttpClient
+import io.ktor.client.call.body
+import io.ktor.client.request.get
+import io.ktor.client.request.parameter
 
-interface PexelsService {
-    @GET(value = "/v1/photos/{id}")
-    suspend fun getPhoto(@Path("id") id: Int): PexelsPhoto
+class PexelsService(private val client: HttpClient) {
+    suspend fun getPhoto(id: Long): PexelsPhoto =
+        client.get("/v1/photos/$id").body()
 
-    @GET(value = "/v1/search")
     suspend fun getPhotosWithQuery(
-        @Query("query") query: List<String>?,
-        @Query("page") page: Int?, @Query("per_page") per_page: Int?):
-            PexelsPhotoExpanded
+        query: List<String>?,
+        page: Int?,
+        per_page: Int?
+    ): PexelsPhotoExpanded = client.get("/v1/search") {
+        parameter("query", query?.joinToString(","))
+        parameter("page", page)
+        parameter("per_page", per_page)
+    }.body()
 }

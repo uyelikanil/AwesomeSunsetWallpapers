@@ -55,7 +55,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 fun HomeRoute(
     viewModel: HomeViewModel = hiltViewModel(),
     sharedViewModel: SharedViewModel,
-    onImageClick: (Int) -> Unit
+    onImageClick: (Long) -> Unit
 ) {
     val networkState by sharedViewModel.networkState.collectAsStateWithLifecycle(
         initialValue = NetworkState.AVAILABLE)
@@ -73,7 +73,7 @@ fun HomeRoute(
 internal fun HomeScreen(
     wallpapers: LazyPagingItems<Photo>,
     networkState: NetworkState,
-    onImageClick: (Int) -> Unit
+    onImageClick: (Long) -> Unit
 ) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
@@ -110,7 +110,7 @@ internal fun HomeScreen(
 private fun PagingList(
     paddingValues: PaddingValues,
     wallpapers: LazyPagingItems<Photo>,
-    onImageClick: (Int) -> Unit
+    onImageClick: (Long) -> Unit
 ) {
     when(wallpapers.loadState.refresh) {
         is LoadState.Loading -> {

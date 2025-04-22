@@ -5,10 +5,11 @@ import androidx.paging.PagingState
 import com.anilyilmaz.awesomesunsetwallpapers.core.network.api.PexelsService
 import com.anilyilmaz.awesomesunsetwallpapers.core.network.model.PexelsPhoto
 
-class PexelsPagingSource (private val pexelsService: PexelsService,
-                                             private val query: List<String>,
-                                             private val perPage: Int
-                                             ): PagingSource<Int, PexelsPhoto>() {
+class PexelsPagingSource (
+    private val pexelsService: PexelsService,
+    private val query: List<String>,
+    private val perPage: Int
+): PagingSource<Int, PexelsPhoto>() {
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, PexelsPhoto> {
         return try {

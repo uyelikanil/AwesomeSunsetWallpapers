@@ -15,7 +15,7 @@ class PhotoRepositoryImpl @Inject constructor(
     @Dispatcher(IO) private val ioDispatcher:
     CoroutineDispatcher
 ): PhotoRepository {
-    override suspend fun getPhoto(id: Int): PexelsPhoto = withContext(ioDispatcher) {
+    override suspend fun getPhoto(id: Long): PexelsPhoto = withContext(ioDispatcher) {
         pexelsDataSource.getPhoto(id)}
 
     override fun getPhotosWithQuery(query: List<String>):
