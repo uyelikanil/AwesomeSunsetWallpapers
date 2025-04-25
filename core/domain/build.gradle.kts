@@ -1,6 +1,6 @@
 plugins {
     id("awesomesunsetwallpapers.android.library")
-    id("awesomesunsetwallpapers.android.hilt")
+    id("awesomesunsetwallpapers.android.koin")
 }
 
 android {

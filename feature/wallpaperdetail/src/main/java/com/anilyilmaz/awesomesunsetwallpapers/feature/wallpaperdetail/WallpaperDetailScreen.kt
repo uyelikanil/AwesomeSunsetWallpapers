@@ -31,7 +31,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.content.FileProvider
 import androidx.core.graphics.drawable.toBitmap
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
@@ -41,13 +40,14 @@ import com.anilyilmaz.awesomesunsetwallpapers.core.designsystem.extension.shimme
 import com.anilyilmaz.awesomesunsetwallpapers.core.designsystem.theme.AppTheme
 import com.anilyilmaz.awesomesunsetwallpapers.core.designsystem.theme.md_theme_dark_primary
 import kotlinx.coroutines.launch
+import org.koin.androidx.compose.koinViewModel
 import java.io.File
 
 private lateinit var imageDrawable: Drawable
 
 @Composable
 fun WallpaperDetailRoute(
-    viewModel: WallpaperDetailViewModel = hiltViewModel(),
+    viewModel: WallpaperDetailViewModel = koinViewModel(),
     getCropAndSetWallpaperIntent: (Uri) -> Intent,
     setTempImage: suspend (Bitmap, Bitmap.CompressFormat, String) -> File,
     onNavigationClick: () -> Unit

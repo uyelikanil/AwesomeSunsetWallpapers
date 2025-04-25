@@ -7,9 +7,8 @@ import com.anilyilmaz.awesomesunsetwallpapers.core.domain.mapper.toPhoto
 import com.anilyilmaz.awesomesunsetwallpapers.core.model.Photo
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import javax.inject.Inject
 
-class GetSunsetPhotosUseCase @Inject constructor(
+class GetSunsetPhotosUseCase(
     private val photoRepository: PhotoRepository
 ) {
     operator fun invoke(): Flow<PagingData<Photo>> {
@@ -21,4 +20,3 @@ class GetSunsetPhotosUseCase @Inject constructor(
         }
     }
 }
-

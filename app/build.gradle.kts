@@ -1,7 +1,7 @@
 plugins {
     id("awesomesunsetwallpapers.android.application")
-    id("awesomesunsetwallpapers.android.hilt")
     id("awesomesunsetwallpapers.application.compose")
+    id("awesomesunsetwallpapers.android.feature.koin")
 }
 
 android {
@@ -28,6 +28,9 @@ android {
 }
 
 dependencies {
+    implementation(project(":core:common"))
+    implementation(project(":core:network"))
+    implementation(project(":core:data"))
     implementation(project(":core:domain"))
     implementation(project(":core:model"))
     implementation(project(":core:designsystem"))

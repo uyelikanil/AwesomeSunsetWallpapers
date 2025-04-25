@@ -52,13 +52,17 @@ gradlePlugin {
             id = "awesomesunsetwallpapers.android.feature"
             implementationClass = "AndroidFeatureConventionPlugin"
         }
-        register("androidHilt") {
-            id = "awesomesunsetwallpapers.android.hilt"
-            implementationClass = "AndroidHiltConventionPlugin"
-        }
         register("jvmLibrary") {
             id = "awesomesunsetwallpapers.jvm.library"
             implementationClass = "JvmLibraryConventionPlugin"
+        }
+        register("androidKoin") {
+            id = "awesomesunsetwallpapers.android.koin"
+            implementationClass = "AndroidKoinConventionPlugin"
+        }
+        register("androidFeatureKoin") {
+            id = "awesomesunsetwallpapers.android.feature.koin"
+            implementationClass = "AndroidFeatureKoinConventionPlugin"
         }
     }
 }

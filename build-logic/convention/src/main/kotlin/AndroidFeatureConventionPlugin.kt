@@ -9,7 +9,7 @@ class AndroidFeatureConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
             apply(plugin = "awesomesunsetwallpapers.android.library")
-            apply(plugin = "awesomesunsetwallpapers.android.hilt")
+            apply(plugin = "awesomesunsetwallpapers.android.feature.koin")
             apply(plugin = "org.jetbrains.kotlin.plugin.serialization")
 
             dependencies {
@@ -24,7 +24,6 @@ class AndroidFeatureConventionPlugin : Plugin<Project> {
                 "implementation"(libs.findLibrary("androidx.compose.foundation").get())
                 "implementation"(libs.findLibrary("androidx.compose.material3").get())
                 "implementation"(libs.findLibrary("androidx.navigation.compose").get())
-                "implementation"(libs.findLibrary("androidx.hilt.navigation.compose").get())
                 "implementation"(libs.findLibrary("androidx.lifecycle.runtime.compose").get())
                 "implementation"(libs.findLibrary("coil.compose").get())
                 "implementation"(libs.findLibrary("androidx.compose.ui.tooling.preview").get())

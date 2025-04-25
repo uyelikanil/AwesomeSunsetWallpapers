@@ -1,18 +1,9 @@
 package com.anilyilmaz.awesomesunsetwallpapers.core.common.di
 
-import com.anilyilmaz.awesomesunsetwallpapers.core.common.AswDispatchers
-import com.anilyilmaz.awesomesunsetwallpapers.core.common.Dispatcher
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
+import org.koin.dsl.module
 
-@Module
-@InstallIn(SingletonComponent::class)
-object DispatchersModule {
-    @Provides
-    @Dispatcher(AswDispatchers.IO)
-    fun providesIODispatcher(): CoroutineDispatcher = Dispatchers.IO
+val dispatchersModule = module {
+    single<CoroutineDispatcher> { Dispatchers.IO }
 }

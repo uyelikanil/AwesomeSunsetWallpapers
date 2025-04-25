@@ -11,7 +11,6 @@ import android.view.WindowInsetsController
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.activity.viewModels
 import androidx.core.view.WindowCompat
 import com.anilyilmaz.awesomesunsetwallpapers.core.designsystem.theme.AppTheme
 import com.anilyilmaz.awesomesunsetwallpapers.core.domain.usecase.GetNetworkStateUseCase
@@ -19,16 +18,15 @@ import com.anilyilmaz.awesomesunsetwallpapers.core.domain.usecase.SetTempFileUse
 import com.anilyilmaz.awesomesunsetwallpapers.core.model.NetworkState
 import com.anilyilmaz.awesomesunsetwallpapers.feature.main.SharedViewModel
 import com.anilyilmaz.awesomesunsetwallpapers.ui.AwesomeSunsetWallpapersApp
-import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
+import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
-@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-    @Inject lateinit var connectivityManager: ConnectivityManager
-    @Inject lateinit var wallpaperManager: WallpaperManager
-    @Inject lateinit var getNetworkStateUseCase: GetNetworkStateUseCase
-    @Inject lateinit var setTempFileUseCase: SetTempFileUseCase
-    private val sharedViewModel by viewModels<SharedViewModel>()
+    private val connectivityManager: ConnectivityManager by inject()
+    private val wallpaperManager: WallpaperManager by inject()
+    private val getNetworkStateUseCase: GetNetworkStateUseCase by inject()
+    private val setTempFileUseCase: SetTempFileUseCase by inject()
+    private val sharedViewModel: SharedViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -85,4 +83,3 @@ class MainActivity : ComponentActivity() {
         connectivityManager.unregisterNetworkCallback(networkCallback)
     }
 }
-

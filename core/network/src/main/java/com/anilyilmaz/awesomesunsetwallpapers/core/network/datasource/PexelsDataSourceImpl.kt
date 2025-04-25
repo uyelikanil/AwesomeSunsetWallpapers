@@ -7,11 +7,8 @@ import com.anilyilmaz.awesomesunsetwallpapers.core.network.NetworkModule
 import com.anilyilmaz.awesomesunsetwallpapers.core.network.api.PexelsService
 import com.anilyilmaz.awesomesunsetwallpapers.core.network.model.PexelsPhoto
 import kotlinx.coroutines.flow.Flow
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class PexelsDataSourceImpl @Inject constructor(): PexelsDataSource {
+class PexelsDataSourceImpl: PexelsDataSource {
     private val httpClient = NetworkModule.createHttpClient("https://api.pexels.com")
     private val pexelsService = PexelsService(httpClient)
 

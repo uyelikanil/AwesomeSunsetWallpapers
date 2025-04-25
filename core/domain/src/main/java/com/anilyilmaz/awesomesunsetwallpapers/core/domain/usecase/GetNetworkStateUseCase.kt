@@ -1,9 +1,8 @@
 package com.anilyilmaz.awesomesunsetwallpapers.core.domain.usecase
 
 import com.anilyilmaz.awesomesunsetwallpapers.core.model.NetworkState
-import javax.inject.Inject
 
-class GetNetworkStateUseCase @Inject constructor() {
+class GetNetworkStateUseCase {
     operator fun invoke(newState: NetworkState, oldState: NetworkState): NetworkState {
         val state = if(newState == NetworkState.AVAILABLE &&
             (oldState == NetworkState.LOST || oldState == NetworkState.UNAVAILABLE)) {

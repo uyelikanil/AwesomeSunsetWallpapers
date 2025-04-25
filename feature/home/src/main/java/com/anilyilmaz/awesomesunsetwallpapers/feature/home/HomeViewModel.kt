@@ -6,12 +6,9 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.anilyilmaz.awesomesunsetwallpapers.core.domain.usecase.GetSunsetPhotosUseCase
 import com.anilyilmaz.awesomesunsetwallpapers.core.model.Photo
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
-import javax.inject.Inject
 
-@HiltViewModel
-class HomeViewModel @Inject constructor(
+class HomeViewModel(
     getSunsetPhotosUseCase: GetSunsetPhotosUseCase
 ): ViewModel() {
     val getWallpapers: Flow<PagingData<Photo>> = getSunsetPhotosUseCase().cachedIn(viewModelScope)

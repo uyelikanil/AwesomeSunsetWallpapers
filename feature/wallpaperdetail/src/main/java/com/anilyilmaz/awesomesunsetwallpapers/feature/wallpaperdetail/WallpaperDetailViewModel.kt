@@ -6,15 +6,12 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.anilyilmaz.awesomesunsetwallpapers.core.domain.usecase.GetPhotoUseCase
 import com.anilyilmaz.awesomesunsetwallpapers.feature.wallpaperdetail.navigation.WallpaperDetail
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
-class WallpaperDetailViewModel @Inject constructor(
+class WallpaperDetailViewModel(
     savedStateHandle: SavedStateHandle,
     private val getPhotoUseCase: GetPhotoUseCase
 ): ViewModel() {

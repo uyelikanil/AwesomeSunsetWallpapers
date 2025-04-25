@@ -2,7 +2,7 @@ import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
 
 plugins {
     id("awesomesunsetwallpapers.android.library")
-    id("awesomesunsetwallpapers.android.hilt")
+    id("awesomesunsetwallpapers.android.koin")
     alias(libs.plugins.kotlin.serialization)
 }
 
