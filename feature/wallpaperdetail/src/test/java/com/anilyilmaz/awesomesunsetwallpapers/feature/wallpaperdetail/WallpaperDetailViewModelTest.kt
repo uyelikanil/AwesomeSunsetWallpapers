@@ -6,6 +6,8 @@ import com.anilyilmaz.awesomesunsetwallpapers.core.domain.usecase.GetPhotoUseCas
 import com.anilyilmaz.awesomesunsetwallpapers.core.testing.testdoubles.network.FakePexelsDataSource
 import com.anilyilmaz.awesomesunsetwallpapers.core.testing.util.MainDispatcherRule
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
@@ -20,8 +22,8 @@ class WallpaperDetailViewModelTest {
     val mainDispatcherRule = MainDispatcherRule()
 
     private lateinit var viewModel: WallpaperDetailViewModel
-    private val dataSource = FakePexelsDataSource()
     private val dispatcher = StandardTestDispatcher(mainDispatcherRule.testDispatcher.scheduler)
+    private val dataSource = FakePexelsDataSource(dispatcher)
     private val photoRepository = PhotoRepositoryImpl(dataSource, dispatcher)
     private val getPhotoUseCase = GetPhotoUseCase(photoRepository)
 
@@ -49,6 +51,7 @@ class WallpaperDetailViewModelTest {
     @Test
     fun `when getWallpaper is called, then ui state should be Loading first and then should be Success` ()
     = runTest {
+        backgroundScope.launch { viewModel.uiState.collect() }
         // When
         viewModel.getWallpaper()
 

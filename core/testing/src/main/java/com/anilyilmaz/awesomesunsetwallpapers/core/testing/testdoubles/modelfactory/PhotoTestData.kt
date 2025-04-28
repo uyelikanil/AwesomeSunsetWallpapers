@@ -5,7 +5,8 @@ import com.anilyilmaz.awesomesunsetwallpapers.core.network.model.PexelsPhotoSrc
 
 fun photoTestData(id: Long = 0) = Photo(
     id = id,
-    photographer = "Photographer", photographer_url = "Photographer URL",
+    photographer = "Photographer",
+    photographer_url = "Photographer URL",
     src = PexelsPhotoSrc(
         original = "original URL",
         large2x = "large2x URL",

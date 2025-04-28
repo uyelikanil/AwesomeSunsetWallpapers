@@ -12,15 +12,17 @@ import io.ktor.http.HttpStatusCode
 import io.ktor.http.headersOf
 import io.ktor.serialization.kotlinx.json.json
 import io.ktor.utils.io.ByteReadChannel
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.serialization.json.Json
 
 object MockNetworkModule {
-    fun createHttpClient(): HttpClient = HttpClient(MockEngine) {
+    fun createHttpClient(dispatcher: CoroutineDispatcher): HttpClient = HttpClient(MockEngine) {
         engine {
+            this.dispatcher = dispatcher
             addHandler { request ->
-                val pathId = request.url.encodedPath.getOrNull(2)
                 when {
                     request.url.encodedPath.startsWith("/v1/photos/") -> {
+                        val pathId = request.url.encodedPath.trimStart('/').split('/').getOrNull(2)
                         val id = pathId?.toString()?.toLongOrNull()
                         id?.let {
                             val content = Json.encodeToString(pexelsPhotoTestData(it))

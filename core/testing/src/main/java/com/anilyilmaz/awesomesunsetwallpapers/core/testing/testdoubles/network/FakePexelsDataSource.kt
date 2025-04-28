@@ -7,10 +7,11 @@ import com.anilyilmaz.awesomesunsetwallpapers.core.network.api.PexelsService
 import com.anilyilmaz.awesomesunsetwallpapers.core.network.datasource.PexelsDataSource
 import com.anilyilmaz.awesomesunsetwallpapers.core.network.datasource.PexelsPagingSource
 import com.anilyilmaz.awesomesunsetwallpapers.core.network.model.PexelsPhoto
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 
-class FakePexelsDataSource: PexelsDataSource {
-    private val mockClient = MockNetworkModule.createHttpClient()
+class FakePexelsDataSource(dispatcher: CoroutineDispatcher): PexelsDataSource {
+    private val mockClient = MockNetworkModule.createHttpClient(dispatcher)
     private val api = PexelsService(mockClient)
 
     override suspend fun getPhoto(id: Long): PexelsPhoto = api.getPhoto(id)
