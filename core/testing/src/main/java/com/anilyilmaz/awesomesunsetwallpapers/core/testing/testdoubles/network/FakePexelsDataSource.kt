@@ -8,9 +8,10 @@ import com.anilyilmaz.awesomesunsetwallpapers.core.network.datasource.PexelsData
 import com.anilyilmaz.awesomesunsetwallpapers.core.network.datasource.PexelsPagingSource
 import com.anilyilmaz.awesomesunsetwallpapers.core.network.model.PexelsPhoto
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 
-class FakePexelsDataSource(dispatcher: CoroutineDispatcher): PexelsDataSource {
+class FakePexelsDataSource(dispatcher: CoroutineDispatcher = Dispatchers.IO): PexelsDataSource {
     private val mockClient = MockNetworkModule.createHttpClient(dispatcher)
     private val api = PexelsService(mockClient)
 
