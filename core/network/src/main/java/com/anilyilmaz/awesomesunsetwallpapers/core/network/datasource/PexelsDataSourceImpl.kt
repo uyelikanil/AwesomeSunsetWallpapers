@@ -6,6 +6,7 @@ import androidx.paging.PagingData
 import com.anilyilmaz.awesomesunsetwallpapers.core.network.NetworkModule
 import com.anilyilmaz.awesomesunsetwallpapers.core.network.api.PexelsService
 import com.anilyilmaz.awesomesunsetwallpapers.core.network.model.PexelsPhoto
+import com.anilyilmaz.awesomesunsetwallpapers.core.network.model.PexelsPhotoExpanded
 import kotlinx.coroutines.flow.Flow
 
 class PexelsDataSourceImpl: PexelsDataSource {
@@ -14,6 +15,13 @@ class PexelsDataSourceImpl: PexelsDataSource {
 
     override suspend fun getPhoto(id: Long): PexelsPhoto =
         pexelsService.getPhoto(id)
+
+    override suspend fun getPhotos(
+        query: List<String>,
+        page: Int,
+        perPage: Int,
+    ): PexelsPhotoExpanded =
+        pexelsService.getPhotosWithQuery(query, page, perPage)
 
     override fun getPhotosWithQuery(
         query: List<String>
