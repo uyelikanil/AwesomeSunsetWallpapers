@@ -1,22 +1,14 @@
 package com.anilyilmaz.awesomesunsetwallpapers.core.domain.usecase
 
-import androidx.paging.PagingData
-import androidx.paging.map
 import com.anilyilmaz.awesomesunsetwallpapers.core.data.repository.PhotoRepository
-import com.anilyilmaz.awesomesunsetwallpapers.core.domain.mapper.toPhoto
-import com.anilyilmaz.awesomesunsetwallpapers.core.model.Photo
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
+import com.anilyilmaz.awesomesunsetwallpapers.core.domain.mapper.toPhotoExpanded
+import com.anilyilmaz.awesomesunsetwallpapers.core.model.PhotoExpanded
 
 class GetSunsetPhotosUseCase(
     private val photoRepository: PhotoRepository
 ) {
-    operator fun invoke(): Flow<PagingData<Photo>> {
+    suspend operator fun invoke(): PhotoExpanded {
         val query = listOf("sunset")
-        val pexelsPhotosPagingData = photoRepository.getPhotosWithQuery(query)
-
-        return pexelsPhotosPagingData.map { pagingData ->
-            pagingData.map { it.toPhoto() }
-        }
+        return photoRepository.getPhotos(query, 1, 30).toPhotoExpanded()
     }
 }

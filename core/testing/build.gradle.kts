@@ -10,7 +10,6 @@ dependencies {
     implementation(project(":core:model"))
 
     implementation(libs.kotlinx.coroutines.android)
-    implementation(libs.androidx.paging.compose)
     implementation(libs.ktor)
     implementation(libs.ktor.okhttp)
     implementation(libs.ktor.content.negotiation)
@@ -18,6 +17,5 @@ dependencies {
     api(libs.ktor.mock)
     api(libs.androidx.test.runner)
     api(libs.kotlinx.coroutines.test)
-    api(libs.androidx.paging.test)
     api(libs.junit4)
 }

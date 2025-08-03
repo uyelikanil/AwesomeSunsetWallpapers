@@ -65,7 +65,6 @@ fun AwesomeSunsetWallpapersApp(
 
             AwesomeSunsetWallpapersNavHost(
                 navController = navController,
-                sharedViewModel = sharedViewModel,
                 getCropAndSetWallpaperIntent = wallpaperManager::getCropAndSetWallpaperIntent,
                 setTempImage = setTempFileUseCase::invoke
             )

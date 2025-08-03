@@ -1,11 +1,9 @@
 package com.anilyilmaz.awesomesunsetwallpapers.core.data.repository
 
-import androidx.paging.PagingData
 import com.anilyilmaz.awesomesunsetwallpapers.core.network.datasource.PexelsDataSource
 import com.anilyilmaz.awesomesunsetwallpapers.core.network.model.PexelsPhoto
 import com.anilyilmaz.awesomesunsetwallpapers.core.network.model.PexelsPhotoExpanded
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 
 class PhotoRepositoryImpl(
@@ -22,7 +20,4 @@ class PhotoRepositoryImpl(
     ): PexelsPhotoExpanded {
         return pexelsDataSource.getPhotos(query, page, perPage)
     }
-
-    override fun getPhotosWithQuery(query: List<String>):
-            Flow<PagingData<PexelsPhoto>> = pexelsDataSource.getPhotosWithQuery(query)
 }

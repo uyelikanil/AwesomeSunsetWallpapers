@@ -34,5 +34,4 @@ dependencies {
     implementation(libs.ktor.content.negotiation)
     implementation(libs.ktor.kotlin.serialization)
     implementation(libs.ktor.logging)
-    implementation(libs.androidx.paging.compose)
 }

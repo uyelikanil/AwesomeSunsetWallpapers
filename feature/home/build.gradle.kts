@@ -10,6 +10,4 @@ android {
 
 dependencies {
     implementation(project(":feature:main"))
-
-    implementation(libs.androidx.paging.compose)
 }

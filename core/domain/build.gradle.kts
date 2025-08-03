@@ -15,5 +15,4 @@ dependencies {
     testImplementation(project(":core:testing"))
 
     implementation(libs.kotlinx.coroutines.android)
-    implementation(libs.androidx.paging.compose)
 }

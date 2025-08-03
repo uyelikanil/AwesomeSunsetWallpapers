@@ -1,5 +1,6 @@
 package com.anilyilmaz.awesomesunsetwallpapers.feature.home
 
+import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -7,10 +8,13 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -20,7 +24,9 @@ import androidx.compose.material3.ShapeDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -33,37 +39,28 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.paging.LoadState
-import androidx.paging.PagingData
-import androidx.paging.compose.LazyPagingItems
-import androidx.paging.compose.collectAsLazyPagingItems
-import androidx.paging.compose.itemKey
 import coil.compose.AsyncImagePainter
 import coil.compose.SubcomposeAsyncImage
 import coil.compose.SubcomposeAsyncImageContent
 import coil.request.ImageRequest
 import com.anilyilmaz.awesomesunsetwallpapers.core.designsystem.extension.shimmerEffect
 import com.anilyilmaz.awesomesunsetwallpapers.core.designsystem.theme.AppTheme
-import com.anilyilmaz.awesomesunsetwallpapers.core.model.NetworkState
 import com.anilyilmaz.awesomesunsetwallpapers.core.model.Photo
+import com.anilyilmaz.awesomesunsetwallpapers.core.model.PhotoExpanded
 import com.anilyilmaz.awesomesunsetwallpapers.core.ui.HomeScreenPreviewParameterProvider
-import com.anilyilmaz.awesomesunsetwallpapers.feature.main.SharedViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.distinctUntilChanged
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun HomeRoute(
     viewModel: HomeViewModel = koinViewModel(),
-    sharedViewModel: SharedViewModel,
     onImageClick: (Long) -> Unit
 ) {
-    val networkState by sharedViewModel.networkState.collectAsStateWithLifecycle(
-        initialValue = NetworkState.AVAILABLE)
-    val wallpapers = viewModel.getWallpapers.collectAsLazyPagingItems()
-
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     HomeScreen(
-        wallpapers = wallpapers,
-        networkState = networkState,
+        uiState = uiState,
+        refreshList = viewModel::getPhotos,
+        loadMoreItems = viewModel::loadMorePhotos,
         onImageClick = onImageClick
     )
 }
@@ -71,8 +68,9 @@ fun HomeRoute(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun HomeScreen(
-    wallpapers: LazyPagingItems<Photo>,
-    networkState: NetworkState,
+    uiState: HomeUiState,
+    refreshList: () -> Unit,
+    loadMoreItems: () -> Unit,
     onImageClick: (Long) -> Unit
 ) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
@@ -96,82 +94,117 @@ internal fun HomeScreen(
     ) {
         PagingList(
             paddingValues = it,
-            wallpapers = wallpapers,
+            uiState = uiState,
+            refreshList = refreshList,
+            loadMoreItems = loadMoreItems,
             onImageClick = onImageClick
         )
-    }
-
-    if(networkState == NetworkState.CONNECTED) {
-        wallpapers.refresh()
     }
 }
 
 @Composable
 private fun PagingList(
     paddingValues: PaddingValues,
-    wallpapers: LazyPagingItems<Photo>,
+    uiState: HomeUiState,
+    refreshList: () -> Unit,
+    loadMoreItems: () -> Unit,
     onImageClick: (Long) -> Unit
 ) {
-    when(wallpapers.loadState.refresh) {
-        is LoadState.Loading -> {
-            CircularProgressIndicator(modifier = Modifier
-                .fillMaxSize()
-                .wrapContentSize(Alignment.Center)
-            )
-        }
-        is LoadState.NotLoading -> {
-            LazyVerticalGrid(
-                columns = GridCells.Adaptive(minSize = 128.dp),
-                contentPadding = PaddingValues(4.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp),
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-                modifier = Modifier.padding(top = paddingValues.calculateTopPadding())
-            ) {
-                items(
-                    wallpapers.itemCount,
-                    key = wallpapers.itemKey { it.id }
-                ) { index ->
-                    val item = wallpapers[index]
+    val gridState = rememberLazyGridState()
 
-                    item?.let {
-                        SubcomposeAsyncImage(
-                            model = ImageRequest.Builder(LocalContext.current)
-                                .data(it.src.portrait)
-                                .crossfade(true)
-                                .build(),
-                            contentScale = ContentScale.Crop,
-                            contentDescription = null,
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .aspectRatio(0.75f)
-                                .clip(shape = ShapeDefaults.Medium)
-                                .clickable {
-                                    onImageClick(it.id)
-                                }
+    LaunchedEffect(gridState) {
+        snapshotFlow {
+            val lastVisible = gridState.layoutInfo.visibleItemsInfo.lastOrNull()?.index
+            val total = gridState.layoutInfo.totalItemsCount
+            lastVisible != null && total - lastVisible <= 6
+        }
+            .distinctUntilChanged()
+            .collect { shouldLoad -> if (shouldLoad) loadMoreItems() }
+    }
+
+    Crossfade(uiState.loadState.refresh) { refreshState ->
+        when(refreshState) {
+            is State.Loading -> {
+                CircularProgressIndicator(modifier = Modifier
+                    .fillMaxSize()
+                    .wrapContentSize(Alignment.Center)
+                )
+            }
+            is State.NotLoading -> {
+                uiState.photoExpanded?.run {
+                    LazyVerticalGrid(
+                        columns = GridCells.Adaptive(minSize = 128.dp),
+                        state = gridState,
+                        contentPadding = PaddingValues(4.dp),
+                        verticalArrangement = Arrangement.spacedBy(8.dp),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        modifier = Modifier.padding(top = paddingValues.calculateTopPadding())
+                    ) {
+                        items(
+                            count = photos.count(),
+                            key = { idx -> photos[idx].id }
                         ) {
-                            val state = painter.state
-                            if (state is AsyncImagePainter.State.Loading) {
-                                Spacer(modifier = Modifier
-                                    .fillMaxSize()
-                                    .shimmerEffect()
+                            val item = photos[it]
+                            ListItem(
+                                photo = item,
+                                onImageClick = onImageClick
+                            )
+                        }
+
+                        item(span = { GridItemSpan(maxLineSpan) }) {
+                            if(uiState.loadState.append == State.Loading) {
+                                CircularProgressIndicator(modifier = Modifier
+                                    .fillMaxWidth(0.5f)
+                                    .wrapContentSize(Alignment.BottomCenter)
+                                    .padding(16.dp)
                                 )
-                            } else {
-                                SubcomposeAsyncImageContent()
                             }
                         }
                     }
                 }
             }
+            is State.Error -> {
+                ErrorLayout(refreshList = refreshList)
+            }
         }
-        is LoadState.Error -> {
-            ErrorLayout(wallpapers = wallpapers)
+    }
+}
+
+@Composable
+private fun ListItem(
+    photo: Photo,
+    onImageClick: (Long) -> Unit
+) {
+    SubcomposeAsyncImage(
+        model = ImageRequest.Builder(LocalContext.current)
+            .data(photo.src.portrait)
+            .crossfade(true)
+            .build(),
+        contentScale = ContentScale.Crop,
+        contentDescription = null,
+        modifier = Modifier
+            .fillMaxSize()
+            .aspectRatio(0.75f)
+            .clip(shape = ShapeDefaults.Medium)
+            .clickable {
+                onImageClick(photo.id)
+            }
+    ) {
+        val state = painter.state
+        if (state is AsyncImagePainter.State.Loading) {
+            Spacer(modifier = Modifier
+                .fillMaxSize()
+                .shimmerEffect()
+            )
+        } else {
+            SubcomposeAsyncImageContent()
         }
     }
 }
 
 @Composable
 private fun ErrorLayout(
-    wallpapers: LazyPagingItems<Photo>
+    refreshList: () -> Unit
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -187,7 +220,7 @@ private fun ErrorLayout(
             text = stringResource(id = R.string.retry),
             color = MaterialTheme.colorScheme.primary,
             modifier = Modifier.clickable {
-               wallpapers.refresh()
+                refreshList()
             }
         )
     }
@@ -199,14 +232,24 @@ fun HomeScreenPreview(
     @PreviewParameter(HomeScreenPreviewParameterProvider::class)
     photos: List<Photo>
 ) {
-    val pagingData = PagingData.from(photos)
-    val fakeDataFlow = MutableStateFlow(pagingData)
-    val lazyPagingItems = fakeDataFlow.collectAsLazyPagingItems()
+    val photoExpanded = PhotoExpanded(
+        totalResults = 8000,
+        page = 1,
+        perPage = 30,
+        photos = photos
+    )
 
     AppTheme {
         HomeScreen(
-            wallpapers = lazyPagingItems,
-            networkState = NetworkState.AVAILABLE,
+            uiState = HomeUiState(
+                photoExpanded = photoExpanded,
+                loadState = LoadState(
+                    refresh = State.NotLoading,
+                    append = State.NotLoading
+                )
+            ),
+            refreshList = {},
+            loadMoreItems = {},
             onImageClick = {}
         )
     }

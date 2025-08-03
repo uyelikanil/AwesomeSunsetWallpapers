@@ -10,13 +10,11 @@ import com.anilyilmaz.awesomesunsetwallpapers.feature.home.navigation.Home
 import com.anilyilmaz.awesomesunsetwallpapers.feature.wallpaperdetail.navigation.WallpaperDetail
 import com.anilyilmaz.awesomesunsetwallpapers.feature.home.navigation.homeScreen
 import com.anilyilmaz.awesomesunsetwallpapers.feature.wallpaperdetail.navigation.wallpaperDetailScreen
-import com.anilyilmaz.awesomesunsetwallpapers.feature.main.SharedViewModel
 import java.io.File
 
 @Composable
 fun AwesomeSunsetWallpapersNavHost(
     navController: NavHostController,
-    sharedViewModel: SharedViewModel,
     getCropAndSetWallpaperIntent: (Uri) -> Intent,
     setTempImage: suspend (Bitmap, Bitmap.CompressFormat, String) -> File
 ) {
@@ -25,7 +23,6 @@ fun AwesomeSunsetWallpapersNavHost(
         startDestination = Home
     ) {
         homeScreen(
-            sharedViewModel = sharedViewModel,
             onImageClick = { id -> navController.navigate(WallpaperDetail(wallpaperId = id))}
         )
         wallpaperDetailScreen(
