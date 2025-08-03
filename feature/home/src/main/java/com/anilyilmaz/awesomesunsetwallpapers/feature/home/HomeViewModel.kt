@@ -18,8 +18,8 @@ class HomeViewModel(
     private val _uiState = MutableStateFlow(
         HomeUiState(
             loadState = LoadState(
-                refresh = State.Loading,
-                append = State.NotLoading
+                refresh = LoadStatus.Loading,
+                append = LoadStatus.NotLoading
             )
         )
     )
@@ -34,8 +34,8 @@ class HomeViewModel(
             it.copy(
                 photoExpanded = null,
                 loadState = LoadState(
-                    refresh = State.Loading,
-                    append = State.NotLoading
+                    refresh = LoadStatus.Loading,
+                    append = LoadStatus.NotLoading
                 )
             )
         }
@@ -45,8 +45,8 @@ class HomeViewModel(
                 it.copy(
                     photoExpanded = photoExpanded,
                     loadState = LoadState(
-                        refresh = State.NotLoading,
-                        append = State.NotLoading
+                        refresh = LoadStatus.NotLoading,
+                        append = LoadStatus.NotLoading
                     )
                 )
             }
@@ -55,8 +55,8 @@ class HomeViewModel(
                 it.copy(
                     photoExpanded = null,
                     loadState = LoadState(
-                        refresh = State.Error,
-                        append = State.NotLoading
+                        refresh = LoadStatus.Error,
+                        append = LoadStatus.NotLoading
                     )
                 )
             }
@@ -65,11 +65,11 @@ class HomeViewModel(
 
     fun loadMorePhotos() = viewModelScope.launch {
         uiState.value.photoExpanded?.run {
-            if (uiState.value.loadState.refresh == State.NotLoading) {
+            if (uiState.value.loadState.refresh == LoadStatus.NotLoading) {
                 _uiState.update {
                     it.copy(
                         loadState = it.loadState.copy(
-                            append = State.Loading
+                            append = LoadStatus.Loading
                         )
                     )
                 }
@@ -96,7 +96,7 @@ class HomeViewModel(
                             uiState.copy(
                                 photoExpanded = updatedPhotoExpanded,
                                 loadState = uiState.loadState.copy(
-                                    append = State.NotLoading
+                                    append = LoadStatus.NotLoading
                                 )
                             )
                         }
@@ -104,7 +104,7 @@ class HomeViewModel(
                         _uiState.update {
                             it.copy(
                                 loadState = it.loadState.copy(
-                                    append = State.Error
+                                    append = LoadStatus.Error
                                 )
                             )
                         }
@@ -113,7 +113,7 @@ class HomeViewModel(
                     _uiState.update {
                         it.copy(
                             loadState = it.loadState.copy(
-                                append = State.Error
+                                append = LoadStatus.Error
                             )
                         )
                     }
@@ -121,20 +121,4 @@ class HomeViewModel(
             }
         }
     }
-}
-
-data class HomeUiState(
-    val loadState: LoadState,
-    val photoExpanded: PhotoExpanded? = null,
-)
-
-data class LoadState(
-    val refresh: State,
-    val append: State,
-)
-
-sealed interface State {
-    data object Loading : State
-    data object NotLoading : State
-    data object Error : State
 }

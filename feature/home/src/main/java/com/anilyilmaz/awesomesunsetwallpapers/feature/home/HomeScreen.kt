@@ -124,13 +124,13 @@ private fun PagingList(
 
     Crossfade(uiState.loadState.refresh) { refreshState ->
         when(refreshState) {
-            is State.Loading -> {
+            is LoadStatus.Loading -> {
                 CircularProgressIndicator(modifier = Modifier
                     .fillMaxSize()
                     .wrapContentSize(Alignment.Center)
                 )
             }
-            is State.NotLoading -> {
+            is LoadStatus.NotLoading -> {
                 uiState.photoExpanded?.run {
                     LazyVerticalGrid(
                         columns = GridCells.Adaptive(minSize = 128.dp),
@@ -152,7 +152,7 @@ private fun PagingList(
                         }
 
                         item(span = { GridItemSpan(maxLineSpan) }) {
-                            if(uiState.loadState.append == State.Loading) {
+                            if(uiState.loadState.append == LoadStatus.Loading) {
                                 CircularProgressIndicator(modifier = Modifier
                                     .fillMaxWidth(0.5f)
                                     .wrapContentSize(Alignment.BottomCenter)
@@ -163,7 +163,7 @@ private fun PagingList(
                     }
                 }
             }
-            is State.Error -> {
+            is LoadStatus.Error -> {
                 ErrorLayout(refreshList = refreshList)
             }
         }
@@ -244,8 +244,8 @@ fun HomeScreenPreview(
             uiState = HomeUiState(
                 photoExpanded = photoExpanded,
                 loadState = LoadState(
-                    refresh = State.NotLoading,
-                    append = State.NotLoading
+                    refresh = LoadStatus.NotLoading,
+                    append = LoadStatus.NotLoading
                 )
             ),
             refreshList = {},
