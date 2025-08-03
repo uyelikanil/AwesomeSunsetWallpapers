@@ -22,8 +22,11 @@ object MockNetworkModule {
             addHandler { request ->
                 when {
                     request.url.encodedPath.startsWith("/v1/photos/") -> {
-                        val pathId = request.url.encodedPath.trimStart('/').split('/').getOrNull(2)
-                        val id = pathId?.toString()?.toLongOrNull()
+                        val pathId = request.url.encodedPath
+                            .trimStart('/')
+                            .split('/')
+                            .getOrNull(2)
+                        val id = pathId?.toLongOrNull()
                         id?.let {
                             val content = Json.encodeToString(pexelsPhotoTestData(it))
                             respond(
@@ -34,14 +37,23 @@ object MockNetworkModule {
                             respondError(HttpStatusCode.BadRequest)
                         }
                     }
+
                     request.url.encodedPath.startsWith("/v1/search") -> {
+                        val page = request.url.parameters["page"]?.toIntOrNull() ?: 1
+                        val perPage = request.url.parameters["per_page"]?.toIntOrNull() ?: 30
                         respond(
-                            content = ByteReadChannel(Json.encodeToString(
-                                pexelsPhotoExpandedTestData()
-                            )),
+                            content = ByteReadChannel(
+                                Json.encodeToString(
+                                    pexelsPhotoExpandedTestData(
+                                        page = page,
+                                        perPage = perPage
+                                    )
+                                )
+                            ),
                             headers = headersOf(HttpHeaders.ContentType, "application/json")
                         )
                     }
+
                     else -> respondError(HttpStatusCode.NotFound)
                 }
             }
