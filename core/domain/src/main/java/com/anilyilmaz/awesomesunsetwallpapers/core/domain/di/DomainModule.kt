@@ -11,7 +11,6 @@ val domainModule = module {
     factory<GetNetworkStateUseCase> { GetNetworkStateUseCase() }
     factory<GetPhotoUseCase> { GetPhotoUseCase(get()) }
     factory<GetSunsetPhotosUseCase> { GetSunsetPhotosUseCase(get()) }
-    factory<GetSunsetPhotosUseCase> { GetSunsetPhotosUseCase(get()) }
     factory<LoadMoreSunsetPhotosUseCase> { LoadMoreSunsetPhotosUseCase(get()) }
     factory<SetTempFileUseCase> { SetTempFileUseCase(get()) }
 }
