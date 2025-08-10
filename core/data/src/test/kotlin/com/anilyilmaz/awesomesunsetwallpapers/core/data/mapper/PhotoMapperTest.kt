@@ -1,10 +1,10 @@
-package com.anilyilmaz.awesomesunsetwallpapers.core.domain.mapper
+package com.anilyilmaz.awesomesunsetwallpapers.core.data.mapper
 
 import com.anilyilmaz.awesomesunsetwallpapers.core.testing.testdoubles.modelfactory.pexelsPhotoExpandedTestData
 import com.anilyilmaz.awesomesunsetwallpapers.core.testing.testdoubles.modelfactory.pexelsPhotoTestData
 import com.anilyilmaz.awesomesunsetwallpapers.core.testing.testdoubles.modelfactory.photoExpandedTestData
 import com.anilyilmaz.awesomesunsetwallpapers.core.testing.testdoubles.modelfactory.photoTestData
-import org.junit.Assert.assertEquals
+import org.junit.Assert
 import org.junit.Test
 
 class PhotoMapperTest {
@@ -18,7 +18,7 @@ class PhotoMapperTest {
         val result = pexelsPhoto.toPhoto()
 
         // Then
-        assertEquals(expectedPhoto, result)
+        Assert.assertEquals(expectedPhoto, result)
     }
 
     @Test
@@ -31,6 +31,6 @@ class PhotoMapperTest {
         val result = pexelsPhotoExpanded.toPhotoExpanded()
 
         // Then
-        assertEquals(expectedPhotoExpanded, result)
+        Assert.assertEquals(expectedPhotoExpanded, result)
     }
 }

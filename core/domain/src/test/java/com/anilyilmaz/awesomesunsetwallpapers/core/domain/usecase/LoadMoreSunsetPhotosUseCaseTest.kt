@@ -1,49 +1,34 @@
 package com.anilyilmaz.awesomesunsetwallpapers.core.domain.usecase
 
-import com.anilyilmaz.awesomesunsetwallpapers.core.data.repository.PhotoRepositoryImpl
-import com.anilyilmaz.awesomesunsetwallpapers.core.testing.testdoubles.modelfactory.photoExpandedTestData
-import com.anilyilmaz.awesomesunsetwallpapers.core.testing.testdoubles.network.FakePexelsDataSource
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import com.anilyilmaz.awesomesunsetwallpapers.core.domain.testdoubles.FakePhotoRepository
+import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert.*
-import org.junit.Before
 import org.junit.Test
 
 class LoadMoreSunsetPhotosUseCaseTest {
-    private lateinit var usecase: LoadMoreSunsetPhotosUseCase
-    private val pexelsDataSource = FakePexelsDataSource()
-
-    @OptIn(ExperimentalCoroutinesApi::class)
-    private val dispatcher = UnconfinedTestDispatcher()
-    private val photoRepository = PhotoRepositoryImpl(pexelsDataSource, dispatcher)
-
-    @Before
-    fun setUp() {
-        usecase = LoadMoreSunsetPhotosUseCase(photoRepository)
-    }
+    private val fakePhotoRepository = FakePhotoRepository()
+    private val getSunsetPhotosUseCase = GetSunsetPhotosUseCase(fakePhotoRepository)
+    private val loadMoreSunsetPhotosUseCase = LoadMoreSunsetPhotosUseCase(getSunsetPhotosUseCase)
 
     @Test
-    fun `given currentPage, perPage and totalResults, when LoadMoreSunsetPhotos is called, then should get next page as PhotoExpanded`() =
+    fun `given page, perPage and totalResults, when LoadMoreSunsetPhotosUseCase is invoked then loads next page`() =
         runTest {
             // Given
-            val currentPage = 1
+            val page = 1
             val perPage = 30
             val totalResults = 8000
-            val expectedPhotoExpanded = photoExpandedTestData(
-                page = currentPage + 1,
-                perPage = perPage,
-                totalResults = totalResults
-            )
 
             // When
-            val result = usecase(
-                page = currentPage,
+            loadMoreSunsetPhotosUseCase(
+                page = page,
                 perPage = perPage,
                 totalResults = totalResults
             )
 
             // Then
-            assertEquals(expectedPhotoExpanded, result)
+            val last = requireNotNull(fakePhotoRepository.lastCallOrNull)
+            assertEquals(listOf("sunset"), last.query)
+            assertEquals(2, last.page)
+            assertEquals(30, last.perPage)
         }
 }

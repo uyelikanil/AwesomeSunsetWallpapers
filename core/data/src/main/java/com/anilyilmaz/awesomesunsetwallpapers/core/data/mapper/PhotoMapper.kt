@@ -1,4 +1,4 @@
-package com.anilyilmaz.awesomesunsetwallpapers.core.domain.mapper
+package com.anilyilmaz.awesomesunsetwallpapers.core.data.mapper
 
 import com.anilyilmaz.awesomesunsetwallpapers.core.model.Photo
 import com.anilyilmaz.awesomesunsetwallpapers.core.network.model.PexelsPhoto

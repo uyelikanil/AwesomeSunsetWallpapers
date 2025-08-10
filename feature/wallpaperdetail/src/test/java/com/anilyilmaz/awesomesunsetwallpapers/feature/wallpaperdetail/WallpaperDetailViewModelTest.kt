@@ -2,7 +2,6 @@ package com.anilyilmaz.awesomesunsetwallpapers.feature.wallpaperdetail
 
 import androidx.lifecycle.SavedStateHandle
 import com.anilyilmaz.awesomesunsetwallpapers.core.data.repository.PhotoRepositoryImpl
-import com.anilyilmaz.awesomesunsetwallpapers.core.domain.usecase.GetPhotoUseCase
 import com.anilyilmaz.awesomesunsetwallpapers.core.testing.testdoubles.network.FakePexelsDataSource
 import com.anilyilmaz.awesomesunsetwallpapers.core.testing.util.MainDispatcherRule
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -25,14 +24,12 @@ class WallpaperDetailViewModelTest {
     private val dispatcher = StandardTestDispatcher(mainDispatcherRule.testDispatcher.scheduler)
     private val dataSource = FakePexelsDataSource(dispatcher)
     private val photoRepository = PhotoRepositoryImpl(dataSource, dispatcher)
-    private val getPhotoUseCase = GetPhotoUseCase(photoRepository)
-
     private val wallpaperId = 0
 
     @Before
     fun setUp() {
         val savedState = SavedStateHandle(mapOf("wallpaperId" to wallpaperId))
-        viewModel = WallpaperDetailViewModel(savedState, getPhotoUseCase)
+        viewModel = WallpaperDetailViewModel(savedState, photoRepository)
     }
 
     @Test
