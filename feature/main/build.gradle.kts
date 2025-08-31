@@ -13,5 +13,5 @@ dependencies {
     testImplementation(project(":core:testing"))
 
     implementation(libs.androidx.lifecycle.viewmodel)
-    implementation(libs.kotlinx.coroutines.android)
+    implementation(libs.kotlinx.coroutines.core)
 }
