@@ -20,7 +20,7 @@ dependencies {
     compileOnly(libs.android.gradlePlugin)
     compileOnly(libs.kotlin.gradlePlugin)
     compileOnly(libs.ksp.gradlePlugin)
-    compileOnly(libs.compose.gradlePlugin)
+    compileOnly(libs.compose.compiler.gradlePlugin)
 }
 
 tasks {
@@ -56,13 +56,17 @@ gradlePlugin {
             id = "awesomesunsetwallpapers.jvm.library"
             implementationClass = "JvmLibraryConventionPlugin"
         }
-        register("androidKoin") {
-            id = "awesomesunsetwallpapers.android.koin"
-            implementationClass = "AndroidKoinConventionPlugin"
-        }
         register("androidFeatureKoin") {
             id = "awesomesunsetwallpapers.android.feature.koin"
             implementationClass = "AndroidFeatureKoinConventionPlugin"
+        }
+        register("multipaltformKoin") {
+            id = "awesomesunsetwallpapers.multiplatform.koin"
+            implementationClass = "MultiplatformKoinConventionPlugin"
+        }
+        register("multipaltformCoreLibrary") {
+            id = "awesomesunsetwallpapers.multiplatform.core.library"
+            implementationClass = "MultiplatformCoreLibraryConventionPlugin"
         }
     }
 }

@@ -1,9 +1,28 @@
 import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
 
 plugins {
-    id("awesomesunsetwallpapers.android.library")
-    id("awesomesunsetwallpapers.android.koin")
+    id("awesomesunsetwallpapers.multiplatform.core.library")
+    id("awesomesunsetwallpapers.multiplatform.koin")
     alias(libs.plugins.kotlin.serialization)
+}
+
+kotlin {
+    sourceSets {
+        commonMain.dependencies {
+            implementation(libs.kotlinx.coroutines.core)
+            implementation(libs.kotlinx.serialization.json)
+            implementation(libs.ktor.client.core)
+            implementation(libs.ktor.client.content.negotiation)
+            implementation(libs.ktor.serialization.kotlinx.json)
+            implementation(libs.ktor.client.logging)
+        }
+        androidMain.dependencies {
+            implementation(libs.ktor.client.okhttp)
+        }
+        iosMain.dependencies {
+            implementation(libs.ktor.client.darwin)
+        }
+    }
 }
 
 android {
@@ -24,14 +43,4 @@ android {
     buildFeatures {
         buildConfig = true
     }
-}
-
-dependencies {
-    implementation(libs.kotlinx.coroutines.android)
-    implementation(libs.kotlinx.serialization.json)
-    implementation(libs.ktor)
-    implementation(libs.ktor.okhttp)
-    implementation(libs.ktor.content.negotiation)
-    implementation(libs.ktor.kotlin.serialization)
-    implementation(libs.ktor.logging)
 }

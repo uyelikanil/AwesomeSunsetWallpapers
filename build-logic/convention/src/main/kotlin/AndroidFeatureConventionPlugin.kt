@@ -20,7 +20,7 @@ class AndroidFeatureConventionPlugin : Plugin<Project> {
                 "implementation"(project(":core:ui"))
 
                 "implementation"(libs.findLibrary("androidx.lifecycle.viewmodel").get())
-                "implementation"(libs.findLibrary("kotlinx.coroutines.android").get())
+                "implementation"(libs.findLibrary("kotlinx.coroutines.core").get())
                 "implementation"(libs.findLibrary("androidx.compose.foundation").get())
                 "implementation"(libs.findLibrary("androidx.compose.material3").get())
                 "implementation"(libs.findLibrary("androidx.navigation.compose").get())
