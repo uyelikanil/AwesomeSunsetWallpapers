@@ -1,5 +1,5 @@
 import com.android.build.api.dsl.ApplicationExtension
-import com.anilyilmaz.awesomesunsetwallpapers.configureCompose
+import com.anilyilmaz.awesomesunsetwallpapers.configureComposeForAndroid
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.apply
@@ -12,7 +12,7 @@ class AndroidApplicationComposeConventionPlugin : Plugin<Project> {
             apply(plugin = "org.jetbrains.kotlin.plugin.compose")
 
             val extension = extensions.getByType<ApplicationExtension>()
-            configureCompose(extension)
+            configureComposeForAndroid(extension)
         }
     }
 }

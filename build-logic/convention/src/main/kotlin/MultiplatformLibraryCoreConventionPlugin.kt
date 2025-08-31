@@ -6,7 +6,7 @@ import org.gradle.kotlin.dsl.apply
 import org.gradle.kotlin.dsl.configure
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 
-class MultiplatformCoreLibraryConventionPlugin : Plugin<Project> {
+class MultiplatformLibraryCoreConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) = with(target) {
         pluginManager.apply {
             apply(plugin = "com.android.library")

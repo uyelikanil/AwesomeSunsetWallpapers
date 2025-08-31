@@ -22,6 +22,7 @@ ktor = "3.2.3"
 koin = "4.1.0"
 junit4 = "4.13.2"
 testRunner = "1.7.0"
+composeMpp = "1.8.2"
 
 [libraries]
 # --- AndroidX / Android-only ---------------------------------
@@ -79,6 +80,7 @@ compose-compiler-gradlePlugin = { module = "org.jetbrains.kotlin:compose-compile
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
 android-library = { id = "com.android.library", version.ref = "androidGradlePlugin" }
 jetbrains-kotlin = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+jetbrains-compose = { id = "org.jetbrains.compose", version.ref = "composeMpp" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 devtools-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }

@@ -1,8 +1,8 @@
 import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
 
 plugins {
-    id("awesomesunsetwallpapers.multiplatform.core.library")
-    id("awesomesunsetwallpapers.multiplatform.koin")
+    id("awesomesunsetwallpapers.multiplatform.library.core")
+    id("awesomesunsetwallpapers.multiplatform.library.koin")
     alias(libs.plugins.kotlin.serialization)
 }
 

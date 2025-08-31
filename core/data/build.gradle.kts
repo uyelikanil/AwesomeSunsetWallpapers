@@ -1,6 +1,6 @@
 plugins {
-    id("awesomesunsetwallpapers.multiplatform.core.library")
-    id("awesomesunsetwallpapers.multiplatform.koin")
+    id("awesomesunsetwallpapers.multiplatform.library.core")
+    id("awesomesunsetwallpapers.multiplatform.library.koin")
 }
 
 kotlin {
