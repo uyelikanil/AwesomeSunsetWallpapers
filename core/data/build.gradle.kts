@@ -16,6 +16,7 @@ kotlin {
 
         commonTest.dependencies {
             implementation(project(":core:testing"))
+            implementation(kotlin("test"))
         }
     }
 }

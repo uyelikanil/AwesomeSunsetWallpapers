@@ -7,7 +7,6 @@ class AndroidFeatureKoinConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
             dependencies {
-                "implementation"(platform(libs.findLibrary("koin-bom").get()))
                 "implementation"(libs.findLibrary("koin-android").get())
                 "implementation"(libs.findLibrary("koin-compose").get())
             }

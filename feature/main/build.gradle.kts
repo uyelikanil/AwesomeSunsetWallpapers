@@ -11,6 +11,7 @@ dependencies {
     implementation(project(":core:domain"))
     implementation(project(":core:model"))
     testImplementation(project(":core:testing"))
+    androidTestImplementation(project(":core:testing"))
 
     implementation(libs.androidx.lifecycle.viewmodel)
     implementation(libs.kotlinx.coroutines.core)

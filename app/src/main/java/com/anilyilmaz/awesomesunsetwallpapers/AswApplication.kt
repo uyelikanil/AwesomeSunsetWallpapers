@@ -1,7 +1,7 @@
 package com.anilyilmaz.awesomesunsetwallpapers
 
 import android.app.Application
-import com.anilyilmaz.awesomesunsetwallpapers.core.common.di.appModule
+import com.anilyilmaz.awesomesunsetwallpapers.di.appModule
 import com.anilyilmaz.awesomesunsetwallpapers.core.common.di.dispatchersModule
 import com.anilyilmaz.awesomesunsetwallpapers.core.data.di.dataModule
 import com.anilyilmaz.awesomesunsetwallpapers.core.domain.di.domainModule

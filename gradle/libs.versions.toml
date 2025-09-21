@@ -1,7 +1,7 @@
 [versions]
 # — Kotlin tool-chain & Gradle —
 kotlin = "2.2.10"
-androidGradlePlugin = "8.12.1"
+androidGradlePlugin = "8.12.3"
 ksp = "2.1.10-1.0.31"
 
 # — Jetpack / Android —
@@ -19,7 +19,7 @@ nav = "2.9.3"
 coilCompose = "2.7.0"
 accompanist = "0.36.0"
 ktor = "3.2.3"
-koin = "4.1.0"
+koin = "4.1.1"
 junit4 = "4.13.2"
 testRunner = "1.7.0"
 composeMpp = "1.8.2"
@@ -65,10 +65,10 @@ ktor-client-logging = { group = "io.ktor", name = "ktor-client-logging", version
 ktor-client-mock = { group = "io.ktor", name = "ktor-client-mock", version.ref = "ktor" }
 
 # --- Koin ----------------------------------------------------
-koin-bom = { group = "io.insert-koin", name = "koin-bom", version.ref = "koin" }
-koin-core = { group = "io.insert-koin", name = "koin-core" }
-koin-android = { group = "io.insert-koin", name = "koin-android" }
-koin-compose = { group = "io.insert-koin", name = "koin-androidx-compose" }
+koin-core = { group = "io.insert-koin", name = "koin-core", version.ref = "koin" }
+koin-android = { group = "io.insert-koin", name = "koin-android", version.ref = "koin" }
+koin-compose = { group = "io.insert-koin", name = "koin-androidx-compose", version.ref = "koin" }
+koin-compose-viewModel = { group = "io.insert-koin", name = "koin-compose-viewmodel", version.ref = "koin" }
 
 # --- Gradle plugins (for build-logic include) ---------------
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }

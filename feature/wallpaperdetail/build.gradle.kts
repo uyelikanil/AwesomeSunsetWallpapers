@@ -11,6 +11,5 @@ android {
 dependencies {
     testImplementation(project(":core:data"))
     testImplementation(project(":core:testing"))
-
     implementation(libs.androidx.activity.compose)
 }

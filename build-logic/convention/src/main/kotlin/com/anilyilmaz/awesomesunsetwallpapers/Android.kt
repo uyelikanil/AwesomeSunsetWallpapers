@@ -18,8 +18,8 @@ internal fun Project.configureAndroid(
         defaultConfig { minSdk = 23 }
 
         compileOptions {
-            sourceCompatibility = JavaVersion.VERSION_19
-            targetCompatibility = JavaVersion.VERSION_19
+            sourceCompatibility = JavaVersion.VERSION_21
+            targetCompatibility = JavaVersion.VERSION_21
         }
     }
 
@@ -28,35 +28,43 @@ internal fun Project.configureAndroid(
 }
 
 private fun Project.configureKotlinSafely() {
-    val warningsAsErrors = providers
-        .gradleProperty("warningsAsErrors")
-        .map(String::toBoolean)
-        .orElse(false)
+    // Allow overrides via gradle.properties if you ever need them
+    val toolchainVersion = (project.findProperty("kotlin.jvmToolchain") as? String)?.toInt() ?: 21
+    val defaultJvmTarget = (project.findProperty("kotlin.jvmTarget") as? String)
+        ?.let { JvmTarget.fromTarget(it) } ?: JvmTarget.JVM_21
 
-    extensions.findByType(KotlinAndroidProjectExtension::class.java)?.let { ext ->
-        ext.compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_19)
-            allWarningsAsErrors.set(warningsAsErrors)
+    // Android Kotlin projects
+    project.plugins.withId("org.jetbrains.kotlin.android") {
+        project.extensions.configure(KotlinAndroidProjectExtension::class.java) {
+            jvmToolchain(toolchainVersion)
+            compilerOptions {
+                jvmTarget.set(defaultJvmTarget)
+            }
         }
     }
 
-    extensions.findByType(KotlinJvmProjectExtension::class.java)?.let { ext ->
-        ext.compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_19)
-            allWarningsAsErrors.set(warningsAsErrors)
+    // Plain JVM Kotlin projects (if you have any)
+    project.plugins.withId("org.jetbrains.kotlin.jvm") {
+        project.extensions.configure(KotlinJvmProjectExtension::class.java) {
+            jvmToolchain(toolchainVersion)
+            compilerOptions {
+                jvmTarget.set(defaultJvmTarget)
+            }
         }
     }
 
-    extensions.findByType(KotlinMultiplatformExtension::class.java)?.let { kmp ->
-        kmp.compilerOptions {
-            allWarningsAsErrors.set(warningsAsErrors)
-        }
+    // Multiplatform projects
+    project.plugins.withId("org.jetbrains.kotlin.multiplatform") {
+        project.extensions.configure(KotlinMultiplatformExtension::class.java) {
+            jvmToolchain(toolchainVersion)
 
-        kmp.targets.withType(KotlinAndroidTarget::class.java).configureEach {
-            compilerOptions { jvmTarget.set(JvmTarget.JVM_19) }
-        }
-        kmp.targets.withType(KotlinJvmTarget::class.java).configureEach {
-            compilerOptions { jvmTarget.set(JvmTarget.JVM_19) }
+            // Set jvmTarget on relevant targets (androidTarget(), jvm())
+            targets.withType(KotlinAndroidTarget::class.java).configureEach {
+                compilerOptions { jvmTarget.set(defaultJvmTarget) }
+            }
+            targets.withType(KotlinJvmTarget::class.java).configureEach {
+                compilerOptions { jvmTarget.set(defaultJvmTarget) }
+            }
         }
     }
 }
