@@ -26,7 +26,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.content.FileProvider
@@ -39,7 +38,14 @@ import com.anilyilmaz.awesomesunsetwallpapers.core.designsystem.component.WhiteT
 import com.anilyilmaz.awesomesunsetwallpapers.core.designsystem.extension.shimmerEffect
 import com.anilyilmaz.awesomesunsetwallpapers.core.designsystem.theme.AppTheme
 import com.anilyilmaz.awesomesunsetwallpapers.core.designsystem.theme.md_theme_dark_primary
+import com.anilyilmaz.awesomesunsetwallpapers.core.resource.Res
+import com.anilyilmaz.awesomesunsetwallpapers.core.resource.error_occurred_while_setting_wallpaper
+import com.anilyilmaz.awesomesunsetwallpapers.core.resource.retry
+import com.anilyilmaz.awesomesunsetwallpapers.core.resource.set_as_a_wallpaper
+import com.anilyilmaz.awesomesunsetwallpapers.core.resource.something_went_wrong
 import kotlinx.coroutines.launch
+import org.jetbrains.compose.resources.getString
+import org.jetbrains.compose.resources.stringResource
 import org.koin.androidx.compose.koinViewModel
 import java.io.File
 
@@ -118,7 +124,7 @@ internal fun WallpaperDetailScreen(
                 )
 
                 WhiteTextOutlinedButton(
-                    text = stringResource(id = R.string.set_as_a_wallpaper),
+                    text = stringResource(Res.string.set_as_a_wallpaper),
                     modifier = Modifier
                         .fillMaxSize()
                         .wrapContentSize(Alignment.BottomCenter)
@@ -170,12 +176,12 @@ private fun ErrorLayout(
             .fillMaxSize()
             .wrapContentSize(Alignment.Center)) {
         Text(
-            text = stringResource(id = R.string.something_went_wrong),
+            text = stringResource(Res.string.something_went_wrong),
             modifier = Modifier.padding(bottom = 10.dp),
             color = White
         )
         Text(
-            text = stringResource(id = R.string.retry),
+            text = stringResource(Res.string.retry),
             modifier = Modifier.clickable {
                 getWallpaper()
             },
@@ -199,7 +205,7 @@ private suspend fun setWallpaper(
             context.startActivity(cropAndSetWallpaperIntent)
         } catch (e: Exception) {
             Toast.makeText(context,
-                context.getText(R.string.error_occurred_while_setting_wallpaper),
+                getString(Res.string.error_occurred_while_setting_wallpaper),
                 Toast.LENGTH_SHORT).show()
 
             e.printStackTrace()

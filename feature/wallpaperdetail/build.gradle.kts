@@ -9,7 +9,9 @@ android {
 }
 
 dependencies {
+    implementation(project(":core:resource"))
     testImplementation(project(":core:data"))
     testImplementation(project(":core:testing"))
     implementation(libs.androidx.activity.compose)
+    implementation(compose.components.resources)
 }

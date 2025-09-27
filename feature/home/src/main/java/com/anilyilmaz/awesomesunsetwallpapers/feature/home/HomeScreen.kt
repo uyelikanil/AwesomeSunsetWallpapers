@@ -33,7 +33,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
@@ -47,8 +46,13 @@ import com.anilyilmaz.awesomesunsetwallpapers.core.designsystem.extension.shimme
 import com.anilyilmaz.awesomesunsetwallpapers.core.designsystem.theme.AppTheme
 import com.anilyilmaz.awesomesunsetwallpapers.core.model.Photo
 import com.anilyilmaz.awesomesunsetwallpapers.core.model.PhotoExpanded
+import com.anilyilmaz.awesomesunsetwallpapers.core.resource.Res
+import com.anilyilmaz.awesomesunsetwallpapers.core.resource.app_name
+import com.anilyilmaz.awesomesunsetwallpapers.core.resource.retry
+import com.anilyilmaz.awesomesunsetwallpapers.core.resource.something_went_wrong
 import com.anilyilmaz.awesomesunsetwallpapers.core.ui.HomeScreenPreviewParameterProvider
 import kotlinx.coroutines.flow.distinctUntilChanged
+import org.jetbrains.compose.resources.stringResource
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -85,7 +89,7 @@ internal fun HomeScreen(
                     scrolledContainerColor = MaterialTheme.colorScheme.surface),
                 title = {
                     Text(
-                        text = stringResource(id = R.string.app_name),
+                        text = stringResource(Res.string.app_name),
                         textAlign = TextAlign.Center
                     )
                 }
@@ -213,11 +217,11 @@ private fun ErrorLayout(
             .wrapContentSize(Alignment.Center)
     ) {
         Text(
-            text = stringResource(id = R.string.something_went_wrong),
+            text = stringResource(Res.string.something_went_wrong),
             modifier = Modifier.padding(bottom = 10.dp),
         )
         Text(
-            text = stringResource(id = R.string.retry),
+            text = stringResource(Res.string.retry),
             color = MaterialTheme.colorScheme.primary,
             modifier = Modifier.clickable {
                 refreshList()
