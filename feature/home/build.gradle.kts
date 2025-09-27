@@ -7,3 +7,8 @@ plugins {
 android {
     namespace = "com.anilyilmaz.awesomesunsetwallpapers.feature.home"
 }
+
+dependencies {
+    implementation(project(":core:resource"))
+    implementation(compose.components.resources)
+}
