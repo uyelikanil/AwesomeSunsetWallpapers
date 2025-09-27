@@ -12,7 +12,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -40,13 +39,5 @@ fun TransparentCenterAlignedTopAppBar(
         },
         colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent),
         modifier = modifier
-    )
-}
-
-@Preview
-@Composable
-fun TransparentCenterAlignedTopAppBarPreview() {
-    TransparentCenterAlignedTopAppBar(
-        title = "Title"
     )
 }
