@@ -2,32 +2,34 @@ package com.anilyilmaz.awesomesunsetwallpapers.feature.main
 
 import com.anilyilmaz.awesomesunsetwallpapers.core.domain.usecase.GetNetworkStateUseCase
 import com.anilyilmaz.awesomesunsetwallpapers.core.model.NetworkState
-import com.anilyilmaz.awesomesunsetwallpapers.core.testing.util.MainDispatcherRule
+import com.anilyilmaz.awesomesunsetwallpapers.core.testing.testdoubles.util.MainDispatcherBase
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert.assertEquals
-import org.junit.Before
-import org.junit.Rule
-import org.junit.Test
+import kotlin.test.AfterTest
+import kotlin.test.BeforeTest
+import kotlin.test.Test
+import kotlin.test.assertEquals
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class SharedViewModelTest {
-
-    @get:Rule
-    val mainDispatcherRule = MainDispatcherRule()
-
+class SharedViewModelTest: MainDispatcherBase() {
     private lateinit var viewModel: SharedViewModel
     private val getNetworkStateUseCase = GetNetworkStateUseCase()
 
-    @Before
+    @BeforeTest
+    fun before() { installMain() }
+
+    @BeforeTest
     fun setUp() {
         viewModel = SharedViewModel(getNetworkStateUseCase)
     }
 
+    @AfterTest
+    fun after()  { resetMain() }
+
     @Test
-    fun `given NetworkState is AVAILABLE as a first value, when updateNetworkState is called, then networkState should emit NetworkState as Available` () = runTest {
+    fun `given NetworkState is AVAILABLE as a first value, when updateNetworkState is called, then networkState should emit NetworkState as Available` () = scope.runTest {
         // Given
         val networkStateAvailable = NetworkState.AVAILABLE
         var networkState: NetworkState? = null
@@ -46,7 +48,7 @@ class SharedViewModelTest {
     }
 
     @Test
-    fun `given NetworkState is LOST as a first value and after that given NetworkState is AVAILABLE, when updateNetworkState is called, then networkState should emit NetworkState as Connected` () = runTest {
+    fun `given NetworkState is LOST as a first value and after that given NetworkState is AVAILABLE, when updateNetworkState is called, then networkState should emit NetworkState as Connected` () = scope.runTest {
         // Given
         val networkStateLost = NetworkState.LOST
         val networkStateAvailable = NetworkState.AVAILABLE
@@ -69,7 +71,7 @@ class SharedViewModelTest {
     }
 
     @Test
-    fun `given isNetworkAvailable is true, when updateNetworkState is called, then networkState should emit NetworkState as Available` () = runTest {
+    fun `given isNetworkAvailable is true, when updateNetworkState is called, then networkState should emit NetworkState as Available` () = scope.runTest {
         // Given
         val isNetworkAvailable = true
         val networkStateAvailable = NetworkState.AVAILABLE
