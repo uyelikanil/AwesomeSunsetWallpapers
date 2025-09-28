@@ -12,13 +12,13 @@ kotlin {
             implementation(libs.ktor.client.core)
             implementation(libs.ktor.client.content.negotiation)
             implementation(libs.ktor.serialization.kotlinx.json)
-            api(libs.ktor.client.mock)
-            api(libs.androidx.test.runner)
-            api(libs.kotlinx.coroutines.test)
-            api(libs.junit4)
+            implementation(libs.ktor.client.mock)
+            implementation(libs.kotlinx.coroutines.test)
         }
         androidMain.dependencies {
             implementation(libs.ktor.client.okhttp)
+            implementation(libs.androidx.test.runner)
+            implementation(libs.junit4)
         }
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin)
