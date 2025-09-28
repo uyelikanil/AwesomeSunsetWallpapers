@@ -14,4 +14,7 @@ dependencies {
     testImplementation(project(":core:testing"))
     implementation(libs.androidx.activity.compose)
     implementation(compose.components.resources)
+    testImplementation(libs.androidx.test.runner)
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.junit4)
 }
