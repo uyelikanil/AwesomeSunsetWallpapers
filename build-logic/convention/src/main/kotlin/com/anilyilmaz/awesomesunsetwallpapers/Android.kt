@@ -23,17 +23,14 @@ internal fun Project.configureAndroid(
         }
     }
 
-    // ---- Kotlin bits (safe across KMP/Android/JVM)
     configureKotlinSafely()
 }
 
 private fun Project.configureKotlinSafely() {
-    // Allow overrides via gradle.properties if you ever need them
     val toolchainVersion = (project.findProperty("kotlin.jvmToolchain") as? String)?.toInt() ?: 21
     val defaultJvmTarget = (project.findProperty("kotlin.jvmTarget") as? String)
         ?.let { JvmTarget.fromTarget(it) } ?: JvmTarget.JVM_21
 
-    // Android Kotlin projects
     project.plugins.withId("org.jetbrains.kotlin.android") {
         project.extensions.configure(KotlinAndroidProjectExtension::class.java) {
             jvmToolchain(toolchainVersion)
@@ -43,7 +40,6 @@ private fun Project.configureKotlinSafely() {
         }
     }
 
-    // Plain JVM Kotlin projects (if you have any)
     project.plugins.withId("org.jetbrains.kotlin.jvm") {
         project.extensions.configure(KotlinJvmProjectExtension::class.java) {
             jvmToolchain(toolchainVersion)
@@ -53,7 +49,6 @@ private fun Project.configureKotlinSafely() {
         }
     }
 
-    // Multiplatform projects
     project.plugins.withId("org.jetbrains.kotlin.multiplatform") {
         project.extensions.configure(KotlinMultiplatformExtension::class.java) {
             jvmToolchain(toolchainVersion)

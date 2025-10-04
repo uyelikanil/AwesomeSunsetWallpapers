@@ -31,8 +31,10 @@ import androidx.compose.ui.unit.dp
 import androidx.core.content.FileProvider
 import androidx.core.graphics.drawable.toBitmap
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import coil.compose.AsyncImage
-import coil.request.ImageRequest
+import coil3.asDrawable
+import coil3.compose.AsyncImage
+import coil3.request.ImageRequest
+import coil3.request.crossfade
 import com.anilyilmaz.awesomesunsetwallpapers.core.designsystem.component.TransparentCenterAlignedTopAppBar
 import com.anilyilmaz.awesomesunsetwallpapers.core.designsystem.component.WhiteTextOutlinedButton
 import com.anilyilmaz.awesomesunsetwallpapers.core.designsystem.extension.shimmerEffect
@@ -100,14 +102,15 @@ internal fun WallpaperDetailScreen(
         }
         is WallpaperDetailUiState.Success ->  {
             AsyncImage(
-                model = ImageRequest.Builder(context = context)
+                model = ImageRequest.Builder(context)
                     .data(uiState.wallpaperSrc)
                     .crossfade(true)
                     .build(),
                 contentScale = ContentScale.Crop,
                 contentDescription = null,
                 onSuccess = { success ->
-                    imageDrawable = success.result.drawable
+                    val image = success.result.image
+                    imageDrawable = image.asDrawable(context.resources)
                 },
                 modifier = Modifier
                     .fillMaxSize()

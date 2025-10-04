@@ -1,37 +1,52 @@
 [versions]
-# — Kotlin tool-chain & Gradle —
-kotlin = "2.2.10"
-androidGradlePlugin = "8.12.3"
+# Kotlin & Tooling
+kotlin = "2.2.20"
+androidGradlePlugin = "8.13.0"
 ksp = "2.1.10-1.0.31"
 
-# — Jetpack / Android —
-activity = "1.10.1"
+# AndroidX Core & Lifecycle (Android)
+activity = "1.11.0"
 ktx = "1.17.0"
-lifecycleRuntimeKtx = "2.9.2"
-lifecycleViewmodelKtx = "2.9.2"
-androidxComposeBom = "2025.08.00"
+lifecycleRuntimeKtx = "2.9.4"
+lifecycleViewmodelKtx = "2.9.4"
 
-# — Core libs —
+# Compose (AndroidX BOM)
+androidxComposeBom = "2025.09.01"
+
+# Compose Multiplatform (JetBrains) & Icons
+composeMpp = "1.8.2"
+composeIcons = "1.7.3"
+
+# Coroutines & Serialization
 kotlinxCoroutines = "1.10.2"
 kotlinxSerializationJson = "1.9.0"
-paging = "3.3.6"
-nav = "2.9.3"
-coilCompose = "2.7.0"
+
+# Navigation & UI Utils
+nav = "2.9.0"
 accompanist = "0.36.0"
-ktor = "3.2.3"
+
+# Imaging
+coilCompose = "3.3.0"
+
+# Networking
+ktor = "3.3.0"
+
+# Dependency Injection
 koin = "4.1.1"
+
+# Testing
 junit4 = "4.13.2"
 testRunner = "1.7.0"
-composeMpp = "1.8.2"
+
 
 [libraries]
-# --- AndroidX / Android-only ---------------------------------
+# Android-only (AndroidX)
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activity" }
 androidx-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "ktx" }
-androidx-lifecycle-runtime = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
 androidx-lifecycle-viewmodel = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycleViewmodelKtx" }
 androidx-lifecycle-runtime-compose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "lifecycleRuntimeKtx" }
 
+# Compose (AndroidX BOM + Android artifacts)
 androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "androidxComposeBom" }
 androidx-compose-runtime = { group = "androidx.compose.runtime", name = "runtime" }
 androidx-compose-foundation = { group = "androidx.compose.foundation", name = "foundation" }
@@ -39,50 +54,67 @@ androidx-compose-material3 = { group = "androidx.compose.material3", name = "mat
 androidx-compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 androidx-compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
 
-coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coilCompose" }
+# UI Utils (Android)
 accompanist-systemuicontroller = { group = "com.google.accompanist", name = "accompanist-systemuicontroller", version.ref = "accompanist" }
 
-# --- Coroutines & Serialization -----------------------------
+# Multiplatform UI (JetBrains Compose)
+compose-runtime = { module = "org.jetbrains.compose.runtime:runtime", version.ref = "composeMpp" }
+compose-foundation = { module = "org.jetbrains.compose.foundation:foundation", version.ref = "composeMpp" }
+compose-material3 = { module = "org.jetbrains.compose.material3:material3", version.ref = "composeMpp" }
+compose-material-icons-extended = { module = "org.jetbrains.compose.material:material-icons-extended", version.ref = "composeIcons" }
+
+# Lifecycle (JetBrains AndroidX for KMP)
+jetbrains-androidx-lifecycle-viewmodel = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "lifecycleViewmodelKtx" }
+jetbrains-androidx-lifecycle-runtime-compose = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "lifecycleRuntimeKtx" }
+
+# Imaging (KMP)
+coil-compose = { group = "io.coil-kt.coil3", name = "coil-compose", version.ref = "coilCompose" }
+coil-ktor = { group = "io.coil-kt.coil3", name = "coil-network-ktor3", version.ref = "coilCompose" }
+
+# Concurrency & Serialization
 kotlinx-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "kotlinxCoroutines" }
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
 
-# --- Paging, Navigation, Testing ----------------------------
-androidx-paging-compose = { group = "androidx.paging", name = "paging-compose", version.ref = "paging" }
-androidx-paging-test = { group = "androidx.paging", name = "paging-testing", version.ref = "paging" }
-androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "nav" }
+# Navigation & Testing
+androidx-navigation-compose = { group = "org.jetbrains.androidx.navigation", name = "navigation-compose", version.ref = "nav" }
 androidx-test-runner = { group = "androidx.test", name = "runner", version.ref = "testRunner" }
 kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "kotlinxCoroutines" }
 junit4 = { group = "junit", name = "junit", version.ref = "junit4" }
 
-# --- Ktor (multiplatform) -----------------------------------
+# Networking (Ktor)
 ktor-client-core = { group = "io.ktor", name = "ktor-client-core", version.ref = "ktor" }
 ktor-client-okhttp = { group = "io.ktor", name = "ktor-client-okhttp", version.ref = "ktor" }
 ktor-client-darwin = { group = "io.ktor", name = "ktor-client-darwin", version.ref = "ktor" }
-ktor-client-cio = { group = "io.ktor", name = "ktor-client-cio", version.ref = "ktor" }
 ktor-client-content-negotiation = { group = "io.ktor", name = "ktor-client-content-negotiation", version.ref = "ktor" }
 ktor-serialization-kotlinx-json = { group = "io.ktor", name = "ktor-serialization-kotlinx-json", version.ref = "ktor" }
 ktor-client-logging = { group = "io.ktor", name = "ktor-client-logging", version.ref = "ktor" }
 ktor-client-mock = { group = "io.ktor", name = "ktor-client-mock", version.ref = "ktor" }
 
-# --- Koin ----------------------------------------------------
+# Dependency Injection (Koin)
 koin-core = { group = "io.insert-koin", name = "koin-core", version.ref = "koin" }
 koin-android = { group = "io.insert-koin", name = "koin-android", version.ref = "koin" }
 koin-compose = { group = "io.insert-koin", name = "koin-androidx-compose", version.ref = "koin" }
 koin-compose-viewModel = { group = "io.insert-koin", name = "koin-compose-viewmodel", version.ref = "koin" }
 
-# --- Gradle plugins (for build-logic include) ---------------
+# Gradle Plugins (for build-logic include)
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }
 kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
 ksp-gradlePlugin = { group = "com.google.devtools.ksp", name = "com.google.devtools.ksp.gradle.plugin", version.ref = "ksp" }
 compose-compiler-gradlePlugin = { module = "org.jetbrains.kotlin:compose-compiler-gradle-plugin", version.ref = "kotlin" }
 
+
 [plugins]
+# Android Gradle
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
 android-library = { id = "com.android.library", version.ref = "androidGradlePlugin" }
+
+# Kotlin Plugins
 jetbrains-kotlin = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
-jetbrains-compose = { id = "org.jetbrains.compose", version.ref = "composeMpp" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
-devtools-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 org-jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+
+# Compose & KSP Plugins
+jetbrains-compose = { id = "org.jetbrains.compose", version.ref = "composeMpp" }
 compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+devtools-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }

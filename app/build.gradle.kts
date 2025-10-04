@@ -38,7 +38,6 @@ dependencies {
     implementation(project(":feature:home"))
     implementation(project(":feature:wallpaperdetail"))
 
-
     implementation(libs.androidx.ktx)
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.lifecycle.runtime.compose)

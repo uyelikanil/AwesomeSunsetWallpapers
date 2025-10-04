@@ -26,6 +26,7 @@ class AndroidFeatureConventionPlugin : Plugin<Project> {
                 "implementation"(libs.findLibrary("androidx.navigation.compose").get())
                 "implementation"(libs.findLibrary("androidx.lifecycle.runtime.compose").get())
                 "implementation"(libs.findLibrary("coil.compose").get())
+                "implementation"(libs.findLibrary("coil.ktor").get())
                 "implementation"(libs.findLibrary("kotlinx.serialization.json").get())
             }
         }

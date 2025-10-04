@@ -53,6 +53,10 @@ gradlePlugin {
             id = "awesomesunsetwallpapers.android.feature"
             implementationClass = "AndroidFeatureConventionPlugin"
         }
+        register("multipaltformFeature") {
+            id = "awesomesunsetwallpapers.multiplatform.feature"
+            implementationClass = "MultiplatformFeatureConventionPlugin"
+        }
         register("jvmLibrary") {
             id = "awesomesunsetwallpapers.jvm.library"
             implementationClass = "JvmLibraryConventionPlugin"

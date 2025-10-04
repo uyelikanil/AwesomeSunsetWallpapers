@@ -13,7 +13,7 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
-rootProject.name = "Awesome Sunset Wallpapers"
+rootProject.name = "AwesomeSunsetWallpapers"
 include(":app")
 include(":core:model")
 include(":core:network")

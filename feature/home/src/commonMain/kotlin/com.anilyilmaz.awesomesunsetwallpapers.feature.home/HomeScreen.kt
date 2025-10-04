@@ -32,28 +32,22 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import coil.compose.AsyncImagePainter
-import coil.compose.SubcomposeAsyncImage
-import coil.compose.SubcomposeAsyncImageContent
-import coil.request.ImageRequest
+import coil3.compose.LocalPlatformContext
+import coil3.compose.SubcomposeAsyncImage
+import coil3.request.ImageRequest
+import coil3.request.crossfade
 import com.anilyilmaz.awesomesunsetwallpapers.core.designsystem.extension.shimmerEffect
-import com.anilyilmaz.awesomesunsetwallpapers.core.designsystem.theme.AppTheme
 import com.anilyilmaz.awesomesunsetwallpapers.core.model.Photo
-import com.anilyilmaz.awesomesunsetwallpapers.core.model.PhotoExpanded
 import com.anilyilmaz.awesomesunsetwallpapers.core.resource.Res
 import com.anilyilmaz.awesomesunsetwallpapers.core.resource.app_name
 import com.anilyilmaz.awesomesunsetwallpapers.core.resource.retry
 import com.anilyilmaz.awesomesunsetwallpapers.core.resource.something_went_wrong
-import com.anilyilmaz.awesomesunsetwallpapers.core.ui.HomeScreenPreviewParameterProvider
 import kotlinx.coroutines.flow.distinctUntilChanged
 import org.jetbrains.compose.resources.stringResource
-import org.koin.androidx.compose.koinViewModel
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun HomeRoute(
@@ -179,8 +173,10 @@ private fun ListItem(
     photo: Photo,
     onImageClick: (Long) -> Unit
 ) {
+    val platformContext = LocalPlatformContext.current
+
     SubcomposeAsyncImage(
-        model = ImageRequest.Builder(LocalContext.current)
+        model = ImageRequest.Builder(platformContext)
             .data(photo.src.portrait)
             .crossfade(true)
             .build(),
@@ -189,21 +185,16 @@ private fun ListItem(
         modifier = Modifier
             .fillMaxSize()
             .aspectRatio(0.75f)
-            .clip(shape = ShapeDefaults.Medium)
-            .clickable {
-                onImageClick(photo.id)
-            }
-    ) {
-        val state = painter.state
-        if (state is AsyncImagePainter.State.Loading) {
-            Spacer(modifier = Modifier
-                .fillMaxSize()
-                .shimmerEffect()
+            .clip(ShapeDefaults.Medium)
+            .clickable { onImageClick(photo.id) },
+        loading = {
+            Spacer(
+                Modifier
+                    .fillMaxSize()
+                    .shimmerEffect()
             )
-        } else {
-            SubcomposeAsyncImageContent()
         }
-    }
+    )
 }
 
 @Composable
@@ -226,35 +217,6 @@ private fun ErrorLayout(
             modifier = Modifier.clickable {
                 refreshList()
             }
-        )
-    }
-}
-
-@Preview
-@Composable
-fun HomeScreenPreview(
-    @PreviewParameter(HomeScreenPreviewParameterProvider::class)
-    photos: List<Photo>
-) {
-    val photoExpanded = PhotoExpanded(
-        totalResults = 8000,
-        page = 1,
-        perPage = 30,
-        photos = photos
-    )
-
-    AppTheme {
-        HomeScreen(
-            uiState = HomeUiState(
-                photoExpanded = photoExpanded,
-                loadState = LoadState(
-                    refresh = LoadStatus.NotLoading,
-                    append = LoadStatus.NotLoading
-                )
-            ),
-            refreshList = {},
-            loadMoreItems = {},
-            onImageClick = {}
         )
     }
 }
