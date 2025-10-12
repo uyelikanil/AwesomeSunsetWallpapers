@@ -4,6 +4,7 @@ import android.app.Application
 import com.anilyilmaz.awesomesunsetwallpapers.di.appModule
 import com.anilyilmaz.awesomesunsetwallpapers.core.common.di.dispatchersModule
 import com.anilyilmaz.awesomesunsetwallpapers.core.data.di.dataModule
+import com.anilyilmaz.awesomesunsetwallpapers.core.domain.di.domainAndroidMainModule
 import com.anilyilmaz.awesomesunsetwallpapers.core.domain.di.domainModule
 import com.anilyilmaz.awesomesunsetwallpapers.core.network.di.dataSourceModule
 import com.anilyilmaz.awesomesunsetwallpapers.feature.home.di.homeModule
@@ -23,7 +24,7 @@ class AswApplication : Application() {
             modules(
                 listOf(
                     appModule, dispatchersModule, dataSourceModule, dataModule, domainModule,
-                    mainModule, homeModule, wallpaperDetailModule
+                    domainAndroidMainModule, mainModule, homeModule, wallpaperDetailModule
                 )
             )
         }
