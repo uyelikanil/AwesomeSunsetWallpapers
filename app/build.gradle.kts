@@ -37,12 +37,9 @@ dependencies {
     implementation(project(":feature:main"))
     implementation(project(":feature:home"))
     implementation(project(":feature:wallpaperdetail"))
+    implementation(project(":composeApp"))
 
     implementation(libs.androidx.ktx)
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.lifecycle.runtime.compose)
-    implementation(libs.androidx.compose.runtime)
-    implementation(libs.androidx.compose.material3)
-    implementation(libs.androidx.navigation.compose)
-    implementation(libs.accompanist.systemuicontroller)
 }

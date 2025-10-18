@@ -1,7 +1,15 @@
 plugins {
-    id("awesomesunsetwallpapers.android.feature")
+    id("awesomesunsetwallpapers.multiplatform.feature")
     id("awesomesunsetwallpapers.multiplatform.library.compose")
     id("awesomesunsetwallpapers.android.feature.koin")
+}
+
+kotlin {
+    sourceSets {
+        commonMain.dependencies {
+            implementation(project(":core:resource"))
+        }
+    }
 }
 
 android {
@@ -9,7 +17,6 @@ android {
 }
 
 dependencies {
-    implementation(project(":core:resource"))
     testImplementation(project(":core:data"))
     testImplementation(project(":core:testing"))
     implementation(libs.androidx.activity.compose)

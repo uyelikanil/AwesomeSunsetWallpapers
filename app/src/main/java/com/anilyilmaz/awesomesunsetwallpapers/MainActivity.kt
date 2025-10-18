@@ -1,6 +1,5 @@
 package com.anilyilmaz.awesomesunsetwallpapers
 
-import android.app.WallpaperManager
 import android.net.ConnectivityManager
 import android.net.Network
 import android.net.NetworkCapabilities
@@ -12,20 +11,17 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.core.view.WindowCompat
+import com.anilyilmaz.awesomesunsetwallpapers.composeApp.ui.AwesomeSunsetWallpapersApp
 import com.anilyilmaz.awesomesunsetwallpapers.core.designsystem.theme.AppTheme
 import com.anilyilmaz.awesomesunsetwallpapers.core.domain.usecase.GetNetworkStateUseCase
-import com.anilyilmaz.awesomesunsetwallpapers.core.domain.usecase.SetTempFileUseCase
 import com.anilyilmaz.awesomesunsetwallpapers.core.model.NetworkState
 import com.anilyilmaz.awesomesunsetwallpapers.feature.main.SharedViewModel
-import com.anilyilmaz.awesomesunsetwallpapers.ui.AwesomeSunsetWallpapersApp
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : ComponentActivity() {
     private val connectivityManager: ConnectivityManager by inject()
-    private val wallpaperManager: WallpaperManager by inject()
     private val getNetworkStateUseCase: GetNetworkStateUseCase by inject()
-    private val setTempFileUseCase: SetTempFileUseCase by inject()
     private val sharedViewModel: SharedViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,20 +37,30 @@ class MainActivity : ComponentActivity() {
             )
         }
 
+        val initialNetworkState = getInitialNetworkState(connectivityManager = connectivityManager,
+            getNetworkStateUseCase = getNetworkStateUseCase)
+
         setContent {
             AppTheme {
                 AwesomeSunsetWallpapersApp(
                     sharedViewModel = sharedViewModel,
-                    connectivityManager = connectivityManager,
-                    wallpaperManager = wallpaperManager,
-                    getNetworkStateUseCase = getNetworkStateUseCase,
-                    setTempFileUseCase = setTempFileUseCase
+                    initialNetworkState = initialNetworkState
                 )
             }
         }
 
         setInternetConnection()
     }
+
+    private fun getInitialNetworkState(
+        connectivityManager: ConnectivityManager,
+        getNetworkStateUseCase: GetNetworkStateUseCase
+    ): NetworkState {
+        val isThereActiveNetwork = connectivityManager.activeNetwork != null
+        val initialNetworkState = getNetworkStateUseCase(isThereActiveNetwork)
+        return initialNetworkState
+    }
+
 
     private fun setInternetConnection () {
         val networkRequest = NetworkRequest.Builder()

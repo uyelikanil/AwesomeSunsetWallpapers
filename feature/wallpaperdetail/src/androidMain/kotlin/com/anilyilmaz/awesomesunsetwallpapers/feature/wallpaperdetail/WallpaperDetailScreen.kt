@@ -1,5 +1,6 @@
 package com.anilyilmaz.awesomesunsetwallpapers.feature.wallpaperdetail
 
+import android.app.WallpaperManager
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
@@ -40,6 +41,7 @@ import com.anilyilmaz.awesomesunsetwallpapers.core.designsystem.component.WhiteT
 import com.anilyilmaz.awesomesunsetwallpapers.core.designsystem.extension.shimmerEffect
 import com.anilyilmaz.awesomesunsetwallpapers.core.designsystem.theme.AppTheme
 import com.anilyilmaz.awesomesunsetwallpapers.core.designsystem.theme.md_theme_dark_primary
+import com.anilyilmaz.awesomesunsetwallpapers.core.domain.usecase.SetTempFileUseCase
 import com.anilyilmaz.awesomesunsetwallpapers.core.resource.Res
 import com.anilyilmaz.awesomesunsetwallpapers.core.resource.error_occurred_while_setting_wallpaper
 import com.anilyilmaz.awesomesunsetwallpapers.core.resource.retry
@@ -48,24 +50,46 @@ import com.anilyilmaz.awesomesunsetwallpapers.core.resource.something_went_wrong
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.getString
 import org.jetbrains.compose.resources.stringResource
-import org.koin.androidx.compose.koinViewModel
+import org.koin.compose.getKoin
+import org.koin.compose.koinInject
+import org.koin.core.parameter.parametersOf
 import java.io.File
 
 private lateinit var imageDrawable: Drawable
 
 @Composable
-fun WallpaperDetailRoute(
-    viewModel: WallpaperDetailViewModel = koinViewModel(),
-    getCropAndSetWallpaperIntent: (Uri) -> Intent,
-    setTempImage: suspend (Bitmap, Bitmap.CompressFormat, String) -> File,
+actual fun WallpaperDetailRouteEntry(
+    wallpaperId: Long,
+    onNavigationClick: () -> Unit
+) {
+    val koin = getKoin()
+    val viewModel = remember(wallpaperId) {
+        koin.get<WallpaperDetailViewModel> { parametersOf(wallpaperId) }
+    }
+    val wallpaperManager: WallpaperManager = koinInject()
+    val setTempImage: SetTempFileUseCase = koinInject()
+
+    WallpaperDetailRoute(
+        viewModel = viewModel,
+        wallpaperManager = wallpaperManager,
+        setTempImage = setTempImage,
+        onNavigationClick = onNavigationClick
+    )
+}
+
+@Composable
+private fun WallpaperDetailRoute(
+    viewModel: WallpaperDetailViewModel,
+    wallpaperManager: WallpaperManager,
+    setTempImage: SetTempFileUseCase,
     onNavigationClick: () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     WallpaperDetailScreen(
         uiState = uiState,
-        getCropAndSetWallpaperIntent = getCropAndSetWallpaperIntent,
-        setTempImage = setTempImage,
+        getCropAndSetWallpaperIntent = wallpaperManager::getCropAndSetWallpaperIntent,
+        setTempImage = setTempImage::invoke,
         getWallpaper = viewModel::getWallpaper,
         onNavigationClick = onNavigationClick)
 }

@@ -1,8 +1,5 @@
-package com.anilyilmaz.awesomesunsetwallpapers.ui
+package com.anilyilmaz.awesomesunsetwallpapers.composeApp.ui
 
-import android.annotation.SuppressLint
-import android.app.WallpaperManager
-import android.net.ConnectivityManager
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Scaffold
@@ -15,27 +12,21 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.rememberNavController
-import com.anilyilmaz.awesomesunsetwallpapers.R
-import com.anilyilmaz.awesomesunsetwallpapers.core.domain.usecase.GetNetworkStateUseCase
-import com.anilyilmaz.awesomesunsetwallpapers.core.domain.usecase.SetTempFileUseCase
+import com.anilyilmaz.awesomesunsetwallpapers.composeApp.navigation.AwesomeSunsetWallpapersNavHost
 import com.anilyilmaz.awesomesunsetwallpapers.core.model.NetworkState
+import com.anilyilmaz.awesomesunsetwallpapers.core.resource.Res
+import com.anilyilmaz.awesomesunsetwallpapers.core.resource.network_is_connected
+import com.anilyilmaz.awesomesunsetwallpapers.core.resource.there_is_no_network
 import com.anilyilmaz.awesomesunsetwallpapers.feature.main.SharedViewModel
-import com.anilyilmaz.awesomesunsetwallpapers.navigation.AwesomeSunsetWallpapersNavHost
+import org.jetbrains.compose.resources.stringResource
 
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun AwesomeSunsetWallpapersApp(
     sharedViewModel: SharedViewModel,
-    connectivityManager: ConnectivityManager,
-    wallpaperManager: WallpaperManager,
-    getNetworkStateUseCase: GetNetworkStateUseCase,
-    setTempFileUseCase: SetTempFileUseCase
+    initialNetworkState: NetworkState
 ) {
-    val initialNetworkState = getInitialNetworkState(connectivityManager = connectivityManager,
-        getNetworkStateUseCase = getNetworkStateUseCase)
     val networkState by sharedViewModel.networkState.collectAsStateWithLifecycle(
         initialValue = initialNetworkState)
 
@@ -46,8 +37,8 @@ fun AwesomeSunsetWallpapersApp(
             snackbarHost = { SnackbarHost(snackbarHostState) },
             contentWindowInsets = WindowInsets(0, 0, 0, 0)
         ) {
-            val networkIsConnectedMessage = stringResource(id = R.string.network_is_connected)
-            val thereIsNoNetworkdMessage = stringResource(id = R.string.there_is_no_network)
+            val networkIsConnectedMessage = stringResource(Res.string.network_is_connected)
+            val thereIsNoNetworkdMessage = stringResource(Res.string.there_is_no_network)
             LaunchedEffect(networkState) {
                 if (networkState == NetworkState.CONNECTED) {
                     snackbarHostState.showSnackbar(
@@ -64,19 +55,8 @@ fun AwesomeSunsetWallpapersApp(
             }
 
             AwesomeSunsetWallpapersNavHost(
-                navController = navController,
-                getCropAndSetWallpaperIntent = wallpaperManager::getCropAndSetWallpaperIntent,
-                setTempImage = setTempFileUseCase::invoke
+                navController = navController
             )
         }
     }
-}
-
-private fun getInitialNetworkState(
-    connectivityManager: ConnectivityManager,
-    getNetworkStateUseCase: GetNetworkStateUseCase
-): NetworkState {
-    val isThereActiveNetwork = connectivityManager.activeNetwork != null
-    val initialNetworkState = getNetworkStateUseCase(isThereActiveNetwork)
-    return initialNetworkState
 }
