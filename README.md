@@ -1,6 +1,6 @@
 <img align="left" src="/app/src/main/res/mipmap-mdpi/ic_launcher.png"> Awesome Sunset Wallpapers
 ==================
-A sunset wallpaper app for Android. It follows Android's architecture guideline and entirely written with Kotlin.
+A sunset wallpaper app for Android and IOS. It follows Jetbrains's Compose Multiplatform guideline and entirely written with Kotlin.
 
 ## Screenshots
 <img src="/docs/images/wallpaper-list-screen.png" width="270"> <img src="/docs/images/wallpaper-detail-screen.png" width="270"> <img src="/docs/images/wallpaper-full-screen.png" width="270">
@@ -8,11 +8,12 @@ A sunset wallpaper app for Android. It follows Android's architecture guideline 
 ## Tech Stack
 * Kotlin
 * Coroutines & Flow
-* Android Architecture Components
-* Dagger Hilt
-* Coil
-* Retrofit
+* Jetpack Compose (Android) & Compose Multiplatform
+* Koin
+* Coil 3
+* Ktor
 * OkHttp
+* Darwin
 
 ## Pexels API Key
 
