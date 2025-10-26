@@ -1,4 +1,4 @@
-package com.anilyilmaz.awesomesunsetwallpapers.feature.wallpaperdetail
+package com.anilyilmaz.awesomesunsetwallpapers.feature.wallpaperdetail.platform
 
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.coroutines.Dispatchers

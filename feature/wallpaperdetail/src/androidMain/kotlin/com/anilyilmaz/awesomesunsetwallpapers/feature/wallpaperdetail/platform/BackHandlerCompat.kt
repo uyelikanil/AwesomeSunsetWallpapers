@@ -1,4 +1,4 @@
-package com.anilyilmaz.awesomesunsetwallpapers.feature.wallpaperdetail
+package com.anilyilmaz.awesomesunsetwallpapers.feature.wallpaperdetail.platform
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.runtime.Composable

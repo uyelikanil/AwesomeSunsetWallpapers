@@ -30,6 +30,9 @@ import com.anilyilmaz.awesomesunsetwallpapers.core.designsystem.theme.md_theme_d
 import com.anilyilmaz.awesomesunsetwallpapers.core.resource.Res
 import com.anilyilmaz.awesomesunsetwallpapers.core.resource.retry
 import com.anilyilmaz.awesomesunsetwallpapers.core.resource.something_went_wrong
+import com.anilyilmaz.awesomesunsetwallpapers.feature.wallpaperdetail.platform.BackHandlerCompat
+import com.anilyilmaz.awesomesunsetwallpapers.feature.wallpaperdetail.platform.WallpaperCapability
+import com.anilyilmaz.awesomesunsetwallpapers.feature.wallpaperdetail.platform.defaultWallpaperCtaText
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.stringResource
 import org.koin.core.parameter.parametersOf
