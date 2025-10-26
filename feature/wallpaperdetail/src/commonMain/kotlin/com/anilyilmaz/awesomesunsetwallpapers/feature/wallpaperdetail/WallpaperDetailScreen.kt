@@ -32,8 +32,8 @@ import com.anilyilmaz.awesomesunsetwallpapers.core.resource.retry
 import com.anilyilmaz.awesomesunsetwallpapers.core.resource.something_went_wrong
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.stringResource
-import org.koin.compose.getKoin
 import org.koin.core.parameter.parametersOf
+import org.koin.mp.KoinPlatform.getKoin
 
 @Composable
 fun WallpaperDetailRoute(

@@ -15,9 +15,6 @@ kotlin {
             implementation(kotlin("test"))
             implementation(libs.kotlinx.coroutines.test)
         }
-        androidMain.dependencies {
-            implementation(libs.androidx.lifecycle.viewmodel)
-        }
     }
 }
 

@@ -37,10 +37,6 @@ gradlePlugin {
             id = "awesomesunsetwallpapers.android.application"
             implementationClass = "AndroidApplicationConventionPlugin"
         }
-        register("androidLibrary") {
-            id = "awesomesunsetwallpapers.android.library"
-            implementationClass = "AndroidLibraryConventionPlugin"
-        }
         register("androidApplicationCompose") {
             id = "awesomesunsetwallpapers.application.compose"
             implementationClass = "AndroidApplicationComposeConventionPlugin"
@@ -49,17 +45,9 @@ gradlePlugin {
             id = "awesomesunsetwallpapers.multiplatform.library.compose"
             implementationClass = "MultiplatformLibraryComposeConventionPlugin"
         }
-        register("androidFeature") {
-            id = "awesomesunsetwallpapers.android.feature"
-            implementationClass = "AndroidFeatureConventionPlugin"
-        }
         register("multipaltformFeature") {
             id = "awesomesunsetwallpapers.multiplatform.feature"
             implementationClass = "MultiplatformFeatureConventionPlugin"
-        }
-        register("jvmLibrary") {
-            id = "awesomesunsetwallpapers.jvm.library"
-            implementationClass = "JvmLibraryConventionPlugin"
         }
         register("androidFeatureKoin") {
             id = "awesomesunsetwallpapers.android.feature.koin"

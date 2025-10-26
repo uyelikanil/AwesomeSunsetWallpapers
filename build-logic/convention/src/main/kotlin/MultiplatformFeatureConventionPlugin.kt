@@ -34,7 +34,7 @@ class MultiplatformFeatureConventionPlugin : Plugin<Project> {
                         implementation(libs.findLibrary("compose.foundation").get())
                         implementation(libs.findLibrary("compose.material3").get())
                         implementation(libs.findLibrary("compose.material.icons.extended").get())
-                        implementation(libs.findLibrary("androidx.navigation.compose").get())
+                        implementation(libs.findLibrary("jetbrains.androidx.navigation.compose").get())
 
                         implementation(libs.findLibrary("jetbrains.androidx.lifecycle.viewmodel").get())
                         implementation(libs.findLibrary("jetbrains.androidx.lifecycle.runtime.compose").get())
@@ -48,12 +48,7 @@ class MultiplatformFeatureConventionPlugin : Plugin<Project> {
 
                     val androidMain = findByName("androidMain")
                     androidMain?.dependencies {
-                        // Android-only UI adapters
-                        implementation(libs.findLibrary("androidx.lifecycle.viewmodel").get())
                         implementation(libs.findLibrary("androidx.lifecycle.runtime.compose").get())
-                        implementation(libs.findLibrary("androidx.compose.foundation").get())
-                        implementation(libs.findLibrary("androidx.compose.material3").get())
-
                         implementation(libs.findLibrary("kotlinx.coroutines.core").get())
                         implementation(libs.findLibrary("kotlinx.serialization.json").get())
                         implementation(libs.findLibrary("ktor.client.okhttp").get())
