@@ -3,7 +3,7 @@ package com.anilyilmaz.awesomesunsetwallpapers.feature.wallpaperdetail.navigatio
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
-import com.anilyilmaz.awesomesunsetwallpapers.feature.wallpaperdetail.WallpaperDetailRouteEntry
+import com.anilyilmaz.awesomesunsetwallpapers.feature.wallpaperdetail.WallpaperDetailRoute
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -14,7 +14,7 @@ fun NavGraphBuilder.wallpaperDetailScreen(
 ) {
     composable<WallpaperDetail> { backStackEntry ->
         val args = backStackEntry.toRoute<WallpaperDetail>() // JetBrains navigation typed args
-        WallpaperDetailRouteEntry(
+        WallpaperDetailRoute(
             wallpaperId = args.wallpaperId,
             onNavigationClick = onNavigationClick
         )

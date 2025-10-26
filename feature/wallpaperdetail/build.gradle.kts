@@ -8,20 +8,17 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             implementation(project(":core:resource"))
+            implementation(compose.components.resources)
+        }
+        commonTest.dependencies {
+            implementation(project(":core:testing"))
+            implementation(project(":core:data"))
+            implementation(kotlin("test"))
+            implementation(libs.kotlinx.coroutines.test)
         }
     }
 }
 
 android {
     namespace = "com.anilyilmaz.awesomesunsetwallpapers.feature.wallpaperdetail"
-}
-
-dependencies {
-    testImplementation(project(":core:data"))
-    testImplementation(project(":core:testing"))
-    implementation(libs.androidx.activity.compose)
-    implementation(compose.components.resources)
-    testImplementation(libs.androidx.test.runner)
-    testImplementation(libs.kotlinx.coroutines.test)
-    testImplementation(libs.junit4)
 }

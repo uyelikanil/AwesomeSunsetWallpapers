@@ -29,7 +29,7 @@ class SharedViewModelTest: MainDispatcherBase() {
     fun after()  { resetMain() }
 
     @Test
-    fun `given NetworkState is AVAILABLE as a first value, when updateNetworkState is called, then networkState should emit NetworkState as Available` () = scope.runTest {
+    fun `given NetworkState is AVAILABLE as a first value, when updateNetworkState is called, then networkState should emit NetworkState as Available` () = scope().runTest {
         // Given
         val networkStateAvailable = NetworkState.AVAILABLE
         var networkState: NetworkState? = null
@@ -48,7 +48,7 @@ class SharedViewModelTest: MainDispatcherBase() {
     }
 
     @Test
-    fun `given NetworkState is LOST as a first value and after that given NetworkState is AVAILABLE, when updateNetworkState is called, then networkState should emit NetworkState as Connected` () = scope.runTest {
+    fun `given NetworkState is LOST as a first value and after that given NetworkState is AVAILABLE, when updateNetworkState is called, then networkState should emit NetworkState as Connected` () = scope().runTest {
         // Given
         val networkStateLost = NetworkState.LOST
         val networkStateAvailable = NetworkState.AVAILABLE
@@ -71,7 +71,7 @@ class SharedViewModelTest: MainDispatcherBase() {
     }
 
     @Test
-    fun `given isNetworkAvailable is true, when updateNetworkState is called, then networkState should emit NetworkState as Available` () = scope.runTest {
+    fun `given isNetworkAvailable is true, when updateNetworkState is called, then networkState should emit NetworkState as Available` () = scope().runTest {
         // Given
         val isNetworkAvailable = true
         val networkStateAvailable = NetworkState.AVAILABLE

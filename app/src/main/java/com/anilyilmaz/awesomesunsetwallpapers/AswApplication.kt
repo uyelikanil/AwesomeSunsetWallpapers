@@ -9,6 +9,7 @@ import com.anilyilmaz.awesomesunsetwallpapers.core.domain.di.domainModule
 import com.anilyilmaz.awesomesunsetwallpapers.core.network.di.dataSourceModule
 import com.anilyilmaz.awesomesunsetwallpapers.feature.home.di.homeModule
 import com.anilyilmaz.awesomesunsetwallpapers.feature.main.di.mainModule
+import com.anilyilmaz.awesomesunsetwallpapers.feature.wallpaperdetail.di.platformWallpaperDetailModule
 import com.anilyilmaz.awesomesunsetwallpapers.feature.wallpaperdetail.di.wallpaperDetailModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -24,7 +25,8 @@ class AswApplication : Application() {
             modules(
                 listOf(
                     appModule, dispatchersModule, dataSourceModule, dataModule, domainModule,
-                    domainAndroidMainModule, mainModule, homeModule, wallpaperDetailModule
+                    domainAndroidMainModule, mainModule, homeModule, wallpaperDetailModule,
+                    platformWallpaperDetailModule
                 )
             )
         }

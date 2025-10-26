@@ -17,8 +17,6 @@ kotlin {
         }
         androidMain.dependencies {
             implementation(libs.ktor.client.okhttp)
-            implementation(libs.androidx.test.runner)
-            implementation(libs.junit4)
         }
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin)
