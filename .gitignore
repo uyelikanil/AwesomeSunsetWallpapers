@@ -13,3 +13,10 @@
 .externalNativeBuild
 .cxx
 local.properties
+
+iosApp/**/*.xcuserdatad/
+iosApp/**/*.xcuserstate
+
+iosApp/**/xcschemes/xcschememanagement.plist
+
+iosApp/config/Secrets.xcconfig
