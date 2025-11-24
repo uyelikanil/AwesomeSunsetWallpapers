@@ -18,26 +18,49 @@ class IosWallpaperCapability : WallpaperCapability {
 
     @OptIn(ExperimentalForeignApi::class)
     override suspend fun performPrimaryAction(imageUrl: String) {
-        val url = NSURL.URLWithString(imageUrl) ?: error("Bad URL")
-
-        // Download bytes with NSURLSession (suspending)
-        val data: NSData = suspendCancellableCoroutine { cont ->
-            val task = NSURLSession.sharedSession.dataTaskWithURL(url) { d, _, e ->
-                when {
-                    e != null -> cont.resumeWithException(NSErrorException(e))
-                    d == null  -> cont.resumeWithException(IllegalStateException("No data"))
-                    else       -> cont.resume(d)
-                }
+        try {
+            val url = NSURL.URLWithString(imageUrl)
+            if (url == null) {
+                println("IosWallpaperCapability: invalid URL: $imageUrl")
+                return
             }
-            cont.invokeOnCancellation { task.cancel() }
-            task.resume()
-        }
 
-        val image = UIImage(data = data) ?: error("Invalid image")
+            val data: NSData = suspendCancellableCoroutine { cont ->
+                val task = NSURLSession.sharedSession.dataTaskWithURL(url) { d, _, e ->
+                    when {
+                        e != null -> {
+                            println(
+                                "IosWallpaperCapability: network error: " +
+                                        (e.localizedDescription ?: "unknown")
+                            )
+                            cont.resumeWithException(NSErrorException(e))
+                        }
+                        d == null -> {
+                            println("IosWallpaperCapability: no data from $imageUrl")
+                            cont.resumeWithException(
+                                IllegalStateException("No data from $imageUrl")
+                            )
+                        }
+                        else -> cont.resume(d)
+                    }
+                }
+                cont.invokeOnCancellation { task.cancel() }
+                task.resume()
+            }
 
-        // UIKit call on main thread
-        withContext(Dispatchers.Main) {
-            UIImageWriteToSavedPhotosAlbum(image, null, null, null)
+            withContext(Dispatchers.Main) {
+                val image: UIImage? = UIImage(data = data)
+                if (image == null) {
+                    println("IosWallpaperCapability: failed to decode image from $imageUrl")
+                    return@withContext
+                }
+
+                UIImageWriteToSavedPhotosAlbum(image, null, null, null)
+                println("IosWallpaperCapability: image saved to Photos")
+            }
+        } catch (t: Throwable) {
+            println("IosWallpaperCapability: performPrimaryAction failed: ${t.message}")
+            t.printStackTrace()
         }
     }
 }

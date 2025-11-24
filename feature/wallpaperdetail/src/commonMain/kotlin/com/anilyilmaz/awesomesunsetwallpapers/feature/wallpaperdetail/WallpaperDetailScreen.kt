@@ -35,21 +35,20 @@ import com.anilyilmaz.awesomesunsetwallpapers.feature.wallpaperdetail.platform.W
 import com.anilyilmaz.awesomesunsetwallpapers.feature.wallpaperdetail.platform.defaultWallpaperCtaText
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.stringResource
+import org.koin.compose.koinInject
+import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.parameter.parametersOf
-import org.koin.mp.KoinPlatform.getKoin
 
 @Composable
 fun WallpaperDetailRoute(
     wallpaperId: Long,
-    onNavigationClick: () -> Unit
+    onNavigationClick: () -> Unit,
+    viewModel: WallpaperDetailViewModel = koinViewModel(
+        parameters = { parametersOf(wallpaperId) }
+    ),
+    capability: WallpaperCapability = koinInject(),
 ) {
     val platformContext = LocalPlatformContext.current
-
-    val koin = getKoin()
-    val viewModel = remember(wallpaperId) {
-        koin.get<WallpaperDetailViewModel> { parametersOf(wallpaperId) }
-    }
-    val capability = remember { koin.get<WallpaperCapability>() }
     val ctaText = remember { defaultWallpaperCtaText() }
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle(WallpaperDetailUiState.Loading)
