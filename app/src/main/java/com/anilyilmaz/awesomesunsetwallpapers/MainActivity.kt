@@ -61,7 +61,6 @@ class MainActivity : ComponentActivity() {
         return initialNetworkState
     }
 
-
     private fun setInternetConnection () {
         val networkRequest = NetworkRequest.Builder()
             .addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)

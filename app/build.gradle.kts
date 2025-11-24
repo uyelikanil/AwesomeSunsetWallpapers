@@ -28,14 +28,10 @@ android {
 }
 
 dependencies {
-    implementation(project(":core:common"))
-    implementation(project(":core:network"))
-    implementation(project(":core:data"))
     implementation(project(":core:domain"))
     implementation(project(":core:model"))
     implementation(project(":core:designsystem"))
     implementation(project(":feature:main"))
-    implementation(project(":feature:home"))
     implementation(project(":feature:wallpaperdetail"))
     implementation(project(":composeApp"))
 
