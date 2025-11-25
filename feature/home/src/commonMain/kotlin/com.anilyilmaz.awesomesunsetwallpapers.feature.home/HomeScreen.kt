@@ -79,7 +79,7 @@ internal fun HomeScreen(
             CenterAlignedTopAppBar(
                 scrollBehavior = scrollBehavior,
                 modifier = Modifier.wrapContentSize(Alignment.TopStart),
-                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                colors = TopAppBarDefaults.topAppBarColors(
                     scrolledContainerColor = MaterialTheme.colorScheme.surface),
                 title = {
                     Text(

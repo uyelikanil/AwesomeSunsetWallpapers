@@ -1,20 +1,21 @@
 [versions]
 # Kotlin & Tooling
-kotlin = "2.2.20"
-androidGradlePlugin = "8.13.0"
+kotlin = "2.2.21"
+androidGradlePlugin = "8.13.1"
 ksp = "2.1.10-1.0.31"
 
 # AndroidX Core & Lifecycle (Android)
-activity = "1.11.0"
+activity = "1.12.0"
 ktx = "1.17.0"
 lifecycleRuntimeKtx = "2.9.4"
-lifecycleViewmodelKtx = "2.9.4"
+lifecycleViewmodelKtx = "2.9.6"
 
 # Compose (AndroidX BOM)
-androidxComposeBom = "2025.09.01"
+androidxComposeBom = "2025.11.01"
 
 # Compose Multiplatform (JetBrains) & Icons
-composeMpp = "1.8.2"
+composeMpp = "1.9.3"
+composeMaterial3 = "1.9.0"
 composeIcons = "1.7.3"
 
 # Coroutines & Serialization
@@ -22,13 +23,13 @@ kotlinxCoroutines = "1.10.2"
 kotlinxSerializationJson = "1.9.0"
 
 # Navigation & UI Utils
-nav = "2.9.0"
+nav = "2.9.1"
 
 # Imaging
 coilCompose = "3.3.0"
 
 # Networking
-ktor = "3.3.0"
+ktor = "3.3.2"
 
 # Dependency Injection
 koin = "4.1.1"
@@ -47,7 +48,7 @@ androidx-compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "u
 # Multiplatform UI (JetBrains Compose)
 compose-runtime = { module = "org.jetbrains.compose.runtime:runtime", version.ref = "composeMpp" }
 compose-foundation = { module = "org.jetbrains.compose.foundation:foundation", version.ref = "composeMpp" }
-compose-material3 = { module = "org.jetbrains.compose.material3:material3", version.ref = "composeMpp" }
+compose-material3 = { module = "org.jetbrains.compose.material3:material3", version.ref = "composeMaterial3" }
 compose-material-icons-extended = { module = "org.jetbrains.compose.material:material-icons-extended", version.ref = "composeIcons" }
 
 # Lifecycle (JetBrains AndroidX for KMP)

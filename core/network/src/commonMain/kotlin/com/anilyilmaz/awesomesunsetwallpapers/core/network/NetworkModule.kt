@@ -16,7 +16,7 @@ import io.ktor.http.HttpHeaders
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 
-expect val httpClientEngine: HttpClientEngineFactory<out HttpClientEngineConfig>
+expect val httpClientEngine: HttpClientEngineFactory<HttpClientEngineConfig>
 expect val pexelsAuthKey: String
 
 object NetworkModule {
