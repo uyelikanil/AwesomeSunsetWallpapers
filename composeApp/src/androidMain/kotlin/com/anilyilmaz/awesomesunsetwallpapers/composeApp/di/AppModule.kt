@@ -1,4 +1,4 @@
-package com.anilyilmaz.awesomesunsetwallpapers.di
+package com.anilyilmaz.awesomesunsetwallpapers.composeApp.di
 
 import android.net.ConnectivityManager
 import org.koin.android.ext.koin.androidContext

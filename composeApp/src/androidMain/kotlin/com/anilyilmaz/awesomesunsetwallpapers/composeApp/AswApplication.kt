@@ -1,8 +1,8 @@
-package com.anilyilmaz.awesomesunsetwallpapers
+package com.anilyilmaz.awesomesunsetwallpapers.composeApp
 
 import android.app.Application
 import com.anilyilmaz.awesomesunsetwallpapers.composeApp.di.initKoin
-import com.anilyilmaz.awesomesunsetwallpapers.di.appModule
+import com.anilyilmaz.awesomesunsetwallpapers.composeApp.di.appModule
 import com.anilyilmaz.awesomesunsetwallpapers.core.domain.di.domainAndroidMainModule
 import com.anilyilmaz.awesomesunsetwallpapers.feature.wallpaperdetail.di.platformWallpaperDetailModule
 import org.koin.android.ext.koin.androidContext

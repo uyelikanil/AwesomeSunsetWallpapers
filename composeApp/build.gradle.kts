@@ -1,8 +1,5 @@
 plugins {
-    kotlin("multiplatform")
-    id("awesomesunsetwallpapers.multiplatform.feature")
-    id("awesomesunsetwallpapers.multiplatform.library.compose")
-    id("awesomesunsetwallpapers.multiplatform.library.koin")
+    id("awesomesunsetwallpapers.application")
 }
 
 kotlin {
@@ -19,21 +16,17 @@ kotlin {
             implementation(project(":feature:main"))
             implementation(project(":feature:home"))
             implementation(project(":feature:wallpaperdetail"))
+
+            implementation(libs.compose.runtime)
+            implementation(libs.compose.foundation)
+            implementation(libs.compose.material3)
+            implementation(libs.jetbrains.androidx.navigation.compose)
         }
-    }
 
-    listOf(
-        iosArm64(),
-        iosSimulatorArm64()
-    ).forEach { iosTarget ->
-        iosTarget.binaries.framework {
-            baseName = "composeApp"
-            isStatic = true
-
-            binaryOption(
-                "bundleId",
-                "com.anilyilmaz.awesomesunsetwallpapers.composeApp"
-            )
+        androidMain.dependencies {
+            implementation(libs.androidx.ktx)
+            implementation(libs.androidx.activity.compose)
+            implementation(libs.androidx.lifecycle.runtime.compose)
         }
     }
 }

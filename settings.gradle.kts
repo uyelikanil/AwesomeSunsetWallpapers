@@ -14,7 +14,6 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "AwesomeSunsetWallpapers"
-include(":app")
 include(":core:model")
 include(":core:network")
 include(":core:data")

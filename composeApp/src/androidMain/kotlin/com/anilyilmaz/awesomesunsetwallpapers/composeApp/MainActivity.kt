@@ -1,4 +1,4 @@
-package com.anilyilmaz.awesomesunsetwallpapers
+package com.anilyilmaz.awesomesunsetwallpapers.composeApp
 
 import android.net.ConnectivityManager
 import android.net.Network

@@ -33,13 +33,9 @@ tasks {
 
 gradlePlugin {
     plugins {
-        register("androidApplication") {
-            id = "awesomesunsetwallpapers.android.application"
-            implementationClass = "AndroidApplicationConventionPlugin"
-        }
-        register("androidApplicationCompose") {
-            id = "awesomesunsetwallpapers.application.compose"
-            implementationClass = "AndroidApplicationComposeConventionPlugin"
+        register("application") {
+            id = "awesomesunsetwallpapers.application"
+            implementationClass = "ApplicationConventionPlugin"
         }
         register("multiplatformLibraryCompose") {
             id = "awesomesunsetwallpapers.multiplatform.library.compose"
