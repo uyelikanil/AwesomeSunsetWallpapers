@@ -1,4 +1,4 @@
-<img align="left" src="/composeApp/src/main/res/mipmap-mdpi/ic_launcher.png"> Awesome Sunset Wallpapers
+<img align="left" src="/composeApp/src/androidMain/res/mipmap-mdpi/ic_launcher.png"> Awesome Sunset Wallpapers
 ==================
 A sunset wallpaper app for Android and IOS. It follows Jetbrains's Compose Multiplatform guideline and entirely written with Kotlin.
 
