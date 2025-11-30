@@ -3,7 +3,7 @@ package com.anilyilmaz.awesomesunsetwallpapers.feature.wallpaperdetail
 import com.anilyilmaz.awesomesunsetwallpapers.core.data.repository.PhotoRepositoryImpl
 import com.anilyilmaz.awesomesunsetwallpapers.core.testing.testdoubles.network.FakePexelsDataSource
 import com.anilyilmaz.awesomesunsetwallpapers.core.testing.testdoubles.util.MainDispatcherBase
-import com.anilyilmaz.awesomesunsetwallpapers.feature.wallpaperdetail.testdoubles.FakeWallpaperCapability
+import com.anilyilmaz.awesomesunsetwallpapers.feature.wallpaperdetail.testdouble.FakeWallpaperCapability
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
@@ -33,7 +33,8 @@ class WallpaperDetailViewModelTest : MainDispatcherBase() {
         viewModel = WallpaperDetailViewModel(
             wallpaperId = wallpaperId,
             photoRepository = photoRepository,
-            capability = capability
+            capability = capability,
+            loadOnInit = false
         )
     }
 
@@ -43,7 +44,7 @@ class WallpaperDetailViewModelTest : MainDispatcherBase() {
     }
 
     @Test
-    fun a() {
+    fun `Initial ui state should be Loading` () {
         // Given
         val uiStateLoading = WallpaperDetailUiState.Loading
 
@@ -56,7 +57,7 @@ class WallpaperDetailViewModelTest : MainDispatcherBase() {
 
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test
-    fun b() =
+    fun `when getWallpaper is called, then ui state should be Loading first and then should be Success` () =
         scope(standardTestDispatcher).runTest {
             // When
             viewModel.getWallpaper()
@@ -71,7 +72,7 @@ class WallpaperDetailViewModelTest : MainDispatcherBase() {
 
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test
-    fun c() =
+    fun `onWallpaperAction should emit Loading then Success when capability succeeds`() =
         scope(standardTestDispatcher).runTest {
             // Given
             viewModel.getWallpaper()
@@ -93,7 +94,7 @@ class WallpaperDetailViewModelTest : MainDispatcherBase() {
 
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test
-    fun d() =
+    fun `onWallpaperAction should emit Loading then Error when capability fails`() =
         scope(standardTestDispatcher).runTest {
             // Given
             viewModel.getWallpaper()

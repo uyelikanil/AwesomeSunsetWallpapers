@@ -15,6 +15,7 @@ class WallpaperDetailViewModel(
     private val wallpaperId: Long,
     private val photoRepository: PhotoRepository,
     private val capability: WallpaperCapability,
+    private val loadOnInit: Boolean = true
 ) : ViewModel() {
     private val _uiState = MutableStateFlow<WallpaperDetailUiState>(WallpaperDetailUiState.Loading)
     val uiState: StateFlow<WallpaperDetailUiState> = _uiState.asStateFlow()
@@ -25,7 +26,9 @@ class WallpaperDetailViewModel(
     val capabilityState: StateFlow<WallpaperDetailCapabilityState> = _capabilityState.asStateFlow()
 
     init {
-
+        if(loadOnInit) {
+            getWallpaper()
+        }
     }
 
     fun onWallpaperActionHandled() {

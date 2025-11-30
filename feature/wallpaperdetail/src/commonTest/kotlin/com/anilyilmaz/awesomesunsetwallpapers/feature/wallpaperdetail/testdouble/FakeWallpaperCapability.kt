@@ -1,4 +1,4 @@
-package com.anilyilmaz.awesomesunsetwallpapers.feature.wallpaperdetail.testdoubles
+package com.anilyilmaz.awesomesunsetwallpapers.feature.wallpaperdetail.testdouble
 
 import com.anilyilmaz.awesomesunsetwallpapers.feature.wallpaperdetail.platform.WallpaperCapability
 import com.anilyilmaz.awesomesunsetwallpapers.feature.wallpaperdetail.platform.WallpaperCapabilityResult
