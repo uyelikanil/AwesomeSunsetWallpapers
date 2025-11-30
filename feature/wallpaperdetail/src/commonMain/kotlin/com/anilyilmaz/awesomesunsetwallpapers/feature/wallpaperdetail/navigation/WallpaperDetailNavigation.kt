@@ -10,13 +10,15 @@ import kotlinx.serialization.Serializable
 data class WallpaperDetail(val wallpaperId: Long)
 
 fun NavGraphBuilder.wallpaperDetailScreen(
-    onNavigationClick: () -> Unit
+    onNavigationClick: () -> Unit,
+    onShowMessage: (String) -> Unit
 ) {
     composable<WallpaperDetail> { backStackEntry ->
-        val args = backStackEntry.toRoute<WallpaperDetail>() // JetBrains navigation typed args
+        val args = backStackEntry.toRoute<WallpaperDetail>()
         WallpaperDetailRoute(
             wallpaperId = args.wallpaperId,
-            onNavigationClick = onNavigationClick
+            onNavigationClick = onNavigationClick,
+            onShowMessage = onShowMessage
         )
     }
 }

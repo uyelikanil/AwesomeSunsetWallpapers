@@ -1,71 +1,132 @@
 package com.anilyilmaz.awesomesunsetwallpapers.feature.wallpaperdetail.platform
 
-import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
+import kotlinx.coroutines.suspendCancellableCoroutine
+import kotlin.coroutines.resume
+import kotlin.coroutines.resumeWithException
 import platform.Foundation.NSData
 import platform.Foundation.NSError
 import platform.Foundation.NSURL
 import platform.Foundation.NSURLSession
 import platform.Foundation.dataTaskWithURL
-import platform.UIKit.UIImage
-import platform.UIKit.UIImageWriteToSavedPhotosAlbum
-import kotlin.coroutines.resume
-import kotlin.coroutines.resumeWithException
+import platform.Photos.*
 
+/**
+ * iOS implementation of [WallpaperCapability].
+ *
+ * Flow:
+ * 1. Check / request Photos *add-only* permission (write-only via [PHAccessLevelAddOnly]).
+ * 2. Download the wallpaper image from a String URL called [imageUrl].
+ * 3. Save the image data into the user's Photos library.
+ * 4. Return:
+ *    - [WallpaperCapabilityResult.Success] with a user-facing message on success.
+ *    - [WallpaperCapabilityResult.Error] with the error message on failure.
+ */
 class IosWallpaperCapability : WallpaperCapability {
 
-    @OptIn(ExperimentalForeignApi::class)
-    override suspend fun performPrimaryAction(imageUrl: String) {
+    override suspend fun performPrimaryAction(
+        imageUrl: String,
+    ): WallpaperCapabilityResult = withContext(Dispatchers.Default) {
         try {
-            val url = NSURL.URLWithString(imageUrl)
-            if (url == null) {
-                println("IosWallpaperCapability: invalid URL: $imageUrl")
-                return
-            }
+            ensurePhotoLibraryAccess()
 
-            val data: NSData = suspendCancellableCoroutine { cont ->
-                val task = NSURLSession.sharedSession.dataTaskWithURL(url) { d, _, e ->
-                    when {
-                        e != null -> {
-                            println(
-                                "IosWallpaperCapability: network error: " +
-                                        (e.localizedDescription ?: "unknown")
-                            )
-                            cont.resumeWithException(NSErrorException(e))
-                        }
-                        d == null -> {
-                            println("IosWallpaperCapability: no data from $imageUrl")
-                            cont.resumeWithException(
-                                IllegalStateException("No data from $imageUrl")
-                            )
-                        }
-                        else -> cont.resume(d)
-                    }
-                }
-                cont.invokeOnCancellation { task.cancel() }
-                task.resume()
-            }
+            val data = downloadImageData(imageUrl)
 
-            withContext(Dispatchers.Main) {
-                val image: UIImage? = UIImage(data = data)
-                if (image == null) {
-                    println("IosWallpaperCapability: failed to decode image from $imageUrl")
-                    return@withContext
-                }
+            saveImageToPhotos(data)
 
-                UIImageWriteToSavedPhotosAlbum(image, null, null, null)
-                println("IosWallpaperCapability: image saved to Photos")
-            }
+            WallpaperCapabilityResult.Success
         } catch (t: Throwable) {
-            println("IosWallpaperCapability: performPrimaryAction failed: ${t.message}")
-            t.printStackTrace()
+            WallpaperCapabilityResult.Error(t.message)
         }
     }
+
+    private suspend fun ensurePhotoLibraryAccess() {
+        val current = PHPhotoLibrary.authorizationStatusForAccessLevel(PHAccessLevelAddOnly)
+
+        if (current == PHAuthorizationStatusAuthorized) return
+
+        val result = requestPhotoAuthorization()
+
+        if (result != PHAuthorizationStatusAuthorized) {
+            throw IllegalStateException(
+                "Access to Photos is not granted. Please enable photo access in Settings."
+            )
+        }
+    }
+
+    private suspend fun requestPhotoAuthorization(): PHAuthorizationStatus =
+        suspendCancellableCoroutine { cont ->
+            PHPhotoLibrary.requestAuthorizationForAccessLevel(
+                accessLevel = PHAccessLevelAddOnly
+            ) { status ->
+                cont.resume(status)
+            }
+        }
+
+    private suspend fun downloadImageData(urlString: String): NSData =
+        suspendCancellableCoroutine { cont ->
+            val url = NSURL.URLWithString(urlString)
+            if (url == null) {
+                cont.resumeWithException(
+                    IllegalArgumentException("Invalid URL: $urlString")
+                )
+                return@suspendCancellableCoroutine
+            }
+
+            val task = NSURLSession.sharedSession.dataTaskWithURL(url) { data, _, error ->
+                when {
+                    error != null -> {
+                        cont.resumeWithException(error.toThrowable())
+                    }
+
+                    data != null -> {
+                        cont.resume(data)
+                    }
+
+                    else -> {
+                        cont.resumeWithException(
+                            IllegalStateException("No data and no error while downloading image")
+                        )
+                    }
+                }
+            }
+
+            cont.invokeOnCancellation { task.cancel() }
+
+            task.resume()
+        }
+
+    private suspend fun saveImageToPhotos(data: NSData) {
+        suspendCancellableCoroutine { cont ->
+            val photoLibrary = PHPhotoLibrary.sharedPhotoLibrary()
+
+            photoLibrary.performChanges(
+                changeBlock = {
+                    val request = PHAssetCreationRequest.creationRequestForAsset()
+                    val options = PHAssetResourceCreationOptions()
+
+                    request.addResourceWithType(
+                        type = PHAssetResourceTypePhoto,
+                        data = data,
+                        options = options
+                    )
+                },
+                completionHandler = { success, error ->
+                    when {
+                        success -> cont.resume(Unit)
+                        error != null -> cont.resumeWithException(error.toThrowable())
+                        else -> cont.resumeWithException(
+                            IllegalStateException("Unknown error while saving to Photos")
+                        )
+                    }
+                }
+            )
+        }
+    }
+
+    private fun NSError.toThrowable(): Throwable {
+        val message = localizedDescription ?: "iOS error"
+        return IllegalStateException(message)
+    }
 }
-
-private class NSErrorException(val nsError: NSError) :
-    RuntimeException(nsError.localizedDescription ?: "NSError")
-
-actual fun defaultWallpaperCtaText(): String = "Download"

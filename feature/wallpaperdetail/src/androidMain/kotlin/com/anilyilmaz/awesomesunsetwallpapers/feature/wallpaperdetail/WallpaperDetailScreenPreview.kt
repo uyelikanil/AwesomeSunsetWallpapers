@@ -15,10 +15,12 @@ fun WallpaperDetailScreenPreview() {
                 wallpaperSrc = "https://images.pexels.com/photos/848573/pexels-photo-848573.jpeg?" +
                         "auto=compress&cs=tinysrgb&fit=crop&h=1200&w=800",
                 photographer = "ANIL"),
-            ctaText = "Set as a Wallpaper",
+            capabilityState = WallpaperDetailCapabilityState.Init,
             onPrimaryAction = {},
+            onPrimaryActionHandled = {},
+            onRetry = {},
             onNavigationClick = {},
-            onRetry = {}
+            onShowMessage = {}
         )
     }
 }

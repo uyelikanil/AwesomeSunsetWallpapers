@@ -11,6 +11,7 @@ import com.anilyilmaz.awesomesunsetwallpapers.feature.wallpaperdetail.navigation
 @Composable
 fun AwesomeSunsetWallpapersNavHost(
     navController: NavHostController,
+    onShowMessage: (String) -> Unit
 ) {
     NavHost(
         navController = navController,
@@ -20,7 +21,8 @@ fun AwesomeSunsetWallpapersNavHost(
             onImageClick = { id -> navController.navigate(WallpaperDetail(wallpaperId = id))}
         )
         wallpaperDetailScreen(
-            onNavigationClick = navController::popBackStack
+            onNavigationClick = navController::popBackStack,
+            onShowMessage = onShowMessage
         )
     }
 }

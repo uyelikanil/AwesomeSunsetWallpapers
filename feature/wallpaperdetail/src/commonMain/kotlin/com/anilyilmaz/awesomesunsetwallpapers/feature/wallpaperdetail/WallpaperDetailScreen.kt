@@ -9,10 +9,10 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -24,18 +24,21 @@ import coil3.compose.AsyncImage
 import coil3.compose.LocalPlatformContext
 import coil3.request.ImageRequest
 import coil3.request.crossfade
+import com.anilyilmaz.awesomesunsetwallpapers.core.common.platform.Platform
+import com.anilyilmaz.awesomesunsetwallpapers.core.common.platform.platform
 import com.anilyilmaz.awesomesunsetwallpapers.core.designsystem.component.TransparentCenterAlignedTopAppBar
 import com.anilyilmaz.awesomesunsetwallpapers.core.designsystem.component.WhiteTextOutlinedButton
 import com.anilyilmaz.awesomesunsetwallpapers.core.designsystem.theme.md_theme_dark_primary
 import com.anilyilmaz.awesomesunsetwallpapers.core.resource.Res
+import com.anilyilmaz.awesomesunsetwallpapers.core.resource.download
+import com.anilyilmaz.awesomesunsetwallpapers.core.resource.error_occurred_while_setting_wallpaper
 import com.anilyilmaz.awesomesunsetwallpapers.core.resource.retry
+import com.anilyilmaz.awesomesunsetwallpapers.core.resource.set_as_a_wallpaper
 import com.anilyilmaz.awesomesunsetwallpapers.core.resource.something_went_wrong
+import com.anilyilmaz.awesomesunsetwallpapers.core.resource.something_went_wrong_try_again
+import com.anilyilmaz.awesomesunsetwallpapers.core.resource.successfully_saved_to_your_gallery
 import com.anilyilmaz.awesomesunsetwallpapers.feature.wallpaperdetail.platform.BackHandlerCompat
-import com.anilyilmaz.awesomesunsetwallpapers.feature.wallpaperdetail.platform.WallpaperCapability
-import com.anilyilmaz.awesomesunsetwallpapers.feature.wallpaperdetail.platform.defaultWallpaperCtaText
-import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.stringResource
-import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.parameter.parametersOf
 
@@ -43,23 +46,25 @@ import org.koin.core.parameter.parametersOf
 fun WallpaperDetailRoute(
     wallpaperId: Long,
     onNavigationClick: () -> Unit,
+    onShowMessage: (String) -> Unit,
     viewModel: WallpaperDetailViewModel = koinViewModel(
         parameters = { parametersOf(wallpaperId) }
     ),
-    capability: WallpaperCapability = koinInject(),
 ) {
     val platformContext = LocalPlatformContext.current
-    val ctaText = remember { defaultWallpaperCtaText() }
 
-    val uiState by viewModel.uiState.collectAsStateWithLifecycle(WallpaperDetailUiState.Loading)
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val capabilityState by viewModel.capabilityState.collectAsStateWithLifecycle()
 
     WallpaperDetailScreen(
         context = platformContext,
         uiState = uiState,
-        ctaText = ctaText,
-        onPrimaryAction = { imageUrl -> capability.performPrimaryAction(imageUrl) },
+        capabilityState = capabilityState,
+        onNavigationClick = onNavigationClick,
         onRetry = viewModel::getWallpaper,
-        onNavigationClick = onNavigationClick
+        onPrimaryAction = viewModel::onWallpaperAction,
+        onPrimaryActionHandled = viewModel::onWallpaperActionHandled,
+        onShowMessage = onShowMessage
     )
 }
 
@@ -67,14 +72,14 @@ fun WallpaperDetailRoute(
 internal fun WallpaperDetailScreen(
     context: PlatformContext,
     uiState: WallpaperDetailUiState,
-    ctaText: String,
-    onPrimaryAction: suspend (imageUrl: String) -> Unit,
+    capabilityState: WallpaperDetailCapabilityState,
+    onNavigationClick: () -> Unit,
     onRetry: () -> Unit,
-    onNavigationClick: () -> Unit
+    onPrimaryAction: () -> Unit,
+    onPrimaryActionHandled: () -> Unit,
+    onShowMessage: (String) -> Unit
 ) {
-    val scope = rememberCoroutineScope()
     var isImageFullScreen by remember { mutableStateOf(false) }
-    var busy by remember { mutableStateOf(false) }
 
     BackHandlerCompat(enabled = isImageFullScreen) {
         isImageFullScreen = false
@@ -82,10 +87,6 @@ internal fun WallpaperDetailScreen(
 
     when (uiState) {
         WallpaperDetailUiState.Loading -> {
-            TopAppBar(
-                topAppBarText = "",
-                onNavigationClick = onNavigationClick
-            )
             CircularProgressIndicator(
                 modifier = Modifier
                     .fillMaxSize()
@@ -107,45 +108,49 @@ internal fun WallpaperDetailScreen(
             )
 
             if (!isImageFullScreen) {
-                TopAppBar(
-                    topAppBarText = uiState.photographer,
-                    onNavigationClick = onNavigationClick
-                )
-
-                WhiteTextOutlinedButton(
-                    text = if (busy) "…" else ctaText,
+                CapabilityButton(
                     modifier = Modifier
                         .fillMaxSize()
                         .wrapContentSize(Alignment.BottomCenter)
                         .padding(16.dp)
                         .safeDrawingPadding(),
-                    onClick = {
-                        if (!busy) {
-                            scope.launch {
-                                busy = true
-                                runCatching { onPrimaryAction(uiState.wallpaperSrc) }
-                                busy = false
-                            }
-                        }
-                    }
+                    capabilityState = capabilityState,
+                    ctaText = if(platform() == Platform.Android) {
+                        stringResource(Res.string.set_as_a_wallpaper)
+                    } else if(platform() == Platform.Ios) {
+                        stringResource(Res.string.download)
+                    } else {
+                        null
+                    },
+                    onClick = onPrimaryAction
                 )
             }
         }
 
         WallpaperDetailUiState.Error -> {
-            TopAppBar(
-                topAppBarText = "",
-                onNavigationClick = onNavigationClick
-            )
             ErrorLayout(onRetry = onRetry)
         }
     }
+
+    val photographer = (uiState as? WallpaperDetailUiState.Success)?.photographer
+    if (!isImageFullScreen) {
+        TopAppBar(
+            topAppBarText = photographer.orEmpty(),
+            onNavigationClick = onNavigationClick
+        )
+    }
+
+    CapabilityStateMessage(
+        capabilityState = capabilityState,
+        onShowMessage = onShowMessage,
+        onPrimaryActionHandled = onPrimaryActionHandled
+    )
 }
 
 @Composable
 private fun TopAppBar(
     topAppBarText: String,
-    onNavigationClick: () -> Unit
+    onNavigationClick: () -> Unit,
 ) {
     TransparentCenterAlignedTopAppBar(
         title = topAppBarText,
@@ -158,7 +163,7 @@ private fun TopAppBar(
 
 @Composable
 private fun ErrorLayout(
-    onRetry: () -> Unit
+    onRetry: () -> Unit,
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -175,5 +180,48 @@ private fun ErrorLayout(
             modifier = Modifier.clickable { onRetry() },
             color = md_theme_dark_primary
         )
+    }
+}
+
+@Composable
+private fun CapabilityButton(
+    modifier: Modifier,
+    capabilityState: WallpaperDetailCapabilityState,
+    ctaText: String?,
+    onClick: () -> Unit,
+) {
+    val isLoading = capabilityState == WallpaperDetailUiState.Loading
+    WhiteTextOutlinedButton(
+        modifier = modifier,
+        isLoading = isLoading,
+        text = ctaText.orEmpty(),
+        onClick = onClick
+    )
+}
+
+@Composable
+private fun CapabilityStateMessage(
+    capabilityState: WallpaperDetailCapabilityState,
+    onShowMessage: (String) -> Unit,
+    onPrimaryActionHandled: () -> Unit,
+) {
+    val iosSuccessMessage = stringResource(Res.string.successfully_saved_to_your_gallery)
+    val iosErrorMessage = stringResource(Res.string.something_went_wrong_try_again)
+    val androidErrorMessage = stringResource(Res.string.error_occurred_while_setting_wallpaper)
+
+    LaunchedEffect(capabilityState) {
+        if (capabilityState == WallpaperDetailCapabilityState.Success) {
+            if (platform() == Platform.Ios) {
+                onShowMessage(iosSuccessMessage)
+            }
+            onPrimaryActionHandled()
+        } else if (capabilityState is WallpaperDetailCapabilityState.Error) {
+            if(platform() == Platform.Android) {
+                onShowMessage(androidErrorMessage)
+            } else if (platform() == Platform.Ios) {
+                onShowMessage(iosErrorMessage)
+            }
+            onPrimaryActionHandled()
+        }
     }
 }

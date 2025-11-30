@@ -24,6 +24,7 @@ class MultiplatformFeatureConventionPlugin : Plugin<Project> {
                 sourceSets.apply {
                     val commonMain = getByName("commonMain")
                     commonMain.dependencies {
+                        implementation(project(":core:common"))
                         implementation(project(":core:domain"))
                         implementation(project(":core:model"))
                         implementation(project(":core:ui"))
@@ -34,10 +35,16 @@ class MultiplatformFeatureConventionPlugin : Plugin<Project> {
                         implementation(libs.findLibrary("compose.foundation").get())
                         implementation(libs.findLibrary("compose.material3").get())
                         implementation(libs.findLibrary("compose.material.icons.extended").get())
-                        implementation(libs.findLibrary("jetbrains.androidx.navigation.compose").get())
+                        implementation(
+                            libs.findLibrary("jetbrains.androidx.navigation.compose").get()
+                        )
 
-                        implementation(libs.findLibrary("jetbrains.androidx.lifecycle.viewmodel").get())
-                        implementation(libs.findLibrary("jetbrains.androidx.lifecycle.runtime.compose").get())
+                        implementation(
+                            libs.findLibrary("jetbrains.androidx.lifecycle.viewmodel").get()
+                        )
+                        implementation(
+                            libs.findLibrary("jetbrains.androidx.lifecycle.runtime.compose").get()
+                        )
 
                         implementation(libs.findLibrary("kotlinx.coroutines.core").get())
                         implementation(libs.findLibrary("kotlinx.serialization.json").get())
