@@ -13,6 +13,7 @@ kotlin {
             implementation(project(":core:domain"))
             implementation(project(":core:designsystem"))
             implementation(project(":core:model"))
+            api(project(":core:system"))
             implementation(project(":feature:main"))
             implementation(project(":feature:home"))
             implementation(project(":feature:wallpaperdetail"))

@@ -20,18 +20,24 @@ import com.anilyilmaz.awesomesunsetwallpapers.core.model.NetworkState
 import com.anilyilmaz.awesomesunsetwallpapers.core.resource.Res
 import com.anilyilmaz.awesomesunsetwallpapers.core.resource.network_is_connected
 import com.anilyilmaz.awesomesunsetwallpapers.core.resource.there_is_no_network
+import com.anilyilmaz.awesomesunsetwallpapers.core.system.NetworkMonitor
 import com.anilyilmaz.awesomesunsetwallpapers.feature.main.SharedViewModel
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.stringResource
+import org.koin.compose.koinInject
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun AwesomeSunsetWallpapersApp(
-    sharedViewModel: SharedViewModel,
-    initialNetworkState: NetworkState,
+    sharedViewModel: SharedViewModel = koinViewModel(),
+    networkMonitor: NetworkMonitor = koinInject()
 ) {
-    val networkState by sharedViewModel.networkState.collectAsStateWithLifecycle(
-        initialValue = initialNetworkState
-    )
+    val rawNetworkState by networkMonitor.state.collectAsStateWithLifecycle()
+    val networkState by sharedViewModel.networkState.collectAsStateWithLifecycle(NetworkState.AVAILABLE)
+
+    LaunchedEffect(rawNetworkState) {
+        sharedViewModel.updateNetworkState(rawNetworkState)
+    }
 
     Surface(Modifier.fillMaxSize()) {
         val navController = rememberNavController()

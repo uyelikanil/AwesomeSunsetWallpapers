@@ -34,6 +34,8 @@ class ApplicationConventionPlugin: Plugin<Project> {
                             "bundleId",
                             "com.anilyilmaz.awesomesunsetwallpapers.composeApp"
                         )
+
+                        export(project(":core:system"))
                     }
                 }
             }

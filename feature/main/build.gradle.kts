@@ -6,6 +6,7 @@ plugins {
 kotlin {
     sourceSets {
         commonMain.dependencies {
+            implementation(project(":core:system"))
             implementation(project(":core:domain"))
             implementation(project(":core:model"))
             implementation(libs.kotlinx.coroutines.core)

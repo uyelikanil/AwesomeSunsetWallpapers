@@ -2,7 +2,13 @@ import SwiftUI
 import composeApp
 
 @main
-struct iOSApp: App {
+struct AwesomeSunsetWallpapersApp: App {
+    private let networkMonitor = iOSNativeNetworkMonitor()
+
+    init() {
+        networkMonitor.start()
+    }
+    
     var body: some Scene {
         WindowGroup {
             RootView()
