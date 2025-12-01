@@ -45,10 +45,6 @@ gradlePlugin {
             id = "awesomesunsetwallpapers.multiplatform.feature"
             implementationClass = "MultiplatformFeatureConventionPlugin"
         }
-        register("androidFeatureKoin") {
-            id = "awesomesunsetwallpapers.android.feature.koin"
-            implementationClass = "AndroidFeatureKoinConventionPlugin"
-        }
         register("multipaltformLibraryKoin") {
             id = "awesomesunsetwallpapers.multiplatform.library.koin"
             implementationClass = "MultiplatformLibraryKoinConventionPlugin"

@@ -1,7 +1,7 @@
 plugins {
     id("awesomesunsetwallpapers.multiplatform.feature")
     id("awesomesunsetwallpapers.multiplatform.library.compose")
-    id("awesomesunsetwallpapers.android.feature.koin")
+    id("awesomesunsetwallpapers.multiplatform.library.koin")
 }
 
 kotlin {

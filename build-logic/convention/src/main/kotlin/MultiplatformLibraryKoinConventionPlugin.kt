@@ -20,6 +20,7 @@ class MultiplatformLibraryKoinConventionPlugin : Plugin<Project> {
                     val androidMain = findByName("androidMain")
                     androidMain?.dependencies {
                         implementation(libs.findLibrary("koin-android").get())
+                        implementation(libs.findLibrary("koin-compose").get())
                     }
                 }
             }
