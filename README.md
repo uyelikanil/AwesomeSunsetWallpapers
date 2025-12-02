@@ -34,7 +34,7 @@ On Android, the key is read from `local.properties` in the project root.
 2. Add the following line:
 
    ```properties
-   pexels.auth.key="your Pexels api key here"
+   pexels.auth.key=your Pexels api key here
    ```
 
 3. Do **not** commit `local.properties`. This file is already ignored by `.gitignore`.
