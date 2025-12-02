@@ -48,7 +48,7 @@ fun AwesomeSunsetWallpapersApp(
             contentWindowInsets = ScaffoldDefaults.contentWindowInsets
         ) {
             val networkIsConnectedMessage = stringResource(Res.string.network_is_connected)
-            val thereIsNoNetworkdMessage = stringResource(Res.string.there_is_no_network)
+            val thereIsNoNetworkMessage = stringResource(Res.string.there_is_no_network)
             LaunchedEffect(networkState) {
                 if (networkState == NetworkState.CONNECTED) {
                     snackbarHostState.showSnackbar(
@@ -59,7 +59,7 @@ fun AwesomeSunsetWallpapersApp(
                     networkState == NetworkState.UNAVAILABLE
                 ) {
                     snackbarHostState.showSnackbar(
-                        message = thereIsNoNetworkdMessage,
+                        message = thereIsNoNetworkMessage,
                         duration = SnackbarDuration.Indefinite
                     )
                 }
