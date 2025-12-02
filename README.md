@@ -1,6 +1,6 @@
 <img align="left" src="/composeApp/src/androidMain/res/mipmap-mdpi/ic_launcher.png"> Awesome Sunset Wallpapers
 ==================
-A sunset wallpaper app for Android and IOS. It follows Jetbrains's Compose Multiplatform guideline and entirely written with Kotlin.
+A sunset wallpaper app for Android and iOS that follows JetBrains's Compose Multiplatform guidelines, showcasing shared Kotlin code, platform specific implementations, and integration with native features.
 
 ## Screenshots
 <img src="/docs/images/wallpaper-list-screen.png" width="270"> <img src="/docs/images/wallpaper-detail-screen.png" width="270"> <img src="/docs/images/wallpaper-full-screen.png" width="270">
@@ -37,7 +37,7 @@ On Android, the key is read from `local.properties` in the project root.
    pexels.auth.key="your Pexels api key here"
    ```
 
-3. Do **not** commit `local.properties` – it should already be ignored by `.gitignore`.
+3. Do **not** commit `local.properties`. This file is already ignored by `.gitignore`.
 
 The Android module reads this value at build time and uses it to set the `Authorization` header for Pexels requests.
 
