@@ -28,16 +28,20 @@ kotlin {
 android {
     namespace = "com.anilyilmaz.awesomesunsetwallpapers.core.network"
 
-    buildTypes {
-        val pexelsAuthKey: String = gradleLocalProperties(rootDir,
-            providers).getProperty("pexels.auth.key")
+    val pexelsAuthKey: String = (gradleLocalProperties(rootDir, providers)
+        .getProperty("pexels.auth.key")
+        ?: "YOUR_PEXELS_API_KEY"
+            ).also {
+            if (it == "YOUR_PEXELS_API_KEY") {
+                logger.lifecycle(
+                    "⚠️ No 'pexels_auth_key' found in local.properties. " +
+                            "Using a dummy key; API calls will fail until you set a real one."
+                )
+            }
+        }
 
-        release {
-            buildConfigField("String", "PEXELS_AUTH_KEY", pexelsAuthKey)
-        }
-        debug {
-            buildConfigField("String", "PEXELS_AUTH_KEY", pexelsAuthKey)
-        }
+    defaultConfig {
+        buildConfigField("String", "PEXELS_AUTH_KEY", "\"$pexelsAuthKey\"")
     }
 
     buildFeatures {
