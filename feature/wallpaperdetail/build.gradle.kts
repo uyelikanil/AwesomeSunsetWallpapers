@@ -1,15 +1,24 @@
 plugins {
-    id("awesomesunsetwallpapers.android.feature")
-    id("awesomesunsetwallpapers.library.compose")
+    id("awesomesunsetwallpapers.multiplatform.feature")
+    id("awesomesunsetwallpapers.multiplatform.library.compose")
+    id("awesomesunsetwallpapers.multiplatform.library.koin")
+}
+
+kotlin {
+    sourceSets {
+        commonMain.dependencies {
+            implementation(project(":core:resource"))
+            implementation(compose.components.resources)
+        }
+        commonTest.dependencies {
+            implementation(project(":core:testing"))
+            implementation(project(":core:data"))
+            implementation(kotlin("test"))
+            implementation(libs.kotlinx.coroutines.test)
+        }
+    }
 }
 
 android {
     namespace = "com.anilyilmaz.awesomesunsetwallpapers.feature.wallpaperdetail"
-}
-
-dependencies {
-    testImplementation(project(":core:data"))
-    testImplementation(project(":core:testing"))
-
-    implementation(libs.androidx.activity.compose)
 }

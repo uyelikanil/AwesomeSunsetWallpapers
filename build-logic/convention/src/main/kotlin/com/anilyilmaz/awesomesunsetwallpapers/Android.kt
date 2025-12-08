@@ -3,44 +3,63 @@ package com.anilyilmaz.awesomesunsetwallpapers
 import com.android.build.api.dsl.CommonExtension
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
-import org.gradle.kotlin.dsl.assign
-import org.gradle.kotlin.dsl.configure
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.dsl.KotlinAndroidProjectExtension
-import org.jetbrains.kotlin.gradle.dsl.KotlinBaseExtension
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmProjectExtension
+import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
+import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinAndroidTarget
+import org.jetbrains.kotlin.gradle.targets.jvm.KotlinJvmTarget
 
 internal fun Project.configureAndroid(
     commonExtension: CommonExtension<*, *, *, *, *, *>,
 ) {
     commonExtension.apply {
-        compileSdk = 35
-
-        defaultConfig {
-            minSdk = 23
-        }
+        compileSdk = 36
+        defaultConfig { minSdk = 23 }
 
         compileOptions {
-            sourceCompatibility = JavaVersion.VERSION_19
-            targetCompatibility = JavaVersion.VERSION_19
+            sourceCompatibility = JavaVersion.VERSION_21
+            targetCompatibility = JavaVersion.VERSION_21
         }
     }
 
-    configureKotlin<KotlinAndroidProjectExtension>()
+    configureKotlinSafely()
 }
 
-private inline fun <reified T : KotlinBaseExtension> Project.configureKotlin() = configure<T> {
-    // Treat all Kotlin warnings as errors (disabled by default)
-    // Override by setting warningsAsErrors=true in your ~/.gradle/gradle.properties
-    val warningsAsErrors = providers.gradleProperty("warningsAsErrors").map {
-        it.toBoolean()
-    }.orElse(false)
-    when (this) {
-        is KotlinAndroidProjectExtension -> compilerOptions
-        is KotlinJvmProjectExtension -> compilerOptions
-        else -> TODO("Unsupported project extension $this ${T::class}")
-    }.apply {
-        jvmTarget = JvmTarget.JVM_19
-        allWarningsAsErrors = warningsAsErrors
+private fun Project.configureKotlinSafely() {
+    val toolchainVersion = (project.findProperty("kotlin.jvmToolchain") as? String)?.toInt() ?: 21
+    val defaultJvmTarget = (project.findProperty("kotlin.jvmTarget") as? String)
+        ?.let { JvmTarget.fromTarget(it) } ?: JvmTarget.JVM_21
+
+    project.plugins.withId("org.jetbrains.kotlin.android") {
+        project.extensions.configure(KotlinAndroidProjectExtension::class.java) {
+            jvmToolchain(toolchainVersion)
+            compilerOptions {
+                jvmTarget.set(defaultJvmTarget)
+            }
+        }
+    }
+
+    project.plugins.withId("org.jetbrains.kotlin.jvm") {
+        project.extensions.configure(KotlinJvmProjectExtension::class.java) {
+            jvmToolchain(toolchainVersion)
+            compilerOptions {
+                jvmTarget.set(defaultJvmTarget)
+            }
+        }
+    }
+
+    project.plugins.withId("org.jetbrains.kotlin.multiplatform") {
+        project.extensions.configure(KotlinMultiplatformExtension::class.java) {
+            jvmToolchain(toolchainVersion)
+
+            // Set jvmTarget on relevant targets (androidTarget(), jvm())
+            targets.withType(KotlinAndroidTarget::class.java).configureEach {
+                compilerOptions { jvmTarget.set(defaultJvmTarget) }
+            }
+            targets.withType(KotlinJvmTarget::class.java).configureEach {
+                compilerOptions { jvmTarget.set(defaultJvmTarget) }
+            }
+        }
     }
 }

@@ -1,12 +1,15 @@
 plugins {
-    id("awesomesunsetwallpapers.android.library")
+    id("awesomesunsetwallpapers.multiplatform.library.core")
+}
+
+kotlin {
+    sourceSets {
+        commonMain.dependencies {
+            implementation(project(":core:network"))
+        }
+    }
 }
 
 android {
     namespace = "com.anilyilmaz.awesomesunsetwallpapers.core.model"
-}
-
-dependencies {
-    implementation(project(":core:network"))
-    implementation(libs.androidx.compose.runtime)
 }

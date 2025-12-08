@@ -1,18 +1,19 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
-plugins {`kotlin-dsl`
+plugins {
+    `kotlin-dsl`
 }
 
 group = "com.anilyilmaz.awesomesunsetwallpapers.buildlogic"
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
 }
 
 kotlin {
     compilerOptions {
-        jvmTarget = JvmTarget.JVM_17
+        jvmTarget = JvmTarget.JVM_21
     }
 }
 
@@ -20,7 +21,7 @@ dependencies {
     compileOnly(libs.android.gradlePlugin)
     compileOnly(libs.kotlin.gradlePlugin)
     compileOnly(libs.ksp.gradlePlugin)
-    compileOnly(libs.compose.gradlePlugin)
+    compileOnly(libs.compose.compiler.gradlePlugin)
 }
 
 tasks {
@@ -32,33 +33,25 @@ tasks {
 
 gradlePlugin {
     plugins {
-        register("androidApplication") {
-            id = "awesomesunsetwallpapers.android.application"
-            implementationClass = "AndroidApplicationConventionPlugin"
+        register("application") {
+            id = "awesomesunsetwallpapers.application"
+            implementationClass = "ApplicationConventionPlugin"
         }
-        register("androidLibrary") {
-            id = "awesomesunsetwallpapers.android.library"
-            implementationClass = "AndroidLibraryConventionPlugin"
+        register("multiplatformLibraryCompose") {
+            id = "awesomesunsetwallpapers.multiplatform.library.compose"
+            implementationClass = "MultiplatformLibraryComposeConventionPlugin"
         }
-        register("androidApplicationCompose") {
-            id = "awesomesunsetwallpapers.application.compose"
-            implementationClass = "AndroidApplicationComposeConventionPlugin"
+        register("multipaltformFeature") {
+            id = "awesomesunsetwallpapers.multiplatform.feature"
+            implementationClass = "MultiplatformFeatureConventionPlugin"
         }
-        register("androidLibraryCompose") {
-            id = "awesomesunsetwallpapers.library.compose"
-            implementationClass = "AndroidLibraryComposeConventionPlugin"
+        register("multipaltformLibraryKoin") {
+            id = "awesomesunsetwallpapers.multiplatform.library.koin"
+            implementationClass = "MultiplatformLibraryKoinConventionPlugin"
         }
-        register("androidFeature") {
-            id = "awesomesunsetwallpapers.android.feature"
-            implementationClass = "AndroidFeatureConventionPlugin"
-        }
-        register("androidHilt") {
-            id = "awesomesunsetwallpapers.android.hilt"
-            implementationClass = "AndroidHiltConventionPlugin"
-        }
-        register("jvmLibrary") {
-            id = "awesomesunsetwallpapers.jvm.library"
-            implementationClass = "JvmLibraryConventionPlugin"
+        register("multipaltformLibraryCore") {
+            id = "awesomesunsetwallpapers.multiplatform.library.core"
+            implementationClass = "MultiplatformLibraryCoreConventionPlugin"
         }
     }
 }
