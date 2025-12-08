@@ -1,4 +1,4 @@
-<img align="left" src="/docs/images/app-icon.png"> Awesome Sunset Wallpapers
+<img align="left" width="48" height="48" src="/docs/images/app-icon.png"> Awesome Sunset Wallpapers
 ==================
 A sunset wallpaper app for Android and iOS that follows JetBrains's Compose Multiplatform guidelines, showcasing shared Kotlin code, platform specific implementations, and integration with native features.
 
