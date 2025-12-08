@@ -3,7 +3,7 @@
 A sunset wallpaper app for Android and iOS that follows JetBrains's Compose Multiplatform guidelines, showcasing shared Kotlin code, platform specific implementations, and integration with native features.
 
 ## Screenshots
-<img src="/docs/images/wallpaper-list-screen.png" width="270"> <img src="/docs/images/wallpaper-detail-screen.png" width="270"> <img src="/docs/images/wallpaper-full-screen.png" width="270">
+<img src="/docs/images/screen-shots.jpg" width="1920">
 
 ## Tech Stack
 * Kotlin
