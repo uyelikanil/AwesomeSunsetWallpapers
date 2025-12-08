@@ -45,8 +45,8 @@ class ApplicationConventionPlugin: Plugin<Project> {
 
                 defaultConfig {
                     applicationId = "com.anilyilmaz.awesomesunsetwallpapers"
-                    versionCode = 4
-                    versionName = "3.1.0"
+                    versionCode = 5
+                    versionName = "4.0.0"
                     targetSdk = 36
                 }
 
