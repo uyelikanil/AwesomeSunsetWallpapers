@@ -10,6 +10,11 @@ kotlin {
             implementation(project(":core:resource"))
             implementation(compose.components.resources)
         }
+        commonTest.dependencies {
+            implementation(project(":core:testing"))
+            implementation(kotlin("test"))
+            implementation(libs.kotlinx.coroutines.test)
+        }
     }
 }
 

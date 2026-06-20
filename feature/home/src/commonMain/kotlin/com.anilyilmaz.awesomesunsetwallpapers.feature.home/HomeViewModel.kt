@@ -63,61 +63,52 @@ class HomeViewModel(
     }
 
     fun loadMorePhotos() = viewModelScope.launch {
-        uiState.value.photoExpanded?.run {
-            if (uiState.value.loadState.refresh == LoadStatus.NotLoading) {
-                _uiState.update {
-                    it.copy(
-                        loadState = it.loadState.copy(
-                            append = LoadStatus.Loading
-                        )
-                    )
-                }
-                try {
-                    val response = loadMoreSunsetPhotosUseCase(
-                        page = page,
-                        perPage = perPage,
-                        totalResults = totalResults
-                    )
+        val currentState = uiState.value
+        val currentPage = currentState.photoExpanded ?: return@launch
 
-                    if (response != null) {
-                        val mutableList = photos.toMutableList()
-                        mutableList.addAll(response.photos)
-                        val updatedList = mutableList.toList()
+        val isRefreshComplete = currentState.loadState.refresh == LoadStatus.NotLoading
+        val isLoadingMore = currentState.loadState.append == LoadStatus.Loading
 
-                        val updatedPhotoExpanded = copy(
-                            totalResults = response.totalResults,
-                            page = response.page,
-                            perPage = response.perPage,
-                            photos = updatedList
-                        )
+        if (!isRefreshComplete || isLoadingMore) return@launch
 
-                        _uiState.update { uiState ->
-                            uiState.copy(
-                                photoExpanded = updatedPhotoExpanded,
-                                loadState = uiState.loadState.copy(
-                                    append = LoadStatus.NotLoading
-                                )
-                            )
-                        }
-                    } else {
-                        _uiState.update {
-                            it.copy(
-                                loadState = it.loadState.copy(
-                                    append = LoadStatus.Error
-                                )
-                            )
-                        }
-                    }
-                } catch (_: Exception) {
-                    _uiState.update {
-                        it.copy(
-                            loadState = it.loadState.copy(
-                                append = LoadStatus.Error
-                            )
-                        )
-                    }
-                }
+        updateAppendStatus(LoadStatus.Loading)
+
+        try {
+            val nextPage = loadMoreSunsetPhotosUseCase(
+                page = currentPage.page,
+                perPage = currentPage.perPage,
+                totalResults = currentPage.totalResults
+            )
+
+            if (nextPage == null) {
+                updateAppendStatus(LoadStatus.Error)
+                return@launch
             }
+
+            val latestPage = uiState.value.photoExpanded ?: return@launch
+            val uniquePhotos = (latestPage.photos + nextPage.photos)
+                .distinctBy { photo -> photo.id }
+
+            _uiState.update { state ->
+                state.copy(
+                    photoExpanded = nextPage.copy(photos = uniquePhotos),
+                    loadState = state.loadState.copy(
+                        append = LoadStatus.NotLoading
+                    )
+                )
+            }
+        } catch (_: Exception) {
+            updateAppendStatus(LoadStatus.Error)
+        }
+    }
+
+    private fun updateAppendStatus(status: LoadStatus) {
+        _uiState.update { state ->
+            state.copy(
+                loadState = state.loadState.copy(
+                    append = status
+                )
+            )
         }
     }
 }
