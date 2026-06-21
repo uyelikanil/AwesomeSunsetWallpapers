@@ -1,17 +1,21 @@
 package com.anilyilmaz.awesomesunsetwallpapers.core.domain.usecase
 
 import com.anilyilmaz.awesomesunsetwallpapers.core.domain.testdoubles.FakePhotoRepository
+import com.anilyilmaz.awesomesunsetwallpapers.core.testing.testdoubles.data.FakeFavoriteWallpaperRepository
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class LoadMoreSunsetPhotosUseCaseTest {
     private val fakePhotoRepository = FakePhotoRepository()
-    private val getSunsetPhotosUseCase = GetSunsetPhotosUseCase(fakePhotoRepository)
+    private val getSunsetPhotosUseCase = GetSunsetPhotosUseCase(
+        fakePhotoRepository,
+        FakeFavoriteWallpaperRepository(),
+    )
     private val loadMoreSunsetPhotosUseCase = LoadMoreSunsetPhotosUseCase(getSunsetPhotosUseCase)
 
     @Test
-    fun `given page, perPage and totalResults, when LoadMoreSunsetPhotosUseCase is invoked then loads next page`() =
+    fun `given page perPage and totalResults when LoadMoreSunsetPhotosUseCase is invoked then loads next page`() =
         runTest {
             // Given
             val page = 1

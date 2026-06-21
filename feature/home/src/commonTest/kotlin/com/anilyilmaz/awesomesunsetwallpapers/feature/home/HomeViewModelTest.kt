@@ -5,6 +5,7 @@ import com.anilyilmaz.awesomesunsetwallpapers.core.domain.usecase.GetSunsetPhoto
 import com.anilyilmaz.awesomesunsetwallpapers.core.domain.usecase.LoadMoreSunsetPhotosUseCase
 import com.anilyilmaz.awesomesunsetwallpapers.core.model.PhotoExpanded
 import com.anilyilmaz.awesomesunsetwallpapers.core.testing.testdoubles.modelfactory.photoTestData
+import com.anilyilmaz.awesomesunsetwallpapers.core.testing.testdoubles.data.FakeFavoriteWallpaperRepository
 import com.anilyilmaz.awesomesunsetwallpapers.core.testing.testdoubles.util.MainDispatcherBase
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -24,10 +25,12 @@ class HomeViewModelTest : MainDispatcherBase() {
     fun setUp() {
         installMain()
         repository = ControlledPhotoRepository()
-        val getPhotos = GetSunsetPhotosUseCase(repository)
+        val favoriteWallpaperRepository = FakeFavoriteWallpaperRepository()
+        val getPhotos = GetSunsetPhotosUseCase(repository, favoriteWallpaperRepository)
         viewModel = HomeViewModel(
-            getSunsetPhotosUpdatedUseCase = getPhotos,
-            loadMoreSunsetPhotosUseCase = LoadMoreSunsetPhotosUseCase(getPhotos)
+            getSunsetPhotosUseCase = getPhotos,
+            loadMoreSunsetPhotosUseCase = LoadMoreSunsetPhotosUseCase(getPhotos),
+            favoriteWallpaperRepository = favoriteWallpaperRepository,
         )
     }
 

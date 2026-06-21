@@ -2,16 +2,20 @@ package com.anilyilmaz.awesomesunsetwallpapers.feature.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.anilyilmaz.awesomesunsetwallpapers.core.domain.repository.FavoriteWallpaperRepository
 import com.anilyilmaz.awesomesunsetwallpapers.core.domain.usecase.GetSunsetPhotosUseCase
 import com.anilyilmaz.awesomesunsetwallpapers.core.domain.usecase.LoadMoreSunsetPhotosUseCase
+import com.anilyilmaz.awesomesunsetwallpapers.core.model.Photo
+import com.anilyilmaz.awesomesunsetwallpapers.core.model.PhotoExpanded
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class HomeViewModel(
-    val getSunsetPhotosUpdatedUseCase: GetSunsetPhotosUseCase,
-    val loadMoreSunsetPhotosUseCase: LoadMoreSunsetPhotosUseCase,
+    private val getSunsetPhotosUseCase: GetSunsetPhotosUseCase,
+    private val loadMoreSunsetPhotosUseCase: LoadMoreSunsetPhotosUseCase,
+    private val favoriteWallpaperRepository: FavoriteWallpaperRepository,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(
@@ -25,6 +29,7 @@ class HomeViewModel(
     val uiState = _uiState.asStateFlow()
 
     init {
+        observeFavoriteIds()
         getPhotos()
     }
 
@@ -39,7 +44,7 @@ class HomeViewModel(
             )
         }
         try {
-            val photoExpanded = getSunsetPhotosUpdatedUseCase()
+            val photoExpanded = getSunsetPhotosUseCase()
             _uiState.update {
                 it.copy(
                     photoExpanded = photoExpanded,
@@ -102,6 +107,27 @@ class HomeViewModel(
         }
     }
 
+    fun toggleFavorite(photo: Photo) {
+        viewModelScope.launch {
+            favoriteWallpaperRepository.toggleFavorite(photo)
+        }
+    }
+
+    private fun observeFavoriteIds() {
+        viewModelScope.launch {
+            favoriteWallpaperRepository.observeFavoriteIds()
+                .collect { favoriteIds -> updateFavoriteInfo(favoriteIds) }
+        }
+    }
+
+    private fun updateFavoriteInfo(favoriteIds: Set<Long>) {
+        _uiState.update { state ->
+            state.copy(
+                photoExpanded = state.photoExpanded?.withFavoriteInfo(favoriteIds)
+            )
+        }
+    }
+
     private fun updateAppendStatus(status: LoadStatus) {
         _uiState.update { state ->
             state.copy(
@@ -112,3 +138,8 @@ class HomeViewModel(
         }
     }
 }
+
+private fun PhotoExpanded.withFavoriteInfo(favoriteIds: Set<Long>): PhotoExpanded =
+    copy(
+        photos = photos.map { photo -> photo.copy(isFavorite = photo.id in favoriteIds) }
+    )
