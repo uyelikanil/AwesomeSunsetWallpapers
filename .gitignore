@@ -4,6 +4,7 @@
 .idea/
 
 .gradle/
+.kotlin/
 local.properties
 build/
 **/build/
@@ -27,3 +28,4 @@ iosApp/Pods/
 iosApp/build/
 
 *.log
+*.hprof
