@@ -1,0 +1,4 @@
+interface:
+  display_name: "Awesome Sunset Compose Multiplatform"
+  short_description: "Build readable, pragmatic Android and iOS KMP code"
+  default_prompt: "Use $awesome-sunset-compose-multiplatform to make a simple, readable change that preserves Android and iOS architecture boundaries."
