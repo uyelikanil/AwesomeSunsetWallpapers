@@ -8,7 +8,7 @@ class GetNetworkStateUseCaseTest {
     private val useCase = GetNetworkStateUseCase()
 
     @Test
-    fun `given new NetworkState is AVAILABLE and old NetworkState is LOST, when getState is called, then NetworkState should be CONNECTED`() {
+    fun `given new NetworkState is AVAILABLE and old NetworkState is LOST when getState is called then NetworkState should be CONNECTED`() {
         // Given
         val newState = NetworkState.AVAILABLE
         val oldState = NetworkState.LOST
@@ -21,7 +21,7 @@ class GetNetworkStateUseCaseTest {
     }
 
     @Test
-    fun `given isThereNetwork is false, when getState is called, then NetworkState should be UNAVAILABLE`() {
+    fun `given isThereNetwork is false when getState is called then NetworkState should be UNAVAILABLE`() {
         // Given
         val isThereNetwork = false
 

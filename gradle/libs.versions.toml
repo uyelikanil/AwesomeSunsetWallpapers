@@ -2,7 +2,7 @@
 # Kotlin & Tooling
 kotlin = "2.2.21"
 androidGradlePlugin = "8.13.1"
-ksp = "2.1.10-1.0.31"
+ksp = "2.2.21-2.0.5"
 
 # AndroidX Core & Lifecycle (Android)
 activity = "1.12.0"
@@ -33,6 +33,8 @@ ktor = "3.3.2"
 
 # Dependency Injection
 koin = "4.1.1"
+room = "2.8.4"
+sqlite = "2.6.2"
 
 [libraries]
 # Android-only (AndroidX)
@@ -81,6 +83,11 @@ koin-core = { group = "io.insert-koin", name = "koin-core", version.ref = "koin"
 koin-android = { group = "io.insert-koin", name = "koin-android", version.ref = "koin" }
 koin-compose = { group = "io.insert-koin", name = "koin-androidx-compose", version.ref = "koin" }
 koin-compose-viewModel = { group = "io.insert-koin", name = "koin-compose-viewmodel", version.ref = "koin" }
+
+# Local persistence
+androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
+androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
+androidx-sqlite-bundled = { module = "androidx.sqlite:sqlite-bundled", version.ref = "sqlite" }
 
 # Gradle Plugins (for build-logic include)
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }

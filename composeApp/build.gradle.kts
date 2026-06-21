@@ -9,6 +9,7 @@ kotlin {
             implementation(compose.components.resources)
             implementation(project(":core:common"))
             implementation(project(":core:network"))
+            implementation(project(":core:local"))
             implementation(project(":core:data"))
             implementation(project(":core:domain"))
             implementation(project(":core:designsystem"))
@@ -16,11 +17,13 @@ kotlin {
             api(project(":core:system"))
             implementation(project(":feature:main"))
             implementation(project(":feature:home"))
+            implementation(project(":feature:favorite"))
             implementation(project(":feature:wallpaperdetail"))
 
             implementation(libs.compose.runtime)
             implementation(libs.compose.foundation)
             implementation(libs.compose.material3)
+            implementation(libs.compose.material.icons.extended)
             implementation(libs.jetbrains.androidx.navigation.compose)
         }
 

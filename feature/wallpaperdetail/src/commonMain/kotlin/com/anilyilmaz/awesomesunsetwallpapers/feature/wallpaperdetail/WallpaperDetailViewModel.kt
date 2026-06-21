@@ -2,7 +2,8 @@ package com.anilyilmaz.awesomesunsetwallpapers.feature.wallpaperdetail
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.anilyilmaz.awesomesunsetwallpapers.core.domain.repository.PhotoRepository
+import com.anilyilmaz.awesomesunsetwallpapers.core.domain.repository.FavoriteWallpaperRepository
+import com.anilyilmaz.awesomesunsetwallpapers.core.domain.usecase.GetWallpaperUseCase
 import com.anilyilmaz.awesomesunsetwallpapers.feature.wallpaperdetail.platform.WallpaperCapability
 import com.anilyilmaz.awesomesunsetwallpapers.feature.wallpaperdetail.platform.WallpaperCapabilityResult
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -13,7 +14,8 @@ import kotlinx.coroutines.launch
 
 class WallpaperDetailViewModel(
     private val wallpaperId: Long,
-    private val photoRepository: PhotoRepository,
+    private val getWallpaperUseCase: GetWallpaperUseCase,
+    private val favoriteWallpaperRepository: FavoriteWallpaperRepository,
     private val capability: WallpaperCapability,
     private val loadOnInit: Boolean = true
 ) : ViewModel() {
@@ -39,11 +41,8 @@ class WallpaperDetailViewModel(
         _uiState.value = WallpaperDetailUiState.Loading
 
         try {
-            val photo = photoRepository.getPhoto(wallpaperId)
-            _uiState.value = WallpaperDetailUiState.Success(
-                wallpaperSrc = photo.src.portrait,
-                photographer = photo.photographer
-            )
+            val photo = getWallpaperUseCase(wallpaperId)
+            _uiState.value = WallpaperDetailUiState.Success(photo)
         } catch (e: Exception) {
             _uiState.value = WallpaperDetailUiState.Error
         }
@@ -53,7 +52,7 @@ class WallpaperDetailViewModel(
         if (uiState.value is WallpaperDetailUiState.Success) {
             _capabilityState.update { WallpaperDetailCapabilityState.Loading }
             val result = capability.performPrimaryAction(
-                (uiState.value as WallpaperDetailUiState.Success).wallpaperSrc
+                (uiState.value as WallpaperDetailUiState.Success).photo.src.portrait
             )
             when (result) {
                 is WallpaperCapabilityResult.Success -> {
@@ -62,6 +61,20 @@ class WallpaperDetailViewModel(
 
                 is WallpaperCapabilityResult.Error -> {
                     _capabilityState.update { WallpaperDetailCapabilityState.Error() }
+                }
+            }
+        }
+    }
+
+    fun toggleFavorite() {
+        val photo = (uiState.value as? WallpaperDetailUiState.Success)?.photo ?: return
+        viewModelScope.launch {
+            favoriteWallpaperRepository.toggleFavorite(photo)
+            _uiState.update { state ->
+                if (state is WallpaperDetailUiState.Success) {
+                    state.copy(photo = state.photo.copy(isFavorite = !photo.isFavorite))
+                } else {
+                    state
                 }
             }
         }

@@ -13,10 +13,13 @@ class PhotoRepositoryTest {
     private val pexelsDataSource = FakePexelsDataSource()
     @OptIn(ExperimentalCoroutinesApi::class)
     private val dispatcher = UnconfinedTestDispatcher()
-    private val photoRepository = PhotoRepositoryImpl(pexelsDataSource, dispatcher)
+    private val photoRepository = PhotoRepositoryImpl(
+        pexelsDataSource,
+        dispatcher,
+    )
 
     @Test
-    fun `given photo id, when getPhoto is called, then get seleceted PexelsPhoto with id as Photo`()
+    fun `getPhoto maps the selected Pexels photo to Photo`()
             = runTest {
         // Given
         val expectedPhoto = photoTestData(0)

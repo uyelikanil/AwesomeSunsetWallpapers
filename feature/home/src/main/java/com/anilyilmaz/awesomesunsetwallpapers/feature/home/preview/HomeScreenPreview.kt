@@ -22,7 +22,9 @@ fun HomeScreenPreview(
         totalResults = 8000,
         page = 1,
         perPage = 30,
-        photos = photos
+        photos = photos.mapIndexed { index, photo ->
+            photo.copy(isFavorite = index == 0)
+        }
     )
 
     AppTheme {
@@ -36,7 +38,8 @@ fun HomeScreenPreview(
             ),
             refreshList = {},
             loadMoreItems = {},
-            onImageClick = {}
+            onImageClick = {},
+            onFavoriteClick = {},
         )
     }
 }

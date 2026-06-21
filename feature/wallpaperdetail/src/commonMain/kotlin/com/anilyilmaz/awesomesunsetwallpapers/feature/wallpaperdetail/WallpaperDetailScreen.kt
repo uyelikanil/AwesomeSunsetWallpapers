@@ -5,8 +5,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawingPadding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -32,12 +34,14 @@ import com.anilyilmaz.awesomesunsetwallpapers.core.designsystem.theme.md_theme_d
 import com.anilyilmaz.awesomesunsetwallpapers.core.resource.Res
 import com.anilyilmaz.awesomesunsetwallpapers.core.resource.download
 import com.anilyilmaz.awesomesunsetwallpapers.core.resource.error_occurred_while_setting_wallpaper
+import com.anilyilmaz.awesomesunsetwallpapers.core.resource.favorite_wallpaper
 import com.anilyilmaz.awesomesunsetwallpapers.core.resource.retry
 import com.anilyilmaz.awesomesunsetwallpapers.core.resource.set_as_a_wallpaper
 import com.anilyilmaz.awesomesunsetwallpapers.core.resource.something_went_wrong
 import com.anilyilmaz.awesomesunsetwallpapers.core.resource.something_went_wrong_try_again
 import com.anilyilmaz.awesomesunsetwallpapers.core.resource.successfully_saved_to_your_gallery
 import com.anilyilmaz.awesomesunsetwallpapers.feature.wallpaperdetail.platform.BackHandlerCompat
+import com.anilyilmaz.awesomesunsetwallpapers.core.designsystem.component.FavoriteIcon
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.parameter.parametersOf
@@ -64,6 +68,7 @@ fun WallpaperDetailRoute(
         onRetry = viewModel::getWallpaper,
         onPrimaryAction = viewModel::onWallpaperAction,
         onPrimaryActionHandled = viewModel::onWallpaperActionHandled,
+        onFavoriteClick = viewModel::toggleFavorite,
         onShowMessage = onShowMessage
     )
 }
@@ -77,6 +82,7 @@ internal fun WallpaperDetailScreen(
     onRetry: () -> Unit,
     onPrimaryAction: () -> Unit,
     onPrimaryActionHandled: () -> Unit,
+    onFavoriteClick: () -> Unit,
     onShowMessage: (String) -> Unit
 ) {
     var isImageFullScreen by remember { mutableStateOf(false) }
@@ -97,7 +103,7 @@ internal fun WallpaperDetailScreen(
         is WallpaperDetailUiState.Success -> {
             AsyncImage(
                 model = ImageRequest.Builder(context)
-                    .data(uiState.wallpaperSrc)
+                    .data(uiState.photo.src.portrait)
                     .crossfade(true)
                     .build(),
                 contentScale = ContentScale.Crop,
@@ -132,11 +138,13 @@ internal fun WallpaperDetailScreen(
         }
     }
 
-    val photographer = (uiState as? WallpaperDetailUiState.Success)?.photographer
+    val photo = (uiState as? WallpaperDetailUiState.Success)?.photo
     if (!isImageFullScreen) {
         TopAppBar(
-            topAppBarText = photographer.orEmpty(),
-            onNavigationClick = onNavigationClick
+            topAppBarText = photo?.photographer.orEmpty(),
+            isFavorite = photo?.isFavorite == true,
+            onNavigationClick = onNavigationClick,
+            onFavoriteClick = onFavoriteClick,
         )
     }
 
@@ -150,14 +158,26 @@ internal fun WallpaperDetailScreen(
 @Composable
 private fun TopAppBar(
     topAppBarText: String,
+    isFavorite: Boolean,
     onNavigationClick: () -> Unit,
+    onFavoriteClick: () -> Unit,
 ) {
+    val favoriteContentDescription = stringResource(Res.string.favorite_wallpaper)
     TransparentCenterAlignedTopAppBar(
         title = topAppBarText,
         modifier = Modifier
             .fillMaxSize()
             .wrapContentSize(Alignment.TopStart),
-        onNavigationClick = onNavigationClick
+        onNavigationClick = onNavigationClick,
+        actions = {
+            IconButton(onClick = onFavoriteClick) {
+                FavoriteIcon(
+                    isFavorite = isFavorite,
+                    contentDescription = favoriteContentDescription,
+                    modifier = Modifier.size(24.dp),
+                )
+            }
+        },
     )
 }
 

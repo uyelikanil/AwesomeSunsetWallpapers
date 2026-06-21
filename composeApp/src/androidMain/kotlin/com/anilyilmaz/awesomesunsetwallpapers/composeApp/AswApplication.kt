@@ -3,6 +3,7 @@ package com.anilyilmaz.awesomesunsetwallpapers.composeApp
 import android.app.Application
 import com.anilyilmaz.awesomesunsetwallpapers.composeApp.di.initKoin
 import com.anilyilmaz.awesomesunsetwallpapers.core.domain.di.domainAndroidMainModule
+import com.anilyilmaz.awesomesunsetwallpapers.core.local.di.localPlatformModule
 import com.anilyilmaz.awesomesunsetwallpapers.core.system.di.systemAndroidModule
 import com.anilyilmaz.awesomesunsetwallpapers.feature.wallpaperdetail.di.platformWallpaperDetailModule
 import org.koin.android.ext.koin.androidContext
@@ -24,6 +25,7 @@ class AswApplication : Application() {
             },
             platformModules = listOf(
                 systemAndroidModule,
+                localPlatformModule,
                 domainAndroidMainModule,
                 platformWallpaperDetailModule
             )

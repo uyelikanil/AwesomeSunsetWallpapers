@@ -6,5 +6,6 @@ data class Photo(
     val id: Long,
     val photographer: String = "",
     val photographer_url: String = "",
-    val src: PexelsPhotoSrc
+    val src: PexelsPhotoSrc,
+    val isFavorite: Boolean = false,
 )

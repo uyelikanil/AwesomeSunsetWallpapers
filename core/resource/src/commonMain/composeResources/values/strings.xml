@@ -10,4 +10,8 @@
     <string name="successfully_saved_to_your_gallery">Wallpaper successfully saved to your gallery.</string>
     <string name="error_occurred_while_setting_wallpaper">Error occurred while setting wallpaper. Please try again!</string>
     <string name="something_went_wrong_try_again">Something went wrong. Please try again!</string>
+    <string name="home">Home</string>
+    <string name="favorite">Favorite</string>
+    <string name="favorite_wallpaper">Favorite wallpaper</string>
+    <string name="no_favorite_wallpapers">Save a sunset you love, and it’ll appear here.</string>
 </resources>

@@ -9,7 +9,7 @@ import kotlin.test.assertEquals
 
 class PhotoMapperTest {
     @Test
-    fun `given PexelsPhoto, when mapToPhoto is called, then PexelsPhoto should be mapped to Photo`() {
+    fun `mapToPhoto maps PexelsPhoto to Photo`() {
         // Given
         val pexelsPhoto = pexelsPhotoTestData(0)
         val expectedPhoto = photoTestData(0)
@@ -22,7 +22,7 @@ class PhotoMapperTest {
     }
 
     @Test
-    fun `given PexelsPhotoExpanded, when mapToPhotoExpanded is called, then PexelsPhotoExpanded should be mapped to PhotoExpanded`() {
+    fun `mapToPhotoExpanded maps PexelsPhotoExpanded to PhotoExpanded`() {
         // Given
         val pexelsPhotoExpanded = pexelsPhotoExpandedTestData()
         val expectedPhotoExpanded = photoExpandedTestData()

@@ -3,8 +3,10 @@ package com.anilyilmaz.awesomesunsetwallpapers.composeApp.di
 import com.anilyilmaz.awesomesunsetwallpapers.core.common.di.dispatchersModule
 import com.anilyilmaz.awesomesunsetwallpapers.core.data.di.dataModule
 import com.anilyilmaz.awesomesunsetwallpapers.core.domain.di.domainModule
+import com.anilyilmaz.awesomesunsetwallpapers.core.local.di.localModule
 import com.anilyilmaz.awesomesunsetwallpapers.core.network.di.dataSourceModule
 import com.anilyilmaz.awesomesunsetwallpapers.feature.home.di.homeModule
+import com.anilyilmaz.awesomesunsetwallpapers.feature.favorite.di.favoriteModule
 import com.anilyilmaz.awesomesunsetwallpapers.feature.main.di.mainModule
 import com.anilyilmaz.awesomesunsetwallpapers.feature.wallpaperdetail.di.wallpaperDetailModule
 import org.koin.core.KoinApplication
@@ -20,10 +22,12 @@ fun initKoin(
     modules(
         dispatchersModule,
         dataSourceModule,
+        localModule,
         dataModule,
         domainModule,
         mainModule,
         homeModule,
+        favoriteModule,
         wallpaperDetailModule,
         * platformModules.toTypedArray()
     )
